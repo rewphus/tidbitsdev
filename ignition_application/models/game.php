@@ -174,7 +174,7 @@ class Game extends CI_Model {
         if($userID == null) 
             $userID = 0;
 
-        $this->db->select('genres.genreID, genres.GBID, genres.name, genres.abbreviation');
+        $this->db->select('genres.genreID, genres.GBID, genres.name');
         $this->db->select('(CASE WHEN collectionGenre.CollectionID IS NULL THEN 0 ELSE 1 END) AS inCollection');
         $this->db->from('games');
         $this->db->join('gameGenres', 'games.GameID = gameGenres.GameID');

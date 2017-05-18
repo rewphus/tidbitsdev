@@ -110,6 +110,20 @@ class Games extends CI_Controller {
                     }
                 }
             }
+
+            // get genres for game
+            if($this->Game->getGenres($userID))
+            {
+                // if game has one genre
+                if($this->Game->Genres != null && count($this->Game->genres) == 1)
+                {
+                    // add game to genre in collection
+                    if($this->Collection->addGenre($collectionID, $this->Game->genres[0]->GBID))
+                    {
+
+                    }
+                }
+            }
             
             // record event
             $this->Event->addEvent($userID, $this->Game->gameID, $listID, null, null);
@@ -301,6 +315,108 @@ class Games extends CI_Controller {
         
         // remove platform from game in collection
         $this->Collection->removePlatform($collection->ID, $GBPlatformID);
+        
+        $result['error'] = false; 
+        echo json_encode($result);
+        return;
+    }
+
+    function addGenre()
+    {
+        // form validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
+        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+
+        $GBID = $this->input->post('GBID');
+        $GBGenreID = $this->input->post('platformID');
+        $userID = $this->session->userdata('UserID');
+
+        // check that user is logged in
+        if($userID <= 0)
+        {
+            $this->returnError($this->lang->line('error_logged_out'),"/login","Login");
+            return;
+        }
+
+        // check if game is in collection
+        $this->load->model('Collection');
+        $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+
+        // if game is not in collection
+        if($collection == null)
+        {
+            $this->returnError("You haven't added this game to your collection. You probably need to do that first kido.", false, false);
+            return;
+        }
+        
+        // if game is not on genre, add it
+        if(!$this->Collection->isGameOnGenreInCollection($collection->ID, $GBGenreID))
+        {
+            // load genre model
+            $this->load->model('Genre');
+
+            // if genre isnt in db
+            if(!$this->Genre->isGenreInDB($GBGenreID))
+            {
+                // get genre data 
+                $genre = $this->Genre->getGenre($GBGenreID);
+
+                // if API returned nothing
+                if($genre == null)
+                {
+                    $this->returnError($this->lang->line('error_giantbomb_down'), false, false);
+                    return;
+                }
+
+                // add genre to db
+                $this->Genre->addGenre($genre);
+            }
+
+            // add game to genre in collection
+            $this->Collection->addGenre($collection->ID, $GBGenreID);
+        }
+
+        // record event
+        $this->load->model('Event');
+        $this->Event->addEvent($userID, $collection->GameID, $collection->ListID, null, null);
+        
+        $result['error'] = false; 
+        echo json_encode($result);
+        return;
+    }
+
+    function removeGenre()
+    {
+        // form validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
+        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+
+        $GBID = $this->input->post('GBID');
+        $GBGenreID = $this->input->post('platformID');
+        $userID = $this->session->userdata('UserID');
+
+        // check that user is logged in
+        if($userID <= 0)
+        {
+            $this->returnError($this->lang->line('error_logged_out'),"/login","Login");
+            return;
+        }
+
+        // check if game is in collection
+        $this->load->model('Collection');
+        $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+
+        // if game is not in collection
+        if($collection == null)
+        {
+            $this->returnError($this->lang->line('error_game_not_added'), false, false);
+            return;
+        }
+        
+        // remove genre from game in collection
+        $this->Collection->removeGenre($collection->ID, $GBGenreID);
         
         $result['error'] = false; 
         echo json_encode($result);
