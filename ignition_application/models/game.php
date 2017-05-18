@@ -11,6 +11,8 @@ class Game extends CI_Model {
     var $imageSmall;
     var $deck;
     var $platforms;
+    var $genres;
+
 
     // list button
     var $listID = 0; 
@@ -121,7 +123,8 @@ class Game extends CI_Model {
                 $this->hoursPlayed = $result->HoursPlayed;
             }
 
-            $this->getPlatforms($userID);         
+            $this->getPlatforms($userID);
+            $this->getGenres($userID);          
 
             return true;
         }
@@ -153,6 +156,37 @@ class Game extends CI_Model {
         if($query->num_rows() > 0)
         {
             $this->platforms = $query->result();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    // get genres for game
+    function getGenres($userID)
+    {
+        // error if no GameID
+        if($this->gameID == null)
+            return false;
+
+        // prevents joining on UserID causing an error
+        if($userID == null) 
+            $userID = 0;
+
+        $this->db->select('genres.genreID, genres.GBID, genres.name, genres.abbreviation');
+        $this->db->select('(CASE WHEN collectionGenre.CollectionID IS NULL THEN 0 ELSE 1 END) AS inCollection');
+        $this->db->from('games');
+        $this->db->join('gameGenres', 'games.GameID = gameGenres.GameID');
+        $this->db->join('genres', 'gameGenres.GenreID = genres.GenreID');
+        $this->db->join('collections', 'games.GameID = collections.GameID AND collections.UserID = ' . $userID, 'left');
+        $this->db->join('collectionGenre', 'collections.ID = collectionGenre.CollectionID AND collectionGenre.GenreID = genres.GenreID','left');
+        $this->db->where('games.GameID', $this->gameID); 
+        $query = $this->db->get();
+
+        if($query->num_rows() > 0)
+        {
+            $this->genres = $query->result();
 
             return true;
         }
@@ -194,6 +228,8 @@ class Game extends CI_Model {
             
             // add platforms to game
             $this->addPlatforms($game);
+            // add genres to game
+            $this->addGenres($game);
 
             return true;
         } else {
@@ -228,6 +264,7 @@ class Game extends CI_Model {
             $this->db->update('games', $data); 
 
             $this->addPlatforms($game);
+            $this->addGenres($game);
         }
     }
 
@@ -281,6 +318,57 @@ class Game extends CI_Model {
             }
         }
     }
+
+        // update game cache
+    function addGenres($game)
+    {
+        // add genres to game
+        if(property_exists($game, "genres") && $game->genres != null)
+        {
+            // load genres model 
+            $this->load->model('Genre');
+
+            // get genres game already has
+            $this->getGenres(null);
+
+            // loop over genres returned by GB
+            $genresToAdd = [];
+            foreach($game->genres as $gbGenre)
+            {
+                // loop over genres for game already in db
+                $gameHasGenre = false;
+                if($this->genres != null) {
+                    foreach ($this->genres as $genre)
+                    {
+                        // if game has genre
+                        if($genre->GBID == $gbGenre->id)
+                        {
+                            $gameHasGenre = true;
+                            break;
+                        }
+                    }
+                }
+
+                // if game doesnt have genre
+                if(!$gameHasGenre) {
+                    // get or add genre to db
+                    $genre = $this->Genre->getOrAddGenre($gbGenre);
+
+                    // add to list of genres to add to game
+                    array_push($genresToAdd, array(
+                      'GameID' => $this->gameID,
+                      'GenreID' => $genre->GenreID
+                   ));
+                }
+            }
+
+            // if there are genres to add to game
+            if(count($genresToAdd) > 0) {
+                // add to game in db
+                $this->db->insert_batch('gamePlatforms', $genresToAdd); 
+            }
+        }
+    }
     
     // destroy game
     function destroy()
@@ -294,6 +382,7 @@ class Game extends CI_Model {
         $this->imageSmall = null;
         $this->deck = null;
         $this->platforms = null;
+        $this->genres = null;
 
         // list button
         $this->listID = 0; 
