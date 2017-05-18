@@ -1,0 +1,311 @@
+# Dump of table blog
+# ------------------------------------------------------------
+
+-- CREATE TABLE `blog` (
+--   `PostID` int(11) NOT NULL AUTO_INCREMENT,
+--   `Title` varchar(100) NOT NULL,
+--   `URL` varchar(100) NOT NULL,
+--   `Post` text NOT NULL,
+--   `UserID` int(11) NOT NULL,
+--   `Date` date NOT NULL,
+--   `Time` time NOT NULL,
+--   `Deck` varchar(155) DEFAULT NULL,
+--   `Image` varchar(100) DEFAULT NULL,
+--   `Published` tinyint(1) NOT NULL DEFAULT '0',
+--   PRIMARY KEY (`PostID`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table ci_sessions
+# ------------------------------------------------------------
+
+-- CREATE TABLE `ci_sessions` (
+--   `session_id` varchar(40) NOT NULL DEFAULT '0',
+--   `ip_address` varchar(45) NOT NULL DEFAULT '0',
+--   `user_agent` varchar(120) NOT NULL,
+--   `last_activity` int(10) unsigned NOT NULL DEFAULT '0',
+--   `user_data` text NOT NULL,
+--   PRIMARY KEY (`session_id`),
+--   KEY `last_activity_idx` (`last_activity`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table collectionPlatform
+# ------------------------------------------------------------
+
+-- CREATE TABLE `collectionPlatform` (
+--   `CollectionID` int(11) NOT NULL,
+--   `PlatformID` int(11) NOT NULL,
+--   UNIQUE KEY `IX_CollectionID_PlatformID` (`CollectionID`,`PlatformID`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table collections
+# ------------------------------------------------------------
+
+CREATE TABLE `collections` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `UserID` int(11) NOT NULL,
+  `GameID` int(11) NOT NULL,
+  `ListID` int(11) NOT NULL,
+  `StatusID` int(11) NOT NULL,
+  `DateComplete` date DEFAULT NULL,
+  `HoursPlayed` int(11) DEFAULT NULL,
+  `CurrentlyPlaying` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  KEY `IX_UserID_GameID_ListID_StatusID` (`UserID`,`GameID`,`ListID`,`StatusID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table comments
+# ------------------------------------------------------------
+
+CREATE TABLE `comments` (
+  `CommentID` int(11) NOT NULL AUTO_INCREMENT,
+  `Comment` text NOT NULL,
+  `UserID` int(11) NOT NULL,
+  `LinkID` int(11) NOT NULL,
+  `CommentTypeID` int(11) NOT NULL,
+  `DateStamp` datetime NOT NULL,
+  PRIMARY KEY (`CommentID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table commentType
+# ------------------------------------------------------------
+
+CREATE TABLE `commentType` (
+  `CommentTypeID` int(11) NOT NULL AUTO_INCREMENT,
+  `CommentType` varchar(20) NOT NULL,
+  PRIMARY KEY (`CommentTypeID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+# Dump of table following
+# ------------------------------------------------------------
+
+CREATE TABLE `following` (
+  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ParentUserID` int(11) NOT NULL,
+  `ChildUserID` int(11) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table games
+# ------------------------------------------------------------
+
+CREATE TABLE `games` (
+  `GameID` int(11) NOT NULL AUTO_INCREMENT,
+  `GBID` int(11) NOT NULL,
+  `Name` varchar(300) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `Image` varchar(300) DEFAULT NULL,
+  `ImageSmall` varchar(300) DEFAULT NULL,
+  `Deck` text CHARACTER SET utf8,
+  `ReleaseDate` date DEFAULT NULL,
+  `LastUpdated` date DEFAULT NULL,
+  `Error` varchar(100) DEFAULT NULL,
+  `GBLink` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`GameID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table gameStatuses
+# ------------------------------------------------------------
+
+CREATE TABLE `gameStatuses` (
+  `StatusID` int(11) NOT NULL AUTO_INCREMENT,
+  `StatusName` varchar(50) NOT NULL,
+  `StatusThirdPerson` varchar(50) NOT NULL,
+  `StatusStyle` varchar(50) NOT NULL,
+  `Ranking` int(11) NOT NULL,
+  `StatusNameShort` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`StatusID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table lists
+# ------------------------------------------------------------
+
+CREATE TABLE `lists` (
+  `ListID` int(11) NOT NULL AUTO_INCREMENT,
+  `ListName` varchar(50) NOT NULL,
+  `ListThirdPerson` varchar(50) NOT NULL,
+  `ListStyle` varchar(50) NOT NULL,
+  PRIMARY KEY (`ListID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table platforms
+# ------------------------------------------------------------
+
+CREATE TABLE `platforms` (
+  `PlatformID` int(11) NOT NULL AUTO_INCREMENT,
+  `GBID` int(11) NOT NULL,
+  `Name` varchar(300) NOT NULL,
+  `Abbreviation` varchar(50) NOT NULL,
+  `API_Detail` varchar(50) NOT NULL,
+  `Image` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`PlatformID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table userEvents
+# ------------------------------------------------------------
+
+CREATE TABLE `userEvents` (
+  `EventID` int(11) NOT NULL AUTO_INCREMENT,
+  `UserID` int(11) NOT NULL,
+  `GameID` int(11) NOT NULL,
+  `ListID` int(11) DEFAULT NULL,
+  `StatusID` int(11) DEFAULT NULL,
+  `DateStamp` datetime NOT NULL,
+  `CurrentlyPlaying` tinyint(1) DEFAULT NULL,
+  `LastUpdated` datetime NOT NULL,
+  PRIMARY KEY (`EventID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table users
+# ------------------------------------------------------------
+
+CREATE TABLE `users` (
+  `UserID` int(11) NOT NULL AUTO_INCREMENT,
+  `Username` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `Password` char(60) DEFAULT NULL,
+  `Email` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `Admin` tinyint(1) NOT NULL DEFAULT '0',
+  `ProfileImage` varchar(300) DEFAULT NULL,
+  `Bio` text,
+  `DateTimeFormat` int(11) NOT NULL DEFAULT '1',
+  `GooglePlus` varchar(100) DEFAULT NULL,
+  `RegisteredUser` tinyint(1) DEFAULT '0',
+  `PasswordResetValidUntil` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`UserID`,`Username`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table gamePlatforms
+# ------------------------------------------------------------
+
+CREATE TABLE `gamePlatforms` (
+  `GameID` int(11) NOT NULL,
+  `PlatformID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table apiLog
+# ------------------------------------------------------------
+
+CREATE TABLE `apiLog` (
+  `LogID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `Url` varchar(250) NOT NULL DEFAULT '',
+  `RequestType` varchar(20) NOT NULL DEFAULT '',
+  `Result` longblob NULL,
+  `Processed` tinyint(1) NOT NULL,
+  `DateStamp` datetime NOT NULL,
+  PRIMARY KEY (`LogID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table settings
+# ------------------------------------------------------------
+
+CREATE TABLE `settings` (
+  `CrawlerOffset` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Default data
+# ------------------------------------------------------------
+
+INSERT INTO `commentType` (`CommentTypeID`, `CommentType`) VALUES
+(1, 'Blog Comment'),
+(2, 'User Event Comment');
+
+INSERT INTO `gameStatuses` (`StatusID`, `StatusName`, `StatusThirdPerson`, `StatusStyle`, `Ranking`, `StatusNameShort`)
+VALUES
+  (1,'Unplayed','Hasn\'t Played','default',4,'Unplayed'),
+  (2,'Unfinished','Hasn\'t Finished','warning',3,'Unfinished'),
+  (3,'Complete','Completed','success',1,'Complete'),
+  (4,'Uncompletable','Can Never Complete','primary',2,'Uncomple...');
+
+INSERT INTO `lists` (`ListID`, `ListName`, `ListThirdPerson`, `ListStyle`) VALUES
+(1, 'Own', 'Owns', 'success'),
+(2, 'Want', 'Wants', 'warning'),
+(3, 'Borrowed', 'Borrowed', 'info'),
+(4, 'Lent', 'Lent', 'danger'),
+(5, 'Played', 'Played', 'primary');
+
+INSERT INTO `platforms` (`PlatformID`, `GBID`, `Name`, `Abbreviation`, `API_Detail`, `Image`)
+VALUES
+  (1,139,'Wii U','WIIU','http://www.giantbomb.com/api/platform/3045-139/','wiiu.png'),
+  (2,20,'Xbox 360','X360','http://www.giantbomb.com/api/platform/3045-20/','xbox360.png'),
+  (3,35,'PlayStation 3','PS3','http://www.giantbomb.com/api/platform/3045-35/','ps3.png'),
+  (4,52,'Nintendo DS','DS','http://www.giantbomb.com/api/platform/3045-52/','ds.png'),
+  (5,14,'Commodore 64','C64','http://www.giantbomb.com/api/platform/3045-14/','c64.png'),
+  (6,18,'PlayStation Portable','PSP','http://www.giantbomb.com/api/platform/3045-18/','psp.png'),
+  (7,36,'Wii','WII','http://www.giantbomb.com/api/platform/3045-36/','wii.png'),
+  (8,138,'Nintendo 3DS eShop','3DSE','http://www.giantbomb.com/api/platform/3045-138/','3ds.png'),
+  (9,117,'Nintendo 3DS','3DS','http://www.giantbomb.com/api/platform/3045-117/','3ds.png'),
+  (10,3,'Game Boy','GB','http://www.giantbomb.com/api/platform/3045-3/','gb.png'),
+  (11,4,'Game Boy Advance','GBA','http://www.giantbomb.com/api/platform/3045-4/','gba.png'),
+  (12,21,'Nintendo Entertainment System','NES','http://www.giantbomb.com/api/platform/3045-21/','nes.png'),
+  (13,9,'Super Nintendo Entertainment System','SNES','http://www.giantbomb.com/api/platform/3045-9/','snes.png'),
+  (14,23,'GameCube','GC','http://www.giantbomb.com/api/platform/3045-23/','gc.png'),
+  (15,43,'Nintendo 64','N64','http://www.giantbomb.com/api/platform/3045-43/','n64.png'),
+  (16,94,'PC','PC','http://www.giantbomb.com/api/platform/3045-94/','pc.png'),
+  (17,19,'PlayStation 2','PS2','http://www.giantbomb.com/api/platform/3045-19/','ps2.png'),
+  (18,145,'Xbox One','XONE','http://www.giantbomb.com/api/platform/3045-145/','xboxone.png'),
+  (19,17,'Mac','MAC','http://www.giantbomb.com/api/platform/3045-17/','mac.png'),
+  (20,129,'PlayStation Vita','VITA','http://www.giantbomb.com/api/platform/3045-129/','vita.png'),
+  (21,42,'Saturn','SAT','http://www.giantbomb.com/api/platform/3045-42/','saturn.png'),
+  (22,32,'Xbox','XBOX','http://www.giantbomb.com/api/platform/3045-32/','xbox.png'),
+  (23,86,'Xbox 360 Games Store','XBGS','http://www.giantbomb.com/api/platform/3045-86/','xbox360.png'),
+  (24,88,'PlayStation Network (PS3)','PS3N','http://www.giantbomb.com/api/platform/3045-88/','ps3.png'),
+  (25,22,'PlayStation','PS1','http://www.giantbomb.com/api/platform/3045-22/','ps1.png'),
+  (26,6,'Genesis','GEN','http://www.giantbomb.com/api/platform/3045-6/','genesis.png'),
+  (27,8,'Sega Master System','SMS','http://www.giantbomb.com/api/platform/3045-8/','mastersystem.png'),
+  (28,87,'Wii Shop','WSHP','http://www.giantbomb.com/api/platform/3045-87/','wii.png'),
+  (29,96,'iPhone','IPHN','http://www.giantbomb.com/api/platform/3045-96/','iphone.png'),
+  (30,37,'Dreamcast','DC','http://www.giantbomb.com/api/platform/3045-37/','dreamcast.png'),
+  (31,143,'PlayStation Network (Vita)','PSNV','http://www.giantbomb.com/api/platform/3045-143/','vita.png'),
+  (32,146,'PlayStation 4','PS4','http://www.giantbomb.com/api/platform/3045-146/','ps4.png'),
+  (33,57,'Game Boy Color','GBC','http://www.giantbomb.com/api/platform/3045-57/','gbc.png'),
+  (34,140,'Browser','BROW','http://www.giantbomb.com/api/platform/3045-140/','browser.png'),
+  (35,123,'Android','ANDR','http://www.giantbomb.com/api/platform/3045-123/','android.png'),
+  (36,116,'PlayStation Network (PSP)','PSPN','http://www.giantbomb.com/api/platform/3045-116/','psp.png'),
+  (37,40,'Atari 2600','2600','http://www.giantbomb.com/api/platform/3045-40/','2600.png'),
+  (38,67,'Atari 5200','Atari 5200','http://www.giantbomb.com/api/platform/3045-67/','5200.png'),
+  (39,70,'Atari 7800','7800','http://www.giantbomb.com/api/platform/3045-70/','7800.png'),
+  (40,5,'Game Gear','GG','http://www.giantbomb.com/api/platform/3045-5/','gamegear.png'),
+  (41,7,'Atari Lynx','LYNX','http://www.giantbomb.com/api/platform/3045-7/','lynx.png'),
+  (42,29,'Sega CD','SCD','http://www.giantbomb.com/api/platform/3045-29/','segacd.png'),
+  (43,84,'Arcade','ARC','http://www.giantbomb.com/api/platform/3045-84/',NULL),
+  (44,121,'iPad','IPAD','http://www.giantbomb.com/api/platform/3045-121/','ipad.png'),
+  (45,54,'WonderSwan Color','WSC','http://www.giantbomb.com/api/platform/3045-54/','wsc.png'),
+  (46,1,'Amiga','AMI','http://www.giantbomb.com/api/platform/3045-1/','amiga.png'),
+  (47,12,'Apple II','APL2','http://www.giantbomb.com/api/platform/3045-12/','apple2.png'),
+  (48,106,'DSiWare','DSI','http://www.giantbomb.com/api/platform/3045-106/','dsiware.png'),
+  (49,11,'Amstrad CPC','CPC','http://www.giantbomb.com/api/platform/3045-11/','amstrad.png'),
+  (50,124,'Windows Phone','WP','http://www.giantbomb.com/api/platform/3045-124/','winphone.png');
+
+INSERT INTO `settings` (`CrawlerOffset`) VALUES
+(0);

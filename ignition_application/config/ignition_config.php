@@ -4,13 +4,13 @@
 	Website name 
 	Example: Ignition
 */
-$config['website_name'] = '';
+$config['website_name'] = 'http://localhost:8888';
 
 /* 
 	Password reset email address 
 	Example: password@ignitionpowered.co.uk
 */
-$config['email_password_reset'] = '';
+$config['email_password_reset'] = 'rcdurant@gmail.com';
 
 /* 
 	Default profile image file name (located in /uploads) 
