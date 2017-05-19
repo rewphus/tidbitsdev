@@ -115,13 +115,13 @@ class Games extends CI_Controller {
             if($this->Game->getGenres($userID))
             {
                 // if game has one genre
-                if($this->Game->Genres != null && count($this->Game->genres) == 1)
+                if($this->Game->genres != null && count($this->Game->genres) == 1)
                 {
-                    // add game to genre in collection
-                    if($this->Collection->addGenre($collectionID, $this->Game->genres[0]->GBID))
-                    {
+                    // // add game to genre in collection
+                    // if($this->Collection->addGenre($collectionID, $this->Game->genres[0]->GBID))
+                    // {
 
-                    }
+                    // }
                 }
             }
             

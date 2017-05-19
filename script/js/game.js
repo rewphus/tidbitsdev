@@ -96,7 +96,7 @@ function addGame(giantbombID, listID, reloadPage) {
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-            showErrorModal('Well crap. Some kind of error gone done happened. Please try again.');
+            showErrorModal(console.log(XMLHttpRequest.responseText));
         }
     });
 }
