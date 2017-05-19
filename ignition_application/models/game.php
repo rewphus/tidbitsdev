@@ -365,7 +365,7 @@ class Game extends CI_Model {
             // if there are genres to add to game
             if(count($genresToAdd) > 0) {
                 // add to game in db
-                $this->db->insert_batch('gamePlatforms', $genresToAdd); 
+                $this->db->insert_batch('gameGenres', $genresToAdd); 
             }
         }
     }
