@@ -21,7 +21,7 @@ class Game extends CI_Model {
 
     // status button
     var $statusID = 0; 
-    var $statusLabel = "Unplayed";
+    var $statusLabel = "Set Status";
     var $statusStyle = "default";
 
     // played data
@@ -391,7 +391,7 @@ class Game extends CI_Model {
 
         // status button
         $this->statusID = 0; 
-        $this->statusLabel = "Unplayed";
+        $this->statusLabel = "Set Status";
         $this->statusStyle = "default";
 
         // played data

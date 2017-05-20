@@ -66,6 +66,16 @@ $(document).ready(function() {
 
 /* add/update game status in collection */
 function addGame(giantbombID, listID, reloadPage) {
+    var StatusID = 0;
+
+    if (listID == 1) {
+        StatusID = 1;
+    } else if (listID == 2) {
+        StatusID = 6;
+    } else {
+        StatusID = 9;
+    }
+
     $('#gameButton' + giantbombID).addClass('disabled').html('Saving...');
     $.ajax({
         type: 'POST',
@@ -73,7 +83,8 @@ function addGame(giantbombID, listID, reloadPage) {
         dataType: 'json',
         data: {
             GBID: giantbombID,
-            listID: listID
+            listID: listID,
+            statusID: StatusID
         },
         success: function(data) {
             if (data.error === true) {
@@ -86,6 +97,8 @@ function addGame(giantbombID, listID, reloadPage) {
                     $('#gameButton' + giantbombID).html(data.listName + ' <span class="caret"></span>').removeClass().addClass("btn btn-" + data.listStyle + " dropdown-toggle");
                     // display collection status button
                     $('#inCollectionControls' + giantbombID).removeClass("hidden");
+                    // display collection status dropdown
+                    $('#statusDropdown' + listID).removeClass("hidden");
                     // enable platform checkboxes
                     $('#platforms' + giantbombID).find('input[type=checkbox]').prop('readonly', false);
                     // if a platform was auto-selected, update checkbox
@@ -96,7 +109,7 @@ function addGame(giantbombID, listID, reloadPage) {
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-            showErrorModal(console.log(XMLHttpRequest.responseText));
+            showErrorModal('addGame' + console.log(XMLHttpRequest.responseText));
         }
     });
 }
@@ -120,7 +133,7 @@ function changeStatus(giantbombID, statusID) {
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-            showErrorModal('Well crud. Some kind of error gone done happened. Please try again.');
+            showErrorModal('changeStatus' + console.log(XMLHttpRequest.responseText));
         }
     });
 }

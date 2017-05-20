@@ -36,11 +36,11 @@
                         <div class='btn-group'>
                             <button id='gameButton<?php echo $game->GBID ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->listStyle ?> dropdown-toggle'><?php echo $game->listLabel ?> <span class='caret'></span></button>
                             <ul class="dropdown-menu">
-                                <li><a onclick="javascript:addGame(<?php echo $game->GBID ?>, 1, true);">Own</a></li>
-                                <li><a onclick="javascript:addGame(<?php echo $game->GBID ?>, 2, true);">Want</a></li>
-                                <li><a onclick="javascript:addGame(<?php echo $game->GBID ?>, 3, true);">Borrowed</a></li>
-                                <li><a onclick="javascript:addGame(<?php echo $game->GBID ?>, 4, true);">Lent</a></li>
-                                <li><a onclick="javascript:addGame(<?php echo $game->GBID ?>, 5, true);">Played</a></li>
+                                <li><a onclick="javascript:addGame(<?php echo $game->GBID ?>, 1, true);">Played</a></li>
+                                <li><a onclick="javascript:addGame(<?php echo $game->GBID ?>, 2, true);">Watched</a></li>
+                                <li><a onclick="javascript:addGame(<?php echo $game->GBID ?>, 3, true);">Familiar</a></li>
+                                <!--<li><a onclick="javascript:addGame(<?php echo $game->GBID ?>, 4, true);">Lent</a></li>
+                                <li><a onclick="javascript:addGame(<?php echo $game->GBID ?>, 5, true);">Played</a></li>-->
                             </ul>
                         </div> 
                         <span id="inCollectionControls<?php echo $game->GBID ?>" class="<?php if($game->listID == 0) echo "hidden" ?>">

@@ -39,21 +39,29 @@
                                                     <div class='btn-group'>
                                                         <button id='gameButton<?php echo $game->id ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->listStyle ?> dropdown-toggle'><?php echo $game->listLabel ?> <span class='caret'></span></button>
                                                         <ul class="dropdown-menu">
-                                                            <li><a onclick="javascript:addGame(<?php echo $game->id ?>, 1, false);">Own</a></li>
-                                                            <li><a onclick="javascript:addGame(<?php echo $game->id ?>, 2, false);">Want</a></li>
-                                                            <li><a onclick="javascript:addGame(<?php echo $game->id ?>, 3, false);">Borrowed</a></li>
-                                                            <li><a onclick="javascript:addGame(<?php echo $game->id ?>, 4, false);">Lent</a></li>
-                                                            <li><a onclick="javascript:addGame(<?php echo $game->id ?>, 5, false);">Played</a></li>
+                                                            <li><a onclick="javascript:addGame(<?php echo $game->id ?>, 1, true);">Played</a></li>
+                                                            <li><a onclick="javascript:addGame(<?php echo $game->id ?>, 2, true);">Watched</a></li>
+                                                            <li><a onclick="javascript:addGame(<?php echo $game->id ?>, 3, true);">Familiar</a></li>
                                                         </ul>
                                                     </div> 
                                                     <span id="inCollectionControls<?php echo $game->id ?>" class="<?php if($game->listID == 0) echo "hidden" ?>">
                                                         <div id="statusButtonGroup<?php echo $game->id ?>" class="btn-group">
                                                             <button id='statusButton<?php echo $game->id ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->statusStyle ?> dropdown-toggle'><?php echo $game->statusLabel  ?> <span class='caret'></span></button>
-                                                            <ul class='dropdown-menu'>
-                                                                <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 1);">Unplayed</a></li>
-                                                                <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 2);">Unfinished</a></li>
-                                                                <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 3);">Complete</a></li>
-                                                                <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 4);">Uncompletable</a></li>
+                                                            <ul id="statusDropdown1" class='dropdown-menu <?php if($game->listID != 1) echo "hidden" ?>'>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 1);">Dabbled</a></li>
+                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 2);">Got my fill</a></li>
+                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 3);">Need MORE</a></li>
+                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 4);">Mastered</a></li>
+                                                            </ul>
+                                                            <ul id="statusDropdown2" class='dropdown-menu <?php if($game->listID != 2) echo "hidden" ?>'>
+                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 5);">Want to Play</a></li>
+                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 6);">Will Keep Watching</a></li>
+                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 7);">Not for me</a></li>
+                                                            </ul>
+                                                            <ul id="statusDropdown3" class='dropdown-menu <?php if($game->listID != 3) echo "hidden" ?>'>
+                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 8);">Interested</a></li>
+                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 9);">Maybe some day</a></li>
+                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 10);">Hall of Shame</a></li>
                                                             </ul>
                                                         </div> 
                                                     </span>

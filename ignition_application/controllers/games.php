@@ -59,9 +59,11 @@ class Games extends CI_Controller {
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
         $this->form_validation->set_rules('listID', 'listID', 'trim|xss_clean');
+        // $this->form_validation->set_rules('statusID', 'statusID', 'trim|xss_clean');
 
 		$GBID = $this->input->post('GBID');
         $listID = $this->input->post('listID');
+        // $statusID = $this->input->post('statusID');
 		$userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -118,10 +120,7 @@ class Games extends CI_Controller {
                 if($this->Game->genres != null && count($this->Game->genres) == 1)
                 {
                     // // add game to genre in collection
-                    // if($this->Collection->addGenre($collectionID, $this->Game->genres[0]->GBID))
-                    // {
 
-                    // }
                 }
             }
             

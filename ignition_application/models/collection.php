@@ -42,7 +42,7 @@ class Collection extends CI_Model {
 
             // status button
             $game->statusID = 0; 
-            $game->statusLabel = "Unplayed";
+            $game->statusLabel = "Set Status";
             $game->statusStyle = "default";
 
             // data
@@ -105,11 +105,20 @@ class Collection extends CI_Model {
     // add game to users collection
     function addToCollection($gameID, $userID, $listID)
     {
+        $statusID = 0;
+        
+        if($listID == 1){
+            $statusID = 1;
+        }elseif($listID == 2){
+            $statusID = 6;
+        }else{
+            $statusID = 9;
+        }
         $data = array(
            'UserID' => $userID,
            'GameID' => $gameID,
            'ListID' => $listID,
-           'StatusID' => 1 // default to unplayed
+           'StatusID' => $statusID // default to Set Status
         );
 
         $this->db->insert('collections', $data); 
