@@ -6,17 +6,14 @@
 				foreach($concepts as $concept)
 				{
 					echo '<div class="row">
-						<div class="col-xs-12">
+						<div class="col-xs-4">
 							<p><b>' . $concept->Name . '</b></p>
 						</div>
-					</div>
 
-					<div class="row collectionStats">
-						<div class="col-xs-4">
-								<img src="/images/concepts/' . $concept->Image . '" class="imageShadow conceptLogo" />
-						</div>
+
+					<div id="conceptCollection" class="collectionStats">
 						<div class="col-sm-8">
-							<div class="row collectionStats">
+							<div class="row">
 								<div class="col-xs-3">
 									<span>' . $concept->Collection . '</span>
 									<p>Collection</p>
@@ -35,6 +32,7 @@
 								</div>
 							</div>
 						</div>
+					</div>
 					</div>
 
 					<div class="progress">

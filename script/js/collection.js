@@ -103,11 +103,11 @@ function loadCollection() {
                         }
 
                         // display list of concepts
-                        var concepts = collection[i].Platforms;
+                        var concepts = collection[i].Concepts;
                         if (concepts != null) {
                             gameCollection += " on ";
                             for (x = 0; x < concepts.length; x++) {
-                                gameCollection += concepts[x].Abbreviation;
+                                gameCollection += concepts[x].Name;
                                 if (x == concepts.length - 2) {
                                     gameCollection += " and ";
                                 } else if (x < concepts.length - 1) {

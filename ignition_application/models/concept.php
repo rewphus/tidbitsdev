@@ -54,7 +54,8 @@ class Concept extends CI_Model {
         $data = array(
            'GBID' => $concept->id,
            'Name' => $concept->name,
-           'API_Detail' => $concept->api_detail_url
+           'API_Detail' => $concept->api_detail_url,
+           'Image' => $concept->image
         );
 
         return $this->db->insert('concepts', $data); 
