@@ -22,45 +22,47 @@
 
   <!-- Javascript-->
   <script>
-    <?php 
-      if($pagetemplate == "Collection") {
+    <?php
+    if ($pagetemplate == "Collection") {
         echo "var UserID = " . $user->UserID . ";";
-      } 
+    }
     ?>
   </script>
   <script src="/script/crushed/ignition.js"></script>
   <script>
     $(function() {
-      <?php
-          switch($pagetemplate)
-          {
+        <?php
+        switch ($pagetemplate) {
             case "Game":
             case "BlogPost":
             case "UserHome":
-              echo "$('.textAreaAutoGrow').autogrow();";
-              break;
+                echo "$('.textAreaAutoGrow').autogrow();";
+                break;
             case "User":
-              echo "$('.textAreaAutoGrow').autogrow();";
-              echo "$('#navFeed').addClass('active');";
-              break;
+                echo "$('.textAreaAutoGrow').autogrow();";
+                echo "$('#navFeed').addClass('active');";
+                break;
             case "Collection":
-              echo "loadCollection();";
-              echo "$('#navCollection').addClass('active');";
-              break;
+                echo "loadCollection();";
+                echo "$('#navCollection').addClass('active');";
+                break;
             case "Platforms":
-              echo "$('#navPlatforms').addClass('active');";
-              break;
+                echo "$('#navPlatforms').addClass('active');";
+                break;
+            case "Concepts":
+                echo "$('#navConcepts').addClass('active');";
+                break;
             case "Settings":
-              echo "$('#dateFormat').val('" . $user->DateTimeFormat . "');";
-              echo "$('#navSettings').addClass('active');";
-              break;
+                echo "$('#dateFormat').val('" . $user->DateTimeFormat . "');";
+                echo "$('#navSettings').addClass('active');";
+                break;
             case "ImageUpload":
             case "Password":
             case "Export":
-              echo "$('#navSettings').addClass('active');";
-              break;
-          }
-      ?>
+                echo "$('#navSettings').addClass('active');";
+                break;
+        }
+        ?>
     });
     
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

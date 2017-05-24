@@ -31,7 +31,8 @@ class Users extends IG_Users {
       x = "Page: ' . $page . '"
       console.log(x)</script>';
 
-        $offset = ($page-1) * $resultsPerPage;
+        // $offset = ($page-1) * $resultsPerPage;
+         $offset = 1;
 
         // page variables
         $this->load->model('Page');
