@@ -151,7 +151,46 @@
                      echo "</div>"; 
                 }
             ?>                                
-        </div>                   
+        </div>
+                <?php    
+                if($game->concepts != null)
+                {
+                    echo "<div id='concepts" . $game->GBID . "' class='panel-footer'>Concept<br>";
+                    foreach($game->concepts as $concept)
+                    {
+                        echo "<label><div id='concept_" . $game->GBID . "_" . $concept->GBID . "' ";
+                        echo "> <span class='label label-info'>" . $concept->name . "</span></div></label> ";  
+                    }
+                     echo "</div>"; 
+                }
+            ?>                                
+        </div>  
+                <?php    
+                if($game->locations != null)
+                {
+                    echo "<div id='locations" . $game->GBID . "' class='panel-footer'>Location<br>";
+                    foreach($game->locations as $location)
+                    {
+                        echo "<label><div id='location_" . $game->GBID . "_" . $location->GBID . "' ";
+                        echo "> <span class='label label-info'>" . $location->name . "</span></div></label> ";  
+                    }
+                     echo "</div>"; 
+                }
+            ?>                                
+        </div>  
+                <?php    
+                if($game->characters != null)
+                {
+                    echo "<div id='characters" . $game->GBID . "' class='panel-footer'>Character<br>";
+                    foreach($game->characters as $character)
+                    {
+                        echo "<label><div id='character_" . $game->GBID . "_" . $character->GBID . "' ";
+                        echo "> <span class='label label-info'>" . $character->name . "</span></div></label> ";  
+                    }
+                     echo "</div>"; 
+                }
+            ?>                                
+        </div>                     
 
 
         <?php if($sessionUserID > 0 && $game->listID > 0) { ?>

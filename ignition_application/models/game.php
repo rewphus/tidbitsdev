@@ -17,6 +17,9 @@ class Game extends CI_Model
     var $publishers;
     var $themes;
     var $franchises;
+    var $concepts;
+    var $locations;
+    var $characters;
 
 
     // list button
@@ -132,6 +135,9 @@ class Game extends CI_Model
             $this->getPublishers($userID);
             $this->getThemes($userID);
             $this->getFranchises($userID);
+            $this->getConcepts($userID);
+            $this->getLocations($userID);
+            $this->getCharacters($userID);
 
             return true;
         }
@@ -139,7 +145,7 @@ class Game extends CI_Model
         return false;
     }
 
-    // get platforms for game
+/*----------------------    // get platforms for game  -------------------------------------------------------------------------*/
     function getPlatforms($userID)
     {
         // error if no GameID
@@ -171,7 +177,7 @@ class Game extends CI_Model
         return false;
     }
 
-    // get genres for game
+/*----------------------    // get genres for game  -------------------------------------------------------------------------*/
     function getGenres($userID)
     {
         // error if no GameID
@@ -203,7 +209,7 @@ class Game extends CI_Model
         return false;
     }
 
-    // get developers for game
+/*----------------------    // get developers for game  -------------------------------------------------------------------------*/
     function getDevelopers($userID)
     {
         // error if no GameID
@@ -235,7 +241,7 @@ class Game extends CI_Model
         return false;
     }
 
-    // get publishers for game
+/*----------------------    // get publishers for game  -------------------------------------------------------------------------*/
     function getPublishers($userID)
     {
         // error if no GameID
@@ -267,7 +273,7 @@ class Game extends CI_Model
         return false;
     }
 
-    // get themes for game
+/*----------------------    // get themes for game  -------------------------------------------------------------------------*/
     function getThemes($userID)
     {
         // error if no GameID
@@ -299,7 +305,7 @@ class Game extends CI_Model
         return false;
     }
 
-    // get franchises for game
+/*----------------------    // get franchises for game  -------------------------------------------------------------------------*/
     function getFranchises($userID)
     {
         // error if no GameID
@@ -324,6 +330,102 @@ class Game extends CI_Model
 
         if ($query->num_rows() > 0) {
             $this->franchises = $query->result();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /*----------------------    // get concepts for game  -------------------------------------------------------------------------*/
+    function getConcepts($userID)
+    {
+        // error if no GameID
+        if ($this->gameID == null) {
+            return false;
+        }
+
+        // prevents joining on UserID causing an error
+        if ($userID == null) {
+            $userID = 0;
+        }
+
+        $this->db->select('concepts.conceptID, concepts.GBID, concepts.name');
+        $this->db->select('(CASE WHEN collectionConcept.CollectionID IS NULL THEN 0 ELSE 1 END) AS inCollection');
+        $this->db->from('games');
+        $this->db->join('gameConcepts', 'games.GameID = gameConcepts.GameID');
+        $this->db->join('concepts', 'gameConcepts.ConceptID = concepts.ConceptID');
+        $this->db->join('collections', 'games.GameID = collections.GameID AND collections.UserID = ' . $userID, 'left');
+        $this->db->join('collectionConcept', 'collections.ID = collectionConcept.CollectionID AND collectionConcept.ConceptID = concepts.ConceptID', 'left');
+        $this->db->where('games.GameID', $this->gameID);
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            $this->concepts = $query->result();
+
+            return true;
+        }
+
+        return false;
+    }
+
+        /*----------------------    // get locations for game  -------------------------------------------------------------------------*/
+    function getLocations($userID)
+    {
+        // error if no GameID
+        if ($this->gameID == null) {
+            return false;
+        }
+
+        // prevents joining on UserID causing an error
+        if ($userID == null) {
+            $userID = 0;
+        }
+
+        $this->db->select('locations.locationID, locations.GBID, locations.name');
+        $this->db->select('(CASE WHEN collectionLocation.CollectionID IS NULL THEN 0 ELSE 1 END) AS inCollection');
+        $this->db->from('games');
+        $this->db->join('gameLocations', 'games.GameID = gameLocations.GameID');
+        $this->db->join('locations', 'gameLocations.LocationID = locations.LocationID');
+        $this->db->join('collections', 'games.GameID = collections.GameID AND collections.UserID = ' . $userID, 'left');
+        $this->db->join('collectionLocation', 'collections.ID = collectionLocation.CollectionID AND collectionLocation.LocationID = locations.LocationID', 'left');
+        $this->db->where('games.GameID', $this->gameID);
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            $this->locations = $query->result();
+
+            return true;
+        }
+
+        return false;
+    }
+
+            /*----------------------    // get characters for game  -------------------------------------------------------------------------*/
+    function getCharacters($userID)
+    {
+        // error if no GameID
+        if ($this->gameID == null) {
+            return false;
+        }
+
+        // prevents joining on UserID causing an error
+        if ($userID == null) {
+            $userID = 0;
+        }
+
+        $this->db->select('characters.characterID, characters.GBID, characters.name');
+        $this->db->select('(CASE WHEN collectionCharacter.CollectionID IS NULL THEN 0 ELSE 1 END) AS inCollection');
+        $this->db->from('games');
+        $this->db->join('gameCharacters', 'games.GameID = gameCharacters.GameID');
+        $this->db->join('characters', 'gameCharacters.CharacterID = characters.CharacterID');
+        $this->db->join('collections', 'games.GameID = collections.GameID AND collections.UserID = ' . $userID, 'left');
+        $this->db->join('collectionCharacter', 'collections.ID = collectionCharacter.CollectionID AND collectionCharacter.CharacterID = characters.CharacterID', 'left');
+        $this->db->where('games.GameID', $this->gameID);
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            $this->characters = $query->result();
 
             return true;
         }
@@ -369,6 +471,9 @@ class Game extends CI_Model
             $this->addPublishers($game);
             $this->addThemes($game);
             $this->addFranchises($game);
+            $this->getConcepts($userID);
+            $this->getLocations($userID);
+            $this->getCharacters($userID);
 
             return true;
         } else {
@@ -408,10 +513,13 @@ class Game extends CI_Model
             $this->addPublishers($game);
             $this->addThemes($game);
             $this->addFranchises($game);
+            $this->getConcepts($userID);
+            $this->getLocations($userID);
+            $this->getCharacters($userID);
         }
     }
 
-    // update game cache
+/*---------------------------    // update platform game cache    ----------------------------------------------------------------*/
     function addPlatforms($game)
     {
         // add platforms to game
@@ -458,7 +566,7 @@ class Game extends CI_Model
         }
     }
 
-        // update game cache
+/*---------------------------    // update genre game cache    ----------------------------------------------------------------*/
     function addGenres($game)
     {
         // add genres to game
@@ -505,7 +613,7 @@ class Game extends CI_Model
         }
     }
 
-    // update game cache
+/*---------------------------    // update developer game cache    ----------------------------------------------------------------*/
     function addDevelopers($game)
     {
         // add developers to game
@@ -552,7 +660,7 @@ class Game extends CI_Model
         }
     }
 
-        // update game cache
+/*---------------------------    // update publisher game cache    ----------------------------------------------------------------*/
     function addPublishers($game)
     {
         // add publishers to game
@@ -599,7 +707,7 @@ class Game extends CI_Model
         }
     }
 
-     // update game cache
+/*---------------------------    // update theme game cache    ----------------------------------------------------------------*/
     function addThemes($game)
     {
         // add themes to game
@@ -646,7 +754,7 @@ class Game extends CI_Model
         }
     }
 
-     // update game cache
+/*---------------------------    // update franchise game cache    ----------------------------------------------------------------*/
     function addFranchises($game)
     {
         // add franchises to game
@@ -692,6 +800,150 @@ class Game extends CI_Model
             }
         }
     }
+
+
+    /*---------------------------    // update concept game cache    ----------------------------------------------------------------*/
+    function addConcepts($game)
+    {
+        // add concepts to game
+        if (property_exists($game, "concepts") && $game->concepts != null) {
+            // load concepts model
+            $this->load->model('Concept');
+
+            // get concepts game already has
+            $this->getConcepts(null);
+
+            // loop over concepts returned by GB
+            $conceptsToAdd = [];
+            foreach ($game->concepts as $gbConcept) {
+                // loop over concepts for game already in db
+                $gameHasConcept = false;
+                if ($this->concepts != null) {
+                    foreach ($this->concepts as $concept) {
+                        // if game has concept
+                        if ($concept->GBID == $gbConcept->id) {
+                            $gameHasConcept = true;
+                            break;
+                        }
+                    }
+                }
+
+                // if game doesnt have concept
+                if (!$gameHasConcept) {
+                    // get or add concept to db
+                    $concept = $this->Concept->getOrAddConcept($gbConcept);
+
+                    // add to list of concepts to add to game
+                    array_push($conceptsToAdd, array(
+                      'GameID' => $this->gameID,
+                      'ConceptID' => $concept->ConceptID
+                    ));
+                }
+            }
+
+            // if there are concepts to add to game
+            if (count($conceptsToAdd) > 0) {
+                // add to game in db
+                $this->db->insert_batch('gameConcepts', $conceptsToAdd);
+            }
+        }
+    }
+
+/*---------------------------    // update location game cache    ----------------------------------------------------------------*/
+    function addLocations($game)
+    {
+        // add locations to game
+        if (property_exists($game, "locations") && $game->locations != null) {
+            // load locations model
+            $this->load->model('Location');
+
+            // get locations game already has
+            $this->getLocations(null);
+
+            // loop over locations returned by GB
+            $locationsToAdd = [];
+            foreach ($game->locations as $gbLocation) {
+                // loop over locations for game already in db
+                $gameHasLocation = false;
+                if ($this->locations != null) {
+                    foreach ($this->locations as $location) {
+                        // if game has location
+                        if ($location->GBID == $gbLocation->id) {
+                            $gameHasLocation = true;
+                            break;
+                        }
+                    }
+                }
+
+                // if game doesnt have location
+                if (!$gameHasLocation) {
+                    // get or add location to db
+                    $location = $this->Location->getOrAddLocation($gbLocation);
+
+                    // add to list of locations to add to game
+                    array_push($locationsToAdd, array(
+                      'GameID' => $this->gameID,
+                      'LocationID' => $location->LocationID
+                    ));
+                }
+            }
+
+            // if there are locations to add to game
+            if (count($locationsToAdd) > 0) {
+                // add to game in db
+                $this->db->insert_batch('gameLocations', $locationsToAdd);
+            }
+        }
+    }
+
+
+/*---------------------------    // update character game cache    ----------------------------------------------------------------*/
+    function addCharacters($game)
+    {
+        // add characters to game
+        if (property_exists($game, "characters") && $game->characters != null) {
+            // load characters model
+            $this->load->model('Character');
+
+            // get characters game already has
+            $this->getCharacters(null);
+
+            // loop over characters returned by GB
+            $charactersToAdd = [];
+            foreach ($game->characters as $gbCharacter) {
+                // loop over characters for game already in db
+                $gameHasCharacter = false;
+                if ($this->characters != null) {
+                    foreach ($this->characters as $character) {
+                        // if game has character
+                        if ($character->GBID == $gbCharacter->id) {
+                            $gameHasCharacter = true;
+                            break;
+                        }
+                    }
+                }
+
+                // if game doesnt have character
+                if (!$gameHasCharacter) {
+                    // get or add character to db
+                    $character = $this->Character->getOrAddCharacter($gbCharacter);
+
+                    // add to list of characters to add to game
+                    array_push($charactersToAdd, array(
+                      'GameID' => $this->gameID,
+                      'CharacterID' => $character->CharacterID
+                    ));
+                }
+            }
+
+            // if there are characters to add to game
+            if (count($charactersToAdd) > 0) {
+                // add to game in db
+                $this->db->insert_batch('gameCharacters', $charactersToAdd);
+            }
+        }
+    }
+
     // destroy game
     function destroy()
     {
@@ -709,6 +961,10 @@ class Game extends CI_Model
         $this->publishers = null;
         $this->themes = null;
         $this->franchises = null;
+        $this->concepts = null;
+        $this->locations = null;
+        $this->characters = null;
+
 
         // list button
         $this->listID = 0;

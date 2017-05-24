@@ -164,7 +164,37 @@ class Games extends CI_Controller {
                     // // add game to franchise in collection
 
                 }
-            }                       
+            } 
+                        // get concepts for game
+            if($this->Game->getConcepts($userID))
+            {
+                // if game has one concept
+                if($this->Game->concepts != null && count($this->Game->concepts) == 1)
+                {
+                    // // add game to concept in collection
+
+                }
+            }   
+                        // get locations for game
+            if($this->Game->getLocations($userID))
+            {
+                // if game has one location
+                if($this->Game->locations != null && count($this->Game->locations) == 1)
+                {
+                    // // add game to location in collection
+
+                }
+            }   
+                        // get characters for game
+            if($this->Game->getCharacters($userID))
+            {
+                // if game has one character
+                if($this->Game->characters != null && count($this->Game->characters) == 1)
+                {
+                    // // add game to character in collection
+
+                }
+            }                         
             // record event
             $this->Event->addEvent($userID, $this->Game->gameID, $listID, null, null);
         // game is in collection, update list
@@ -865,6 +895,315 @@ class Games extends CI_Controller {
         
         // remove franchise from game in collection
         $this->Collection->removeFranchise($collection->ID, $GBFranchiseID);
+        
+        $result['error'] = false; 
+        echo json_encode($result);
+        return;
+    }
+
+// ----------   Concepts  ----------------------------------------------------------------------------------------------------------
+    function addConcept()
+    {
+        // form validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
+        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+
+        $GBID = $this->input->post('GBID');
+        $GBConceptID = $this->input->post('platformID');
+        $userID = $this->session->userdata('UserID');
+
+        // check that user is logged in
+        if($userID <= 0)
+        {
+            $this->returnError($this->lang->line('error_logged_out'),"/login","Login");
+            return;
+        }
+
+        // check if game is in collection
+        $this->load->model('Collection');
+        $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+
+        // if game is not in collection
+        if($collection == null)
+        {
+            $this->returnError("You haven't added this game to your collection. You probably need to do that first kido.", false, false);
+            return;
+        }
+        
+        // if game is not on concept, add it
+        if(!$this->Collection->isGameOnConceptInCollection($collection->ID, $GBConceptID))
+        {
+            // load concept model
+            $this->load->model('Concept');
+
+            // if concept isnt in db
+            if(!$this->Concept->isConceptInDB($GBConceptID))
+            {
+                // get concept data 
+                $concept = $this->Concept->getConcept($GBConceptID);
+
+                // if API returned nothing
+                if($concept == null)
+                {
+                    $this->returnError($this->lang->line('error_giantbomb_down'), false, false);
+                    return;
+                }
+
+                // add concept to db
+                $this->Concept->addConcept($concept);
+            }
+
+            // add game to concept in collection
+            $this->Collection->addConcept($collection->ID, $GBConceptID);
+        }
+
+        // record event
+        $this->load->model('Event');
+        $this->Event->addEvent($userID, $collection->GameID, $collection->ListID, null, null);
+        
+        $result['error'] = false; 
+        echo json_encode($result);
+        return;
+    }
+
+    function removeConcept()
+    {
+        // form validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
+        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+
+        $GBID = $this->input->post('GBID');
+        $GBConceptID = $this->input->post('platformID');
+        $userID = $this->session->userdata('UserID');
+
+        // check that user is logged in
+        if($userID <= 0)
+        {
+            $this->returnError($this->lang->line('error_logged_out'),"/login","Login");
+            return;
+        }
+
+        // check if game is in collection
+        $this->load->model('Collection');
+        $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+
+        // if game is not in collection
+        if($collection == null)
+        {
+            $this->returnError($this->lang->line('error_game_not_added'), false, false);
+            return;
+        }
+        
+        // remove concept from game in collection
+        $this->Collection->removeConcept($collection->ID, $GBConceptID);
+        
+        $result['error'] = false; 
+        echo json_encode($result);
+        return;
+    }
+
+// ----------   Locations  ----------------------------------------------------------------------------------------------------------
+    function addLocation()
+    {
+        // form validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
+        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+
+        $GBID = $this->input->post('GBID');
+        $GBLocationID = $this->input->post('platformID');
+        $userID = $this->session->userdata('UserID');
+
+        // check that user is logged in
+        if($userID <= 0)
+        {
+            $this->returnError($this->lang->line('error_logged_out'),"/login","Login");
+            return;
+        }
+
+        // check if game is in collection
+        $this->load->model('Collection');
+        $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+
+        // if game is not in collection
+        if($collection == null)
+        {
+            $this->returnError("You haven't added this game to your collection. You probably need to do that first kido.", false, false);
+            return;
+        }
+        
+        // if game is not on location, add it
+        if(!$this->Collection->isGameOnLocationInCollection($collection->ID, $GBLocationID))
+        {
+            // load location model
+            $this->load->model('Location');
+
+            // if location isnt in db
+            if(!$this->Location->isLocationInDB($GBLocationID))
+            {
+                // get location data 
+                $location = $this->Location->getLocation($GBLocationID);
+
+                // if API returned nothing
+                if($location == null)
+                {
+                    $this->returnError($this->lang->line('error_giantbomb_down'), false, false);
+                    return;
+                }
+
+                // add location to db
+                $this->Location->addLocation($location);
+            }
+
+            // add game to location in collection
+            $this->Collection->addLocation($collection->ID, $GBLocationID);
+        }
+
+        // record event
+        $this->load->model('Event');
+        $this->Event->addEvent($userID, $collection->GameID, $collection->ListID, null, null);
+        
+        $result['error'] = false; 
+        echo json_encode($result);
+        return;
+    }
+
+    function removeLocation()
+    {
+        // form validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
+        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+
+        $GBID = $this->input->post('GBID');
+        $GBLocationID = $this->input->post('platformID');
+        $userID = $this->session->userdata('UserID');
+
+        // check that user is logged in
+        if($userID <= 0)
+        {
+            $this->returnError($this->lang->line('error_logged_out'),"/login","Login");
+            return;
+        }
+
+        // check if game is in collection
+        $this->load->model('Collection');
+        $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+
+        // if game is not in collection
+        if($collection == null)
+        {
+            $this->returnError($this->lang->line('error_game_not_added'), false, false);
+            return;
+        }
+        
+        // remove location from game in collection
+        $this->Collection->removeLocation($collection->ID, $GBLocationID);
+        
+        $result['error'] = false; 
+        echo json_encode($result);
+        return;
+    }
+
+// ----------   Characters  ----------------------------------------------------------------------------------------------------------
+    function addCharacter()
+    {
+        // form validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
+        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+
+        $GBID = $this->input->post('GBID');
+        $GBCharacterID = $this->input->post('platformID');
+        $userID = $this->session->userdata('UserID');
+
+        // check that user is logged in
+        if($userID <= 0)
+        {
+            $this->returnError($this->lang->line('error_logged_out'),"/login","Login");
+            return;
+        }
+
+        // check if game is in collection
+        $this->load->model('Collection');
+        $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+
+        // if game is not in collection
+        if($collection == null)
+        {
+            $this->returnError("You haven't added this game to your collection. You probably need to do that first kido.", false, false);
+            return;
+        }
+        
+        // if game is not on character, add it
+        if(!$this->Collection->isGameOnCharacterInCollection($collection->ID, $GBCharacterID))
+        {
+            // load character model
+            $this->load->model('Character');
+
+            // if character isnt in db
+            if(!$this->Character->isCharacterInDB($GBCharacterID))
+            {
+                // get character data 
+                $character = $this->Character->getCharacter($GBCharacterID);
+
+                // if API returned nothing
+                if($character == null)
+                {
+                    $this->returnError($this->lang->line('error_giantbomb_down'), false, false);
+                    return;
+                }
+
+                // add character to db
+                $this->Character->addCharacter($character);
+            }
+
+            // add game to character in collection
+            $this->Collection->addCharacter($collection->ID, $GBCharacterID);
+        }
+
+        // record event
+        $this->load->model('Event');
+        $this->Event->addEvent($userID, $collection->GameID, $collection->ListID, null, null);
+        
+        $result['error'] = false; 
+        echo json_encode($result);
+        return;
+    }
+
+    function removeCharacter()
+    {
+        // form validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
+        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+
+        $GBID = $this->input->post('GBID');
+        $GBCharacterID = $this->input->post('platformID');
+        $userID = $this->session->userdata('UserID');
+
+        // check that user is logged in
+        if($userID <= 0)
+        {
+            $this->returnError($this->lang->line('error_logged_out'),"/login","Login");
+            return;
+        }
+
+        // check if game is in collection
+        $this->load->model('Collection');
+        $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+
+        // if game is not in collection
+        if($collection == null)
+        {
+            $this->returnError($this->lang->line('error_game_not_added'), false, false);
+            return;
+        }
+        
+        // remove character from game in collection
+        $this->Collection->removeCharacter($collection->ID, $GBCharacterID);
         
         $result['error'] = false; 
         echo json_encode($result);
