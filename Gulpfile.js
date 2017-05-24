@@ -16,7 +16,7 @@ gulp.task('scss', function() {
 });
 
 gulp.task('css', function() {
-    return gulp.src(['./style/css/bootstrap.min.css', './style/css/bootstrap-markdown.min.css', './style/css/ignition.css',
+    return gulp.src(['./style/css/bootstrap.min.css', './style/css/bootstrap.icon-large.min.css', './style/css/bootstrap-markdown.min.css', './style/css/ignition.css',
             './style/css/gwl.css', './style/css/tidbits.css'
         ])
         .pipe(concat('ignition.css'))

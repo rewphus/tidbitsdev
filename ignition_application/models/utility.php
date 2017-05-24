@@ -18,6 +18,11 @@ class Utility extends CI_Model {
         $this->logApiRequest($url, $requestType, $json);
 
         $result = json_decode($json); 
+
+    //                   echo '<script>
+    //   var x;
+    //   x = "Result: ' . $options[CURLOPT_USERAGENT] . '"
+    //   console.log(x)</script>';
         
         return $result;
     }

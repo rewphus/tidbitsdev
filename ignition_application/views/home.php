@@ -46,7 +46,7 @@
 			<img src="/images/GiantBomb.png">
 		</div>
 		<h2>Structured Data</h2>
-		<p>Using <a href="http://www.giantbomb.com/api">Giant Bomb’s API</a> - the world’s best user-editable video game database - your collection is stored in a structured way that creates useful, powerful information. And it’s all exportable when you want to leave.</p>
+		<p>Using <a href="https://www.giantbomb.com/api">Giant Bomb’s API</a> - the world’s best user-editable video game database - your collection is stored in a structured way that creates useful, powerful information. And it’s all exportable when you want to leave.</p>
 	</div>
 	<div class="col-md-4">
 		<div class="thumbnail">

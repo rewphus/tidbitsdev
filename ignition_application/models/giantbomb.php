@@ -47,7 +47,7 @@ class GiantBomb extends CI_Model {
     {  
         // build API request
         $url = $this->config->item('gb_api_root') . "/search/?api_key=" . $this->config->item('gb_api_key') . "&format=json&resources=game&limit=" . $resultsPerPage . "&page=" . $page . "&query=" . urlencode ($query);
-      
+
         // make API request
         $result = $this->Utility->getData($url, "Search");
 
@@ -59,6 +59,7 @@ class GiantBomb extends CI_Model {
                 $game = $this->Collection->addCollectionInfo($game, $userID);
             }
             return $result;
+            
         } else {
             return null;
         }

@@ -7,4 +7,4 @@ $config['gwl_user_agent'] = 'TidbitsDev';
 $config['gb_api_key'] = '1f2fbb08dde5a07ceb29f21e581301f3105598e8';
 
 /* API url root for Giant Bomb */
-$config['gb_api_root'] = 'http://www.giantbomb.com/api';
+$config['gb_api_root'] = 'https://www.giantbomb.com/api';
