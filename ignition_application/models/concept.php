@@ -54,7 +54,6 @@ class Concept extends CI_Model {
         $data = array(
            'GBID' => $concept->id,
            'Name' => $concept->name,
-           'Abbreviation' => $concept->abbreviation,
            'API_Detail' => $concept->api_detail_url
         );
 

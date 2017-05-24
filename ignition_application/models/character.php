@@ -54,7 +54,6 @@ class Character extends CI_Model {
         $data = array(
            'GBID' => $character->id,
            'Name' => $character->name,
-           'Abbreviation' => $character->abbreviation,
            'API_Detail' => $character->api_detail_url
         );
 

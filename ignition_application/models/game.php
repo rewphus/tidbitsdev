@@ -471,9 +471,9 @@ class Game extends CI_Model
             $this->addPublishers($game);
             $this->addThemes($game);
             $this->addFranchises($game);
-            $this->getConcepts($userID);
-            $this->getLocations($userID);
-            $this->getCharacters($userID);
+            $this->addConcepts($game);
+            $this->addLocations($game);
+            $this->addCharacters($game);
 
             return true;
         } else {
@@ -513,9 +513,9 @@ class Game extends CI_Model
             $this->addPublishers($game);
             $this->addThemes($game);
             $this->addFranchises($game);
-            $this->getConcepts($userID);
-            $this->getLocations($userID);
-            $this->getCharacters($userID);
+            $this->addConcepts($game);
+            $this->addLocations($game);
+            $this->addCharacters($game);
         }
     }
 

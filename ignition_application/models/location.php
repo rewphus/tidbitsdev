@@ -54,7 +54,6 @@ class Location extends CI_Model {
         $data = array(
            'GBID' => $location->id,
            'Name' => $location->name,
-           'Abbreviation' => $location->abbreviation,
            'API_Detail' => $location->api_detail_url
         );
 

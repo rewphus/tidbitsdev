@@ -30,16 +30,22 @@
         <div class="panel panel-default"> 
             <div class="panel-body">
               <p><?php echo $game->deck; ?></p>
-              <?php if($game->GBLink != null) echo '<p><a href="' . $game->GBLink . '" target="_blank">Read more on GiantBomb.com.</a></p>'; ?>
-              <?php if($sessionUserID > 0) { ?>
+                <?php if ($game->GBLink != null) {
+                    echo '<p><a href="' . $game->GBLink . '" target="_blank">Read more on GiantBomb.com.</a></p>';
+} ?>
+                <?php if ($sessionUserID > 0) { ?>
                   <div class="pull-right">  
-                        <div id="inCollectionControlsBtn<?php echo $game->GBID ?>" class="btn-group <?php if($game->listID != 0) echo 'hidden' ?>">
+                        <div id="inCollectionControlsBtn<?php echo $game->GBID ?>" class="btn-group <?php if ($game->listID != 0) {
+                            echo 'hidden';
+} ?>">
                                                         <button type="button" class="btn btn-default" onclick="javascript:addGame(<?php echo $game->GBID ?>, 1, true);"><span class="icon-large icon-gamepad"  style="height: 18px" aria-hidden="true"></span><br>Played</button>
                                                         <button type="button" class="btn btn-default" onclick="javascript:addGame(<?php echo $game->GBID ?>, 2, true);"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span><br>Watched</button>
                                                         <button type="button" class="btn btn-default" onclick="javascript:addGame(<?php echo $game->GBID ?>, 3, true);"><span class="glyphicon glyphicon-cloud" aria-hidden="true"></span><br>Familiar</button>
                                                     </div>
   
-                                                    <div class='btn-group <?php if($game->listID == 0) echo 'hidden' ?>'>
+                                                    <div class='btn-group <?php if ($game->listID == 0) {
+                                                        echo 'hidden';
+} ?>'>
                                                         <button id='gameButton<?php echo $game->GBID ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->listStyle ?> dropdown-toggle'><?php echo $game->listLabel ?> <span class='caret'></span></button>
                                                         <ul class="dropdown-menu">
                                                             <li><a onclick="javascript:addGame(<?php echo $game->GBID ?>, 1, true);">Played</a></li>
@@ -47,21 +53,29 @@
                                                             <li><a onclick="javascript:addGame(<?php echo $game->GBID ?>, 3, true);">Familiar</a></li>
                                                         </ul>
                                                     </div> 
-                        <span id="inCollectionControls<?php echo $game->GBID ?>" class="<?php if($game->listID == 0) echo "hidden" ?>">
+                        <span id="inCollectionControls<?php echo $game->GBID ?>" class="<?php if ($game->listID == 0) {
+                            echo "hidden";
+} ?>">
                             <div id='statusButtonGroup<?php echo $game->GBID ?>' class='btn-group'>
                                 <button id='statusButton<?php echo $game->GBID ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->statusStyle ?> dropdown-toggle'><?php echo $game->statusLabel  ?> <span class='caret'></span></button>
-                                                            <ul id="statusDropdown1" class='dropdown-menu <?php if($game->listID != 1) echo "hidden" ?>'>
+                                                            <ul id="statusDropdown1" class='dropdown-menu <?php if ($game->listID != 1) {
+                                                                echo "hidden";
+} ?>'>
                                                                     <li><a onclick="javascript:changeStatus(<?php echo $game->GBID ?>, 1);">Dabbled</a></li>
                                                                     <li ><a onclick="javascript:changeStatus(<?php echo $game->GBID ?>, 2);">Got my fill</a></li>
                                                                     <li ><a onclick="javascript:changeStatus(<?php echo $game->GBID ?>, 3);">Need MORE</a></li>
                                                                     <li ><a onclick="javascript:changeStatus(<?php echo $game->GBID ?>, 4);">Mastered</a></li>
                                                             </ul>
-                                                            <ul id="statusDropdown2" class='dropdown-menu <?php if($game->listID != 2) echo "hidden" ?>'>
+                                                            <ul id="statusDropdown2" class='dropdown-menu <?php if ($game->listID != 2) {
+                                                                echo "hidden";
+} ?>'>
                                                                     <li ><a onclick="javascript:changeStatus(<?php echo $game->GBID ?>, 5);">Want to Play</a></li>
                                                                     <li ><a onclick="javascript:changeStatus(<?php echo $game->GBID ?>, 6);">Will Keep Watching</a></li>
                                                                     <li ><a onclick="javascript:changeStatus(<?php echo $game->GBID ?>, 7);">Not for me</a></li>
                                                             </ul>
-                                                            <ul id="statusDropdown3" class='dropdown-menu <?php if($game->listID != 3) echo "hidden" ?>'>
+                                                            <ul id="statusDropdown3" class='dropdown-menu <?php if ($game->listID != 3) {
+                                                                echo "hidden";
+} ?>'>
                                                                     <li ><a onclick="javascript:changeStatus(<?php echo $game->GBID ?>, 8);">Interested</a></li>
                                                                     <li ><a onclick="javascript:changeStatus(<?php echo $game->GBID ?>, 9);">Maybe some day</a></li>
                                                                     <li ><a onclick="javascript:changeStatus(<?php echo $game->GBID ?>, 10);">Hall of Shame</a></li>
@@ -71,136 +85,123 @@
                     </div>   
                 <?php } ?>   
             </div>  
-             <?php    
-                if($game->platforms != null)
-                {
+                <?php
+                if ($game->platforms != null) {
                     echo "<div id='platforms" . $game->GBID . "' class='panel-footer'>Platform<br>";
-                    foreach($game->platforms as $platform)
-                    {
+                    foreach ($game->platforms as $platform) {
                         echo "<label><input id='platform_" . $game->GBID . "_" . $platform->GBID . "' type='checkbox'";
-                        if($platform->inCollection) echo " checked";
-                        if($game->listID == 0) echo " readonly";
-                        echo "> <span class='label label-info'>" . $platform->name . "</span></label> ";  
+                        if ($platform->inCollection) {
+                            echo " checked";
+                        }
+                        if ($game->listID == 0) {
+                            echo " readonly";
+                        }
+                        echo "> <span class='label label-info'>" . $platform->name . "</span></label> ";
                     }
                     echo "</div>";
                 }
                 
             ?>                                
           
-        <?php    
-                if($game->developers != null)
-                {
-                    echo "<div id='developers" . $game->GBID . "' class='panel-footer'>Developer<br>";
-                    foreach($game->developers as $developer)
-                    {
-                        echo "<label><div id='developer_" . $game->GBID . "_" . $developer->GBID . "' ";
-                        echo "> <span class='label label-info'>" . $developer->name . "</span></div></label> ";  
-                    }
-                    echo "</div>";
-                }
+        <?php
+        if ($game->developers != null) {
+            echo "<div id='developers" . $game->GBID . "' class='panel-footer'>Developer<br>";
+            foreach ($game->developers as $developer) {
+                echo "<label><div id='developer_" . $game->GBID . "_" . $developer->GBID . "' ";
+                echo "> <span class='label label-info'>" . $developer->name . "</span></div></label> ";
+            }
+            echo "</div>";
+        }
                 
             ?>                                                   
-        <?php    
-                if($game->publishers != null)
-                {
-                    echo "<div id='publishers" . $game->GBID . "' class='panel-footer'>Publisher<br>";
-                    foreach($game->publishers as $publisher)
-                    {
-                        echo "<label><div id='publisher_" . $game->GBID . "_" . $publisher->GBID . "' ";
-                        echo "> <span class='label label-info'>" . $publisher->name . "</span></div></label> ";  
-                    }
-                    echo "</div>";
-                }
+        <?php
+        if ($game->publishers != null) {
+            echo "<div id='publishers" . $game->GBID . "' class='panel-footer'>Publisher<br>";
+            foreach ($game->publishers as $publisher) {
+                echo "<label><div id='publisher_" . $game->GBID . "_" . $publisher->GBID . "' ";
+                echo "> <span class='label label-info'>" . $publisher->name . "</span></div></label> ";
+            }
+            echo "</div>";
+        }
                 
             ?>                                
-        <?php    
-                if($game->genres != null)
-                {
-                    echo "<div id='genres" . $game->GBID . "' class='panel-footer'>Genre<br>";
-                    foreach($game->genres as $genre)
-                    {
-                        echo "<label><div id='genre_" . $game->GBID . "_" . $genre->GBID . "' ";
-                        echo "> <span class='label label-info'>" . $genre->name . "</span></div></label> ";  
-                    }
-                    echo "</div>";
-                }
+        <?php
+        if ($game->genres != null) {
+            echo "<div id='genres" . $game->GBID . "' class='panel-footer'>Genre<br>";
+            foreach ($game->genres as $genre) {
+                echo "<label><div id='genre_" . $game->GBID . "_" . $genre->GBID . "' ";
+                echo "> <span class='label label-info'>" . $genre->name . "</span></div></label> ";
+            }
+            echo "</div>";
+        }
                 
             ?>                                         
-        <?php    
-                if($game->themes != null)
-                {
-                    echo "<div id='themes" . $game->GBID . "' class='panel-footer'>Theme<br>";
-                    foreach($game->themes as $theme)
-                    {
-                        echo "<label><div id='theme_" . $game->GBID . "_" . $theme->GBID . "' ";
-                        echo "> <span class='label label-info'>" . $theme->name . "</span></div></label> ";  
-                    }
-                    echo "</div>";
-                }
+        <?php
+        if ($game->themes != null) {
+            echo "<div id='themes" . $game->GBID . "' class='panel-footer'>Theme<br>";
+            foreach ($game->themes as $theme) {
+                echo "<label><div id='theme_" . $game->GBID . "_" . $theme->GBID . "' ";
+                echo "> <span class='label label-info'>" . $theme->name . "</span></div></label> ";
+            }
+            echo "</div>";
+        }
 
             ?>                                
-        <?php    
-                if($game->franchises != null)
-                {
-                    echo "<div id='franchises" . $game->GBID . "' class='panel-footer'>Franchise<br>";
-                    foreach($game->franchises as $franchise)
-                    {
-                        echo "<label><div id='franchise_" . $game->GBID . "_" . $franchise->GBID . "' ";
-                        echo "> <span class='label label-info'>" . $franchise->name . "</span></div></label> ";  
-                    }
-                     echo "</div>"; 
-                }
+        <?php
+        if ($game->franchises != null) {
+            echo "<div id='franchises" . $game->GBID . "' class='panel-footer'>Franchise<br>";
+            foreach ($game->franchises as $franchise) {
+                echo "<label><div id='franchise_" . $game->GBID . "_" . $franchise->GBID . "' ";
+                echo "> <span class='label label-info'>" . $franchise->name . "</span></div></label> ";
+            }
+            echo "</div>";
+        }
             ?>                                
-        </div>
-                <?php    
-                if($game->concepts != null)
-                {
+                <?php
+                if ($game->concepts != null) {
                     echo "<div id='concepts" . $game->GBID . "' class='panel-footer'>Concept<br>";
-                    foreach($game->concepts as $concept)
-                    {
+                    foreach ($game->concepts as $concept) {
                         echo "<label><div id='concept_" . $game->GBID . "_" . $concept->GBID . "' ";
-                        echo "> <span class='label label-info'>" . $concept->name . "</span></div></label> ";  
+                        echo "> <span class='label label-info'>" . $concept->name . "</span></div></label> ";
                     }
-                     echo "</div>"; 
+                     echo "</div>";
                 }
-            ?>                                
-        </div>  
-                <?php    
-                if($game->locations != null)
-                {
+            ?>                                 
+                <?php
+                if ($game->locations != null) {
                     echo "<div id='locations" . $game->GBID . "' class='panel-footer'>Location<br>";
-                    foreach($game->locations as $location)
-                    {
+                    foreach ($game->locations as $location) {
                         echo "<label><div id='location_" . $game->GBID . "_" . $location->GBID . "' ";
-                        echo "> <span class='label label-info'>" . $location->name . "</span></div></label> ";  
+                        echo "> <span class='label label-info'>" . $location->name . "</span></div></label> ";
                     }
-                     echo "</div>"; 
+                     echo "</div>";
                 }
-            ?>                                
-        </div>  
-                <?php    
-                if($game->characters != null)
-                {
+            ?>                                 
+                <?php
+                if ($game->characters != null) {
                     echo "<div id='characters" . $game->GBID . "' class='panel-footer'>Character<br>";
-                    foreach($game->characters as $character)
-                    {
+                    foreach ($game->characters as $character) {
                         echo "<label><div id='character_" . $game->GBID . "_" . $character->GBID . "' ";
-                        echo "> <span class='label label-info'>" . $character->name . "</span></div></label> ";  
+                        echo "> <span class='label label-info'>" . $character->name . "</span></div></label> ";
                     }
-                     echo "</div>"; 
+                     echo "</div>";
                 }
             ?>                                
         </div>                     
 
 
-        <?php if($sessionUserID > 0 && $game->listID > 0) { ?>
+        <?php if ($sessionUserID > 0 && $game->listID > 0) { ?>
             <div class="panel panel-default"> 
                 <div class="panel-body">
                     <div class="form-group">
                         <label for="currentlyPlayingInput">Currently Playing?</label>
                         <select class="form-control" id="currentlyPlayingInput">
-                            <option value="false" <?php if(!$game->currentlyPlaying) echo "selected"; ?>>No</option>
-                            <option value="true" <?php if($game->currentlyPlaying) echo "selected"; ?>>Yes</option>
+                            <option value="false" <?php if (!$game->currentlyPlaying) {
+                                echo "selected";
+} ?>>No</option>
+                            <option value="true" <?php if ($game->currentlyPlaying) {
+                                echo "selected";
+} ?>>Yes</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -219,24 +220,22 @@
     </div>
     <div class="col-sm-8">
         <?php
-            if(isset($users) && $users != null)
-            {
-                echo '<h4>Who\'s played this?</h4>
+        if (isset($users) && $users != null) {
+            echo '<h4>Who\'s played this?</h4>
 
                 <div class="itemGrid clearfix">';
 
-                foreach($users as $user)
-                {
-                    echo '<div class="itemGridImage pull-left">
+            foreach ($users as $user) {
+                echo '<div class="itemGridImage pull-left">
                         <a href="/user/'. $user->UserID . '">
                             <img class="itemGridImage imageShadow" src="/uploads/' . $user->ProfileImage . '" alt="' . $user->UserName . '" title="' . $user->UserName . '">
                             <span class="label label-' . $user->StatusStyle . ' itemGridLabel">' . $user->StatusNameShort . '</span>
                         </a>
                     </div>';
-                }
-
-                echo '</div>';
             }
+
+            echo '</div>';
+        }
         ?>
 
         <h4>What's Happening?</h4>
