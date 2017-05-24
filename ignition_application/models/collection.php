@@ -33,6 +33,8 @@ class Collection extends CI_Model {
 
             // get platforms user has game in collection
             $platforms = $this->getGamesPlatformsInCollection($game->id, $userID);
+            // get concepts user has game in collection
+            $concepts = $this->getGamesConceptsInCollection($game->id, $userID);
         // not in collection
         } else {
             // list button
@@ -52,6 +54,8 @@ class Collection extends CI_Model {
 
             // get platforms user has game in collection
             $platforms = null;
+            // get concepts user has game in collection
+            $concepts = null;
         }
 
         // add platforms user has game on in collection (if any)
@@ -71,6 +75,30 @@ class Collection extends CI_Model {
                         if($platform->GBID == $gbPlatform->id)
                         {
                             $gbPlatform->inCollection = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // add concepts user has identified as dominant (if any)
+        // if game has concepts
+        if(property_exists($game, "concepts") && $game->concepts != null)
+        {
+            // loop over concepts for game
+            foreach($game->concepts as $gbConcept)
+            {
+                $gbConcept->inCollection = false;
+                if($concept != null)
+                {
+                    // loop over concepts user has in collection
+                    foreach ($concepts as $concept)
+                    {
+                        // if concept is on game in collection
+                        if($concept->GBID == $gbConcept->id)
+                        {
+                            $gbConcept->inCollection = true;
                             break;
                         }
                     }
@@ -176,7 +204,8 @@ class Collection extends CI_Model {
 
             // delete collectionPlatform record
             $this->db->where('CollectionID', $row->ID);
-            $this->db->delete('collectionPlatform'); 
+            $this->db->delete('collectionPlatform');
+            $this->db->delete('collectionConcept'); 
 
             // delete userEvents records
             $this->db->where('GameID', $row->GameID);
@@ -253,6 +282,74 @@ class Collection extends CI_Model {
         return $query->num_rows() > 0 ? true : false;
     }
 
+    // add concept to game in collection
+    function addConcept($collectionID, $conceptGBID)
+    {
+        // get ConceptID from GBID
+        $query = $this->db->get_where('concepts', array('GBID' => $conceptGBID));
+        if($query->num_rows() == 1)
+        {
+            $row = $query->first_row();
+
+            $data = array(
+               'CollectionID' => $collectionID,
+               'ConceptID' => $row->ConceptID
+            );
+
+            return $this->db->insert('collectionConcept', $data); 
+        }
+    }
+
+    // remove concept to game in collection
+    function removeConcept($collectionID, $conceptGBID)
+    {
+        // get ConceptID from GBID
+        $query = $this->db->get_where('concepts', array('GBID' => $conceptGBID));
+        if($query->num_rows() == 1)
+        {
+            $row = $query->first_row();
+
+            $this->db->where('CollectionID', $collectionID);
+            $this->db->where('ConceptID', $row->ConceptID);
+            $this->db->delete('collectionConcept'); 
+        }
+    }
+
+    // get concepts game is on in collection
+    function getGamesConceptsInCollection($GBID, $userID)
+    {
+        $this->db->select('concepts.GBID, concepts.Name');
+        $this->db->from('collections');
+        $this->db->join('games', 'collections.GameID = games.GameID');
+        $this->db->join('collectionConcept', 'collections.ID = collectionConcept.CollectionID');
+        $this->db->join('concepts', 'collectionConcept.ConceptID = concepts.ConceptID');
+        $this->db->where('games.GBID', $GBID); 
+        $this->db->where('collections.UserID', $userID); 
+        $query = $this->db->get();
+
+        if($query->num_rows() > 0)
+        {
+            return $query->result();
+        }
+
+        return null;
+    }
+
+    // check if game is on concept in collection
+    function isGameOnConceptInCollection($collectionID, $conceptGBID)
+    {
+        $this->db->select('*');
+        $this->db->from('collections');
+        $this->db->join('games', 'collections.GameID = games.GameID');
+        $this->db->join('collectionConcept', 'collections.ID = collectionConcept.CollectionID');
+        $this->db->join('concepts', 'collectionConcept.ConceptID = concepts.ConceptID');
+        $this->db->where('collections.ID', $collectionID); 
+        $this->db->where('concepts.GBID', $conceptGBID); 
+        $query = $this->db->get();
+
+        return $query->num_rows() > 0 ? true : false;
+    }
+
     // update currently playing, hours played and date completed for game
     function updateProgression($collectionID, $currentlyPlaying, $hoursPlayed, $dateCompleted)
     {
@@ -324,6 +421,7 @@ class Collection extends CI_Model {
             $this->db->join('lists', 'collections.ListID = lists.ListID');
             $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID');
             $this->db->join('collectionPlatform', 'collections.ID = collectionPlatform.CollectionID', 'left');
+            $this->db->join('collectionConcept', 'collections.ID = collectionConcept.CollectionID', 'left');
             $this->db->join('games', 'collections.GameID = games.GameID');
             $this->db->where('collections.UserID', $userID); 
         
@@ -344,6 +442,16 @@ class Collection extends CI_Model {
             // filter out games with no platform
             else if(!$filters->includeNoPlatforms)
                 $this->db->where("(`collectionPlatform`.`PlatformID` IS NOT NULL)"); 
+
+            // // filter out conceptID's
+            // if(count($filters->concepts) > 0 && !$filters->includeNoConcepts) 
+            //     $this->db->where_not_in('collectionConcept.ConceptID', $filters->concepts);
+            // // filter out conceptID's, but include games with no concept
+            // else if(count($filters->concepts) > 0 && $filters->includeNoConcepts) 
+            //     $this->db->where("(`collectionConcept`.`ConceptID` NOT IN (" . implode(",", $filters->concepts) . ") OR `collectionConcept`.`ConceptID` IS NULL)");
+            // // filter out games with no concept
+            // else if(!$filters->includeNoConcepts)
+            //     $this->db->where("(`collectionConcept`.`ConceptID` IS NOT NULL)"); 
         }
         
         // only apply group by, order by and limit if getting list of games
@@ -384,6 +492,12 @@ class Collection extends CI_Model {
             foreach ($games as $game)
             {
                 $game->Platforms = $this->getGamesPlatformsInCollection($game->GBID, $userID);
+            }
+
+                        // add concepts to games
+            foreach ($games as $game)
+            {
+                $game->Concepts = $this->getGamesConceptsInCollection($game->GBID, $userID);
             }
 
             return $games;
@@ -448,16 +562,66 @@ class Collection extends CI_Model {
         return null;
     }
 
+     // get users collection by concept
+    function getCollectionByConcept($userID) 
+    {
+        $this->db->select('collectionConcept.ConceptID');
+        $this->db->select('concepts.Name,');
+        $this->db->select('concepts.Image,');
+        // collection: everything not on the want list
+        $this->db->select('COUNT(CASE WHEN collections.ListID != 2 THEN collections.GameID END) AS Collection');
+        // completable collection: everything not uncompletable or on the want list
+        $this->db->select('COUNT(CASE WHEN collections.StatusID != 4 AND collections.ListID != 2 THEN collections.GameID END) AS CompletableCollection');
+        // completed: everything completed and not on the want list
+        $this->db->select('COUNT(CASE WHEN collections.StatusID = 3 AND collections.ListID != 2 THEN collections.GameID END) AS Completed');
+        // backlog: everything unplayed or unfinished and not on the want list
+        $this->db->select('COUNT(CASE WHEN (collections.StatusID = 1 OR collections.StatusID = 2) AND collections.ListID != 2 THEN collections.GameID END) AS Backlog');
+        // want: everything on the want list
+        $this->db->select('COUNT(CASE WHEN collections.ListID = 2 THEN collections.GameID END) AS Want');   
+        // percentage complete: (completed / completable collection) * 100
+        $this->db->select('CAST((COUNT(CASE WHEN collections.StatusID = 3 AND collections.ListID != 2 THEN collections.GameID END) / COUNT(CASE WHEN collections.StatusID != 4 AND collections.ListID != 2 THEN collections.GameID END)) * 100 AS UNSIGNED) AS Percentage');   
+    
+        $this->db->from('collections');
+        $this->db->join('lists', 'collections.ListID = lists.ListID');
+        $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID');
+        $this->db->join('collectionConcept', 'collections.ID = collectionConcept.CollectionID', 'left');
+        $this->db->join('concepts', 'collectionConcept.ConceptID = concepts.ConceptID', 'left');
+        $this->db->join('games', 'collections.GameID = games.GameID');
+        
+        $this->db->where('collections.UserID', $userID); 
+
+        $this->db->group_by("collectionConcept.ConceptID");
+        $this->db->order_by("Percentage", "desc"); 
+
+        // get results
+        $query = $this->db->get();
+        if($query->num_rows() > 0)
+        {
+            $concepts = $query->result();
+
+            foreach ($concepts as $concept)
+            {  
+                // default profile image
+                $concept->Name = $concept->Name == null ? "No Concept" : $concept->Name;
+                $concept->Image = $concept->Image == null ? $this->config->item('default_profile_image') : $concept->Image;
+            }
+
+            return $concepts;
+        }
+
+        return null;
+    }
     // get raw collection data to export
     function getRawCollection($userID)
     {
-        $this->db->select('ID AS GWL_ID, games.GBID AS GB_ID, games.Name, ListName AS List, StatusName AS Status, DateComplete, HoursPlayed, CurrentlyPlaying, platforms.Name AS Platform, Abbreviation');
+        $this->db->select('ID AS GWL_ID, games.GBID AS GB_ID, games.Name, ListName AS List, StatusName AS Status, DateComplete, HoursPlayed, CurrentlyPlaying, platforms.Name AS Platform, concepts.Name AS Concept, Abbreviation');
         $this->db->from('collections');
         $this->db->join('games', 'collections.GameID = games.GameID');
         $this->db->join('lists', 'collections.ListID = lists.ListID');
         $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID');
-        $this->db->join('collectionPlatform', 'collections.ID = collectionPlatform.CollectionID', 'left');
+        $this->db->join('collectionConcept', 'collections.ID = collectionConcept.CollectionID', 'left');
         $this->db->join('platforms', 'collectionPlatform.PlatformID = platforms.PlatformID', 'left');
+        $this->db->join('concepts', 'collectionConcept.ConceptID = concepts.ConceptID', 'left');
         $this->db->where('collections.UserID', $userID); 
         $this->db->order_by("games.Name", "asc");
             
@@ -501,6 +665,21 @@ class Collection extends CI_Model {
         $this->db->join('platforms', 'collectionPlatform.PlatformID = platforms.PlatformID', 'left');
         $this->db->where('collections.UserID', $userID); 
         $this->db->group_by("platforms.PlatformID");
+        $this->db->order_by("Games", "desc"); 
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
+        // get concepts in collection
+    function getConceptsInCollection($userID)
+    {
+        $this->db->select('concepts.ConceptID, count(*) as Games');
+        $this->db->from('collections');
+        $this->db->join('collectionConcept', 'collections.ID = collectionConcept.CollectionID', 'left');
+        $this->db->join('concepts', 'collectionConcept.ConceptID = concepts.ConceptID', 'left');
+        $this->db->where('collections.UserID', $userID); 
+        $this->db->group_by("concepts.ConceptID");
         $this->db->order_by("Games", "desc"); 
         $query = $this->db->get();
 

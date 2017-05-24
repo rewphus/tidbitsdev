@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     /* platform checkbox change */
-    $(".panel-footer :checkbox").change(function() {
+    $("[id^='platform'].panel-footer :checkbox").change(function() {
 
         // get the game and platform id out of the checkbox id
         match = this.id.match("platform_([0-9]+)_([0-9]+)");
@@ -62,7 +62,72 @@ $(document).ready(function() {
             }
         }
     });
+
+    /* concept checkbox change */
+    $("[id^='concept'].panel-footer :checkbox").change(function() {
+
+        // get the game and concept id out of the checkbox id
+        match = this.id.match("concept_([0-9]+)_([0-9]+)");
+        // if ids found and checkbox checked
+        if (match.length == 3) {
+            $(this).prop('disabled', true); // disable checkbox
+            var checkbox = this;
+            if (this.checked) {
+                // add concept
+                $.ajax({
+                    type: 'POST',
+                    url: '/games/addConcept',
+                    dataType: 'json',
+                    data: {
+                        GBID: match[1],
+                        conceptID: match[2]
+                    },
+                    success: function(data) {
+                        if (data.error === true) {
+                            $(checkbox).prop('disabled', false); // enable checkbox
+                            $(checkbox).prop('checked', false); // reset to unchecked as add failed
+                            showErrorModal(data.errorMessage, data.errorProgressURL, data.errorProgressCTA);
+                        } else {
+                            $(checkbox).prop('disabled', false); // enable checkbox
+                        }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        $(checkbox).prop('disabled', false); // enable checkbox
+                        $(checkbox).prop('checked', false); // reset to unchecked as add failed
+                        showErrorModal('Well 1. Some kind of error gone done happened. Please try again.');
+                    }
+                });
+            } else {
+                // remove concept
+                $.ajax({
+                    type: 'POST',
+                    url: '/games/removeConcept',
+                    dataType: 'json',
+                    data: {
+                        GBID: match[1],
+                        conceptID: match[2]
+                    },
+                    success: function(data) {
+                        if (data.error === true) {
+                            $(checkbox).prop('disabled', false); // enable checkbox
+                            $(checkbox).prop('checked', true); // reset to checked as remove failed
+                            showErrorModal(data.errorMessage);
+                        } else {
+                            $(checkbox).prop('disabled', false); // enable checkbox
+                        }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        $(checkbox).prop('disabled', false); // enable checkbox
+                        $(checkbox).prop('checked', true); // reset to checked as remove failed
+                        showErrorModal('Well 2. Some kind of error gone done happened. Please try again.');
+                    }
+                });
+            }
+        }
+    });
 });
+
+
 
 /* add/update game status in collection */
 function addGame(giantbombID, listID, reloadPage) {
@@ -99,12 +164,19 @@ function addGame(giantbombID, listID, reloadPage) {
                     $('#inCollectionControls' + giantbombID).removeClass("hidden");
                     // display collection status dropdown
                     $('#statusDropdown' + listID).removeClass("hidden");
+                    // enable conceptcheckboxes
+                    $('#concepts' + giantbombID).find('input[type=checkbox]').prop('readonly', false);
+                    // if a concept was auto-selected, update checkbox
+                    // if (data.autoSelectConcept != null) {
+                    //     $('#concept_' + giantbombID + '_' + data.autoSelectConcept).prop('checked', true);
+                    // }
                     // enable platform checkboxes
                     $('#platforms' + giantbombID).find('input[type=checkbox]').prop('readonly', false);
                     // if a platform was auto-selected, update checkbox
                     if (data.autoSelectPlatform != null) {
                         $('#platform_' + giantbombID + '_' + data.autoSelectPlatform).prop('checked', true);
                     }
+
                 }
             }
         },

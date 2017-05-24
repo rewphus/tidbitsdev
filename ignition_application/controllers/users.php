@@ -26,6 +26,11 @@ class Users extends IG_Users {
 
         // paging
         $resultsPerPage = 20;
+                      echo '<script>
+      var x;
+      x = "Page: ' . $page . '"
+      console.log(x)</script>';
+
         $offset = ($page-1) * $resultsPerPage;
 
         // page variables
@@ -68,6 +73,7 @@ class Users extends IG_Users {
         // get platforms, lists and statuses for filtering
         $this->load->model('Collection');
         $data['platforms'] = $this->Collection->getPlatformsInCollection($userID);
+        $data['concepts'] = $this->Collection->getConceptsInCollection($userID);
         $data['lists'] = $this->Collection->getListsInCollection($userID);
         $data['statuses'] = $this->Collection->getStatusesInCollection($userID);
 
@@ -107,6 +113,35 @@ class Users extends IG_Users {
         $this->load->view('templates/header', $data);
         $this->load->view('user/profile/header', $data);
         $this->load->view('user/platforms', $data);
+        $this->load->view('templates/footer', $data);
+    } 
+    
+       // view user collection by concepts
+    function concepts($userID)
+    {   
+        // get user data
+        $this->load->model('User');
+        $user = $this->User->getUserByIdWithFollowingStatus($userID, $this->session->userdata('UserID'));
+
+        if($user == null)
+            show_404();
+
+        // page variables
+        $this->load->model('Page');
+        $data = $this->Page->create($user->Username, "Concepts");
+        $data['user'] = $user;
+
+        // get users collections by concept
+        $this->load->model('Collection');
+        $data['concepts'] = $this->Collection->getCollectionByConcept($userID);
+
+        // get games currently playing
+        $data['currentlyPlaying'] = $this->Collection->getCurrentlyPlaying($userID);
+
+        // load views
+        $this->load->view('templates/header', $data);
+        $this->load->view('user/profile/header', $data);
+        $this->load->view('user/concepts', $data);
         $this->load->view('templates/footer', $data);
     }
 

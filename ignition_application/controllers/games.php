@@ -396,10 +396,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('genreID', 'genreID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBGenreID = $this->input->post('platformID');
+        $GBGenreID = $this->input->post('genreID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -461,10 +461,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('genreID', 'genreID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBGenreID = $this->input->post('platformID');
+        $GBGenreID = $this->input->post('genreID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -498,10 +498,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('developerID', 'developerID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBDeveloperID = $this->input->post('platformID');
+        $GBDeveloperID = $this->input->post('developerID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -563,10 +563,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('developerID', 'developerID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBDeveloperID = $this->input->post('platformID');
+        $GBDeveloperID = $this->input->post('developerID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -600,10 +600,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('publisherID', 'publisherID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBPublisherID = $this->input->post('platformID');
+        $GBPublisherID = $this->input->post('publisherID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -665,10 +665,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('publisherID', 'publisherID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBPublisherID = $this->input->post('platformID');
+        $GBPublisherID = $this->input->post('publisherID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -702,10 +702,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('themeID', 'themeID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBThemeID = $this->input->post('platformID');
+        $GBThemeID = $this->input->post('themeID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -767,10 +767,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('themeID', 'themeID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBThemeID = $this->input->post('platformID');
+        $GBThemeID = $this->input->post('themeID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -804,10 +804,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('franchiseID', 'franchiseID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBFranchiseID = $this->input->post('platformID');
+        $GBFranchiseID = $this->input->post('franchiseID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -869,10 +869,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('franchiseID', 'franchiseID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBFranchiseID = $this->input->post('platformID');
+        $GBFranchiseID = $this->input->post('franchiseID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -907,10 +907,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('conceptID', 'conceptID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBConceptID = $this->input->post('platformID');
+        $GBConceptID = $this->input->post('conceptID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -923,6 +923,8 @@ class Games extends CI_Controller {
         // check if game is in collection
         $this->load->model('Collection');
         $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+
+       // $this->returnError("Collection:" + $collection, false, false);
 
         // if game is not in collection
         if($collection == null)
@@ -972,10 +974,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('conceptID', 'conceptID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBConceptID = $this->input->post('platformID');
+        $GBConceptID = $this->input->post('conceptID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -1010,10 +1012,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('locationID', 'locationID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBLocationID = $this->input->post('platformID');
+        $GBLocationID = $this->input->post('locationID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -1075,10 +1077,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('locationID', 'locationID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBLocationID = $this->input->post('platformID');
+        $GBLocationID = $this->input->post('locationID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -1113,10 +1115,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('characterID', 'characterID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBCharacterID = $this->input->post('platformID');
+        $GBCharacterID = $this->input->post('characterID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -1178,10 +1180,10 @@ class Games extends CI_Controller {
         // form validation
         $this->load->library('form_validation');
         $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
-        $this->form_validation->set_rules('platformID', 'platformID', 'trim|xss_clean');
+        $this->form_validation->set_rules('characterID', 'characterID', 'trim|xss_clean');
 
         $GBID = $this->input->post('GBID');
-        $GBCharacterID = $this->input->post('platformID');
+        $GBCharacterID = $this->input->post('characterID');
         $userID = $this->session->userdata('UserID');
 
         // check that user is logged in

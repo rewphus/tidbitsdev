@@ -1,23 +1,21 @@
-var filters = { lists : [], statuses : [], platforms : [], includeNoPlatforms : true, orderBy: "releaseDateDesc" };
+var filters = { lists: [], statuses: [], platforms: [], includeNoPlatforms: true, orderBy: "releaseDateDesc" };
 var currentPage = 1;
 
 $(document).ready(function() {
     /* filter checkbox change */
-    $(".filters :checkbox").change(function(){
+    $(".filters :checkbox").change(function() {
         // get the filter type and filter id out of the checkbox id
         match = this.id.match("filter_([a-z]+)_([0-9]+)");
         // if ids found
-        if(match.length == 3)
-        {
+        if (match.length == 3) {
             $(this).prop('disabled', true); // disable checkbox
             var filterID = parseInt(match[2]); // convert filter id to int
             var listType = match[1];
             var checkbox = this;
 
             // exception for including or excluding games with no platform
-            if(listType == "platform" && filterID == 0)
-            {
-                if(checkbox.checked) {
+            if (listType == "platform" && filterID == 0) {
+                if (checkbox.checked) {
                     filters.includeNoPlatforms = true;
                 } else {
                     filters.includeNoPlatforms = false;
@@ -25,8 +23,7 @@ $(document).ready(function() {
             } else {
                 // set current filter
                 var currentFilter;
-                switch(listType)
-                {
+                switch (listType) {
                     case "list":
                         currentFilter = filters.lists;
                         break;
@@ -38,7 +35,7 @@ $(document).ready(function() {
                         break;
                 }
 
-                if(checkbox.checked) {
+                if (checkbox.checked) {
                     var index = currentFilter.indexOf(filterID); // get array index of filterID
                     currentFilter.splice(index, 1); // remove filterID from array
                 } else {
@@ -67,22 +64,22 @@ function viewMoreGames() {
 
 function loadCollection() {
     $.ajax({
-        type : 'POST',
-        url : '/user/getCollection',
-        dataType : 'json',
+        type: 'POST',
+        url: '/user/getCollection',
+        dataType: 'json',
         data: {
             userID: UserID,
             page: currentPage,
             filters: JSON.stringify(filters)
         },
-        success : function(data){
+        success: function(data) {
             if (data.error === true) {
-                showErrorModal(data.errorMessage,false,false);
-            } else { 
+                showErrorModal(data.errorMessage, false, false);
+            } else {
                 var gameCollection = "";
                 var collection = data.collection;
 
-                if(collection != null) { 
+                if (collection != null) {
                     for (i = 0; i < collection.length; ++i) {
                         gameCollection += '<div class="panel panel-default collectionItem media clearfix">';
                         gameCollection += '     <div class="pull-left">';
@@ -90,18 +87,30 @@ function loadCollection() {
                         gameCollection += '     </div>';
                         gameCollection += '     <div class="media-body eventComment">';
                         gameCollection += '         <a href="/game/' + collection[i].GBID + '">' + collection[i].Name + '</a></b>';
-                        
+
                         // display list of platforms
                         var platforms = collection[i].Platforms;
-                        if(platforms != null) 
-                        {
+                        if (platforms != null) {
                             gameCollection += " on ";
-                            for (x = 0; x < platforms.length; x++)
-                            {
+                            for (x = 0; x < platforms.length; x++) {
                                 gameCollection += platforms[x].Abbreviation;
-                                if(x == platforms.length-2) {
+                                if (x == platforms.length - 2) {
                                     gameCollection += " and ";
-                                } else if(x < platforms.length-1) {
+                                } else if (x < platforms.length - 1) {
+                                    gameCollection += ", ";
+                                }
+                            }
+                        }
+
+                        // display list of concepts
+                        var concepts = collection[i].Platforms;
+                        if (concepts != null) {
+                            gameCollection += " on ";
+                            for (x = 0; x < concepts.length; x++) {
+                                gameCollection += concepts[x].Abbreviation;
+                                if (x == concepts.length - 2) {
+                                    gameCollection += " and ";
+                                } else if (x < concepts.length - 1) {
                                     gameCollection += ", ";
                                 }
                             }
@@ -124,13 +133,13 @@ function loadCollection() {
                 $('#completionPercentage').width(data.stats.PercentComplete + "%");
                 $('#completionPercentageLabel').html(data.stats.PercentComplete);
 
-                if(currentPage == 1)
+                if (currentPage == 1)
                     $('#gameCollection').html(gameCollection);
                 else
                     $('#gameCollection').append(gameCollection);
 
-                if(collection.length > 0) {
-                    if(collection.length == 30) {
+                if (collection.length > 0) {
+                    if (collection.length == 30) {
                         $('#gameCollectionViewMore').html("<a class='btn btn-default btn-fullWidth' onclick='viewMoreGames()''>View More</a>");
                     } else {
                         $('#gameCollectionViewMore').html("");
@@ -140,8 +149,8 @@ function loadCollection() {
                 }
             }
         },
-        error : function(XMLHttpRequest, textStatus, errorThrown) {
-            showErrorModal('Well nuts. It appears that something didnt go to plan. Please call the coast guard imediately.');
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            showErrorModal('Well nuts.' + console.log(XMLHttpRequest.responseText));
         }
     });
 }

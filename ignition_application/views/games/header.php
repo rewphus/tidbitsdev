@@ -161,11 +161,18 @@
                 if ($game->concepts != null) {
                     echo "<div id='concepts" . $game->GBID . "' class='panel-footer'>Concept<br>";
                     foreach ($game->concepts as $concept) {
-                        echo "<label><div id='concept_" . $game->GBID . "_" . $concept->GBID . "' ";
-                        echo "> <span class='label label-info'>" . $concept->name . "</span></div></label> ";
+                        echo "<label><input id='concept_" . $game->GBID . "_" . $concept->GBID . "' type='checkbox'";
+                        if ($concept->inCollection) {
+                            echo " checked";
+                        }
+                        if ($game->listID == 0) {
+                            echo " readonly";
+                        }
+                        echo "> <span class='label label-info'>" . $concept->name . "</span></label> ";
                     }
-                     echo "</div>";
+                    echo "</div>";
                 }
+                
             ?>                                 
                 <?php
                 if ($game->locations != null) {
