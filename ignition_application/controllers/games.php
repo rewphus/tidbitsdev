@@ -105,11 +105,19 @@ class Games extends CI_Controller {
                 if($this->Game->platforms != null && count($this->Game->platforms) == 1)
                 {
                     // add game to platform in collection
-                    if($this->Collection->addPlatform($collectionID, $this->Game->platforms[0]->GBID))
+                    // if($this->Collection->addPlatform($collectionID, $this->Game->platforms[0]->GBID))
+                    // {
+                    //     // tell UI to check platform that was auto-selected
+                    //     $result['autoSelectPlatform'] = $this->Game->platforms[0]->GBID; 
+                    // }
+
+                    // add game to meta in collection
+                    if($this->Collection->addMeta($collectionID, 'platform', $this->Game->platforms[0]->GBID))
                     {
                         // tell UI to check platform that was auto-selected
                         $result['autoSelectPlatform'] = $this->Game->platforms[0]->GBID; 
                     }
+
                 }
             }
 
@@ -288,6 +296,121 @@ class Games extends CI_Controller {
         $result['error'] = false;  
         echo json_encode($result);
     }
+// ----------   Meta  ----------------------------------------------------------------------------------------------------------
+    function addMeta($meta)
+    {
+        $metaID = ucfirst($meta)."ID";
+        $GBMetaID = "$GB".ucfirst($meta)."ID";
+        $isMetaInDB = "is".ucfirst($meta)."InDB";
+        $getMeta = "get".ucfirst($meta);
+        $addMeta = "add".ucfirst($meta);
+        
+        // form validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
+        $this->form_validation->set_rules($metaID, $metaID, 'trim|xss_clean');
+
+        $GBID = $this->input->post('GBID');
+        $GBPlatformID = $this->input->post($metaID);
+        $userID = $this->session->userdata('UserID');
+
+        // check that user is logged in
+        if($userID <= 0)
+        {
+            $this->returnError($this->lang->line('error_logged_out'),"/login","Login");
+            return;
+        }
+
+        // check if game is in collection
+        $this->load->model('Collection');
+        $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+
+        // if game is not in collection
+        if($collection == null)
+        {
+            $this->returnError("You haven't added this game to your collection. You probably need to do that first kido.", false, false);
+            return;
+        }
+        
+        // if game has meta, add it
+        if(!$this->Collection->isGameOnMetaInCollection($collection->ID, $metaID, $GBMetaID))
+        {
+            // load meta model
+            $this->load->model(ucfirst($meta));
+
+            // if meta isnt in db
+            if(!$this->ucfirst($meta)->$isMetaInDB($GBMetaID))
+            {
+                // get meta data 
+                $meta = $this->ucfirst($meta)->$getMeta($GBMetaID);
+
+                // if API returned nothing
+                if($meta == null)
+                {
+                    $this->returnError($this->lang->line('error_giantbomb_down'), false, false);
+                    return;
+                }
+
+                // add meta to db
+                $this->ucfirst($meta)->$addMeta($meta);
+            }
+
+            // add game to meta in collection
+            $this->Collection->addMeta($collection->ID, $meta, $GBMetaID);
+
+
+        }
+
+        // record event
+        $this->load->model('Event');
+        $this->Event->addEvent($userID, $collection->GameID, $collection->ListID, null, null);
+        
+        $result['error'] = false; 
+        echo json_encode($result);
+        return;
+    }
+
+    function removeMeta($meta)
+    {
+        
+        $metaID = ucfirst($meta)."ID";
+        
+        // form validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
+        $this->form_validation->set_rules($metaID, $metaID, 'trim|xss_clean');
+
+        $GBID = $this->input->post('GBID');
+        $GBMetaID = $this->input->post($metaID);
+        $userID = $this->session->userdata('UserID');
+
+        // check that user is logged in
+        if($userID <= 0)
+        {
+            $this->returnError($this->lang->line('error_logged_out'),"/login","Login");
+            return;
+        }
+
+        // check if game is in collection
+        $this->load->model('Collection');
+        $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+
+        // if game is not in collection
+        if($collection == null)
+        {
+            $this->returnError($this->lang->line('error_game_not_added'), false, false);
+            return;
+        }
+        
+        // remove platform from game in collection
+        $this->Collection->removeMeta($collection->ID, $meta, $GBMetaID);
+        
+        $result['error'] = false; 
+        echo json_encode($result);
+        return;
+    }
+
+
 // ----------   Platform  ----------------------------------------------------------------------------------------------------------
     function addPlatform()
     {
@@ -319,7 +442,7 @@ class Games extends CI_Controller {
         }
         
         // if game is not on platform, add it
-        if(!$this->Collection->isGameOnPlatformInCollection($collection->ID, $GBPlatformID))
+        if(!$this->Collection->isGameOnMetaInCollection($collection->ID, 'platform', $GBPlatformID))
         {
             // load platform model
             $this->load->model('Platform');
@@ -342,7 +465,10 @@ class Games extends CI_Controller {
             }
 
             // add game to platform in collection
-            $this->Collection->addPlatform($collection->ID, $GBPlatformID);
+           // $this->Collection->addPlatform($collection->ID, $GBPlatformID);
+            $this->Collection->addMeta($collection->ID, 'platform', $GBPlatformID);
+
+
         }
 
         // record event
@@ -384,7 +510,7 @@ class Games extends CI_Controller {
         }
         
         // remove platform from game in collection
-        $this->Collection->removePlatform($collection->ID, $GBPlatformID);
+        $this->Collection->removeMeta($collection->ID, 'platform', $GBPlatformID);
         
         $result['error'] = false; 
         echo json_encode($result);
@@ -934,7 +1060,7 @@ class Games extends CI_Controller {
         }
         
         // if game is not on concept, add it
-        if(!$this->Collection->isGameOnConceptInCollection($collection->ID, $GBConceptID))
+        if(!$this->Collection->isGameOnMetaInCollection($collection->ID, 'concept', $GBConceptID))
         {
             // load concept model
             $this->load->model('Concept');
@@ -957,7 +1083,7 @@ class Games extends CI_Controller {
             }
 
             // add game to concept in collection
-            $this->Collection->addConcept($collection->ID, $GBConceptID);
+            $this->Collection->addMeta($collection->ID, 'concept', $GBConceptID);
         }
 
         // record event
@@ -999,7 +1125,7 @@ class Games extends CI_Controller {
         }
         
         // remove concept from game in collection
-        $this->Collection->removeConcept($collection->ID, $GBConceptID);
+        $this->Collection->removeMeta($collection->ID, 'concept', $GBConceptID);
         
         $result['error'] = false; 
         echo json_encode($result);

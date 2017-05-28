@@ -117,7 +117,7 @@ class Event extends CI_Model {
             }
 
             // add platforms in collection
-            $event->platforms = $this->Collection->getGamesPlatformsInCollection($event->GBID, $event->UserID);
+            $event->platforms = $this->Collection->getGamesMetaInCollection($event->GBID, $event->UserID, 'platform');
             
             // build platforms label
             $event->PlatformsLabel = "";

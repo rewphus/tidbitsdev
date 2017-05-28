@@ -31,7 +31,7 @@ $(document).ready(function() {
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         $(checkbox).prop('disabled', false); // enable checkbox
                         $(checkbox).prop('checked', false); // reset to unchecked as add failed
-                        showErrorModal('Well 1. Some kind of error gone done happened. Please try again.');
+                        showErrorModal('Well Platform: ' + +console.log(XMLHttpRequest.responseText));
                     }
                 });
             } else {

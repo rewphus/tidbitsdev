@@ -74,7 +74,7 @@ class Users extends IG_Users {
         // get platforms, lists and statuses for filtering
         $this->load->model('Collection');
         $data['platforms'] = $this->Collection->getPlatformsInCollection($userID);
-        $data['concepts'] = $this->Collection->getConceptsInCollection($userID);
+        $data['concepts'] = $this->Collection->getMetaInCollection($userID, 'concept');
         $data['lists'] = $this->Collection->getListsInCollection($userID);
         $data['statuses'] = $this->Collection->getStatusesInCollection($userID);
 
@@ -105,7 +105,7 @@ class Users extends IG_Users {
 
         // get users collections by platform
         $this->load->model('Collection');
-        $data['platforms'] = $this->Collection->getCollectionByPlatform($userID);
+        $data['platforms'] = $this->Collection->getCollectionByMeta($userID, 'platform');
 
         // get games currently playing
         $data['currentlyPlaying'] = $this->Collection->getCurrentlyPlaying($userID);
@@ -134,7 +134,7 @@ class Users extends IG_Users {
 
         // get users collections by concept
         $this->load->model('Collection');
-        $data['concepts'] = $this->Collection->getCollectionByConcept($userID);
+        $data['concepts'] = $this->Collection->getCollectionByMeta($userID, 'concept');
 
         // get games currently playing
         $data['currentlyPlaying'] = $this->Collection->getCurrentlyPlaying($userID);
