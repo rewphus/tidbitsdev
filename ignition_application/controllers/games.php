@@ -104,12 +104,6 @@ class Games extends CI_Controller {
                 // if game has one platform
                 if($this->Game->platforms != null && count($this->Game->platforms) == 1)
                 {
-                    // add game to platform in collection
-                    // if($this->Collection->addPlatform($collectionID, $this->Game->platforms[0]->GBID))
-                    // {
-                    //     // tell UI to check platform that was auto-selected
-                    //     $result['autoSelectPlatform'] = $this->Game->platforms[0]->GBID; 
-                    // }
 
                     // add game to meta in collection
                     if($this->Collection->addMeta($collectionID, 'platform', $this->Game->platforms[0]->GBID))

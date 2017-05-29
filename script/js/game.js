@@ -165,7 +165,7 @@ function addGame(giantbombID, listID, reloadPage) {
                     // display collection status dropdown
                     $('#statusDropdown' + listID).removeClass("hidden");
                     // enable conceptcheckboxes
-                    $('#concepts' + giantbombID).find('input[type=checkbox]').prop('readonly', false);
+                    $('#concepts' + giantbombID).find('input[type=checkbox]').prop('checked', true);
                     // if a concept was auto-selected, update checkbox
                     // if (data.autoSelectConcept != null) {
                     //     $('#concept_' + giantbombID + '_' + data.autoSelectConcept).prop('checked', true);
