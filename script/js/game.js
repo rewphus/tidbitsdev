@@ -132,6 +132,8 @@ $(document).ready(function() {
 /* add/update game status in collection */
 function addGame(giantbombID, listID, reloadPage) {
     var StatusID = 0;
+    var FutureID = 0;
+    var ValueID = 0;
 
     if (listID == 1) {
         StatusID = 1;
@@ -152,6 +154,7 @@ function addGame(giantbombID, listID, reloadPage) {
             statusID: StatusID
         },
         success: function(data) {
+            console.log("addGame: " + data);
             if (data.error === true) {
                 showErrorModal(data.errorMessage);
             } else {
@@ -198,6 +201,7 @@ function changeStatus(giantbombID, statusID) {
             statusID: statusID
         },
         success: function(data) {
+            console.log("changeStatus: " + JSON.parse(JSON.stringify(data)));
             if (data.error === true) {
                 showErrorModal(data.errorMessage);
             } else {

@@ -133,10 +133,12 @@ class CI_Router {
 		if (defined('ENVIRONMENT') AND is_file(APPPATH.'config/'.ENVIRONMENT.'/routes.php'))
 		{
 			include(APPPATH.'config/'.ENVIRONMENT.'/routes.php');
+			// include(APPPATH.'config/'.ENVIRONMENT.'/ChromePhp.php');
 		}
 		elseif (is_file(APPPATH.'config/routes.php'))
 		{
 			include(APPPATH.'config/routes.php');
+			// include(APPPATH.'config/ChromePhp.php');
 		}
 
 		$this->routes = ( ! isset($route) OR ! is_array($route)) ? array() : $route;

@@ -32,6 +32,16 @@ class Game extends CI_Model
     var $statusLabel = "Set Status";
     var $statusStyle = "default";
 
+        // status button
+    var $futureID = 0;
+    var $futureLabel = "Set Future";
+    var $futureStyle = "default";
+
+        // status button
+    var $ValueID = 0;
+    var $valueLabel = "Set Value";
+    var $valueStyle = "default";
+
     // played data
     var $currentlyPlaying = false;
     var $dateComplete;
@@ -76,6 +86,7 @@ class Game extends CI_Model
     function isGameInDB($GBID)
     {
         $query = $this->db->get_where('games', array('GBID' => $GBID));
+        echo $query->num_rows();
 
         return $query->num_rows() > 0 ? true : false;
     }
@@ -85,7 +96,7 @@ class Game extends CI_Model
     {
         // get game from db
         $this->db->select('games.GameID, games.GBID, games.GBLink, games.Name, games.Image, games.ImageSmall, games.Deck, lists.ListID, lists.ListName, lists.ListStyle');
-        $this->db->select('gameStatuses.StatusID, gameStatuses.StatusName, gameStatuses.StatusStyle, collections.CurrentlyPlaying, collections.DateComplete, collections.HoursPlayed');
+        $this->db->select('gameStatuses.StatusID, gameStatuses.StatusName, gameStatuses.StatusStyle, gameFutures.FutureID, gameFutures.FutureName, gameFutures.FutureStyle, gameValues.ValueID, gameValues.ValueName, gameValues.ValueStyle, collections.CurrentlyPlaying, collections.DateComplete, collections.HoursPlayed');
         $this->db->from('games');
 
         if ($userID == null) {
@@ -95,6 +106,8 @@ class Game extends CI_Model
         $this->db->join('collections', 'collections.GameID = games.GameID AND collections.UserID = ' . $userID, 'left');
         $this->db->join('lists', 'collections.ListID = lists.ListID', 'left');
         $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID', 'left');
+        $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID', 'left');
+        $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID', 'left');
 
         $this->db->where('games.GBID', $GBID);
         $query = $this->db->get();
@@ -122,6 +135,16 @@ class Game extends CI_Model
                 $this->statusID = $result->StatusID;
                 $this->statusLabel = $result->StatusName;
                 $this->statusStyle = $result->StatusStyle;
+
+                                // future button
+                $this->futureID = $result->FutureID;
+                $this->futureLabel = $result->FutureName;
+                $this->futureStyle = $result->FutureStyle;
+
+                                // value button
+                $this->valueID = $result->ValueID;
+                $this->valueLabel = $result->ValueName;
+                $this->valueStyle = $result->ValueStyle;
 
                 // played data
                 $this->currentlyPlaying = ($result->CurrentlyPlaying == 1) ? true : false;
@@ -975,6 +998,16 @@ class Game extends CI_Model
         $this->statusID = 0;
         $this->statusLabel = "Set Status";
         $this->statusStyle = "default";
+
+                // future button
+        $this->futureID = 0;
+        $this->futureLabel = "Set Future";
+        $this->futureStyle = "default";
+
+                // value button
+        $this->valueID = 0;
+        $this->valueLabel = "Set Value";
+        $this->valueStyle = "default";
 
         // played data
         $this->currentlyPlaying = false;

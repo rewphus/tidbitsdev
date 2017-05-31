@@ -59,11 +59,15 @@ class Games extends CI_Controller {
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
         $this->form_validation->set_rules('listID', 'listID', 'trim|xss_clean');
-        // $this->form_validation->set_rules('statusID', 'statusID', 'trim|xss_clean');
+        $this->form_validation->set_rules('statusID', 'statusID', 'trim|xss_clean');
+        // $this->form_validation->set_rules('futureID', 'futureID', 'trim|xss_clean');
+        // $this->form_validation->set_rules('valueID', 'valueID', 'trim|xss_clean');
 
 		$GBID = $this->input->post('GBID');
         $listID = $this->input->post('listID');
-        // $statusID = $this->input->post('statusID');
+        $statusID = $this->input->post('statusID');
+        // $futureID = $this->input->post('futureID');
+        // $valueID = $this->input->post('valueID');
 		$userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -214,7 +218,6 @@ class Games extends CI_Controller {
 
         // return success
         $result['error'] = false;   
-        echo json_encode($result);
 	}
 
     // change played status of game
@@ -322,7 +325,7 @@ class Games extends CI_Controller {
         // if game is not in collection
         if($collection == null)
         {
-            $this->returnError("You haven't added this game to your collection. You probably need to do that first kido.", false, false);
+            $this->returnError("You haven't added this game to your collection. You probably need to do that first kidos." + $collection, false, false);
             return;
         }
         
@@ -459,7 +462,6 @@ class Games extends CI_Controller {
             }
 
             // add game to platform in collection
-           // $this->Collection->addPlatform($collection->ID, $GBPlatformID);
             $this->Collection->addMeta($collection->ID, 'platform', $GBPlatformID);
 
 

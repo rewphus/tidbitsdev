@@ -26,6 +26,16 @@ class Collection extends CI_Model
             $game->statusLabel = $collection->StatusName;
             $game->statusStyle = $collection->StatusStyle;
 
+            // future button
+            $game->futureID = $collection->FutureID;
+            $game->futureLabel = $collection->FutureName;
+            $game->futureStyle = $collection->FutureStyle;
+
+            // value button
+            $game->valueID = $collection->ValueID;
+            // $game->valueLabel = $collection->ValueName;
+            // $game->valueStyle = $collection->ValueStyle;
+
             // data
             $game->currentlyPlaying = ($collection->CurrentlyPlaying == 1) ? true : false;
             $game->dateComplete = $collection->DateComplete;
@@ -49,6 +59,16 @@ class Collection extends CI_Model
             $game->statusLabel = "Set Status";
             $game->statusStyle = "default";
 
+            // future button
+            $game->futureID = 0;
+            $game->futureLabel = "Chance of Return...";
+            $game->futureStyle = "default";
+
+            // value button
+            $game->valueID = 0;
+            $game->valueLabel = "Current Value";
+            $game->valueStyle = "default";
+
             // data
             $game->currentlyPlaying = false;
             $game->dateComplete = null;
@@ -62,20 +82,15 @@ class Collection extends CI_Model
 
         // add platforms user has game on in collection (if any)
         // if game has platforms
-        if(property_exists($game, "platforms") && $game->platforms != null)
-        {
+        if (property_exists($game, "platforms") && $game->platforms != null) {
             // loop over platforms game is on
-            foreach($game->platforms as $gbPlatform)
-            {
+            foreach ($game->platforms as $gbPlatform) {
                 $gbPlatform->inCollection = false;
-                if($platforms != null)
-                {
+                if ($platforms != null) {
                     // loop over platforms user has in collection
-                    foreach ($platforms as $platform)
-                    {
+                    foreach ($platforms as $platform) {
                         // if platform is on game in collection
-                        if($platform->GBID == $gbPlatform->id)
-                        {
+                        if ($platform->GBID == $gbPlatform->id) {
                             $gbPlatform->inCollection = true;
                             break;
                         }
@@ -127,6 +142,8 @@ class Collection extends CI_Model
         $this->db->join('games', 'collections.GameID = games.GameID');
         $this->db->join('lists', 'collections.ListID = lists.ListID');
         $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID');
+        // $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
+        // $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
         $this->db->where('games.GBID', $GBID);
         $this->db->where('collections.UserID', $userID);
         $query = $this->db->get();
@@ -142,6 +159,8 @@ class Collection extends CI_Model
     function addToCollection($gameID, $userID, $listID)
     {
         $statusID = 0;
+        $futureID = 0;
+        $valueID = 0;
         
         if ($listID == 1) {
             $statusID = 1;
@@ -150,11 +169,14 @@ class Collection extends CI_Model
         } else {
             $statusID = 9;
         }
+
         $data = array(
            'UserID' => $userID,
            'GameID' => $gameID,
            'ListID' => $listID,
            'StatusID' => $statusID // default to Set Status
+            // 'FutureID' => $futureID, // default to Set Future
+            // 'ValueID' => $valueID // default to Set Value
         );
 
         $this->db->insert('collections', $data);
@@ -187,6 +209,34 @@ class Collection extends CI_Model
             $this->db->where('GameID', $row->GameID);
             $this->db->where('UserID', $userID);
             $this->db->update('collections', array('StatusID' => $statusID));
+        }
+    }
+
+    // update played future of game in collection
+    function updateFuture($GBID, $userID, $futureID)
+    {
+        // get GameID from GBID
+        $query = $this->db->get_where('games', array('GBID' => $GBID));
+        if ($query->num_rows() == 1) {
+            $row = $query->first_row();
+
+            $this->db->where('GameID', $row->GameID);
+            $this->db->where('UserID', $userID);
+            $this->db->update('collections', array('FutureID' => $futureID));
+        }
+    }
+
+    // update played value of game in collection
+    function updateValue($GBID, $userID, $valueID)
+    {
+        // get GameID from GBID
+        $query = $this->db->get_where('games', array('GBID' => $GBID));
+        if ($query->num_rows() == 1) {
+            $row = $query->first_row();
+
+            $this->db->where('GameID', $row->GameID);
+            $this->db->where('UserID', $userID);
+            $this->db->update('collections', array('ValueID' => $valueID));
         }
     }
 
@@ -351,12 +401,42 @@ class Collection extends CI_Model
         return null;
     }
 
+    // get played future
+    function getFutureDetails($futureID)
+    {
+        $this->db->select('*');
+        $this->db->from('gameFutures');
+        $this->db->where('gameFutures.FutureID', $futureID);
+        $query = $this->db->get();
+
+        if ($query->num_rows() == 1) {
+            return $query->first_row();
+        }
+
+        return null;
+    }
+
+    // get played value
+    function getValueDetails($valueID)
+    {
+        $this->db->select('*');
+        $this->db->from('gameValues');
+        $this->db->where('gameValues.ValueID', $valueID);
+        $query = $this->db->get();
+
+        if ($query->num_rows() == 1) {
+            return $query->first_row();
+        }
+
+        return null;
+    }
+
     // get users collection
     function getCollection($userID, $filters, $offset, $resultsPerPage)
     {
         // if offset is provided, get list of games
         if ($offset !== null) {
-            $this->db->select('ImageSmall, GBID, Name, ListStyle, ListName, StatusStyle, StatusName');
+            $this->db->select('ImageSmall, GBID, Name, ListStyle, ListName, StatusStyle, StatusName, FutureStyle, FutureName, ValueStyle, ValueName');
         } // if no offset, count number of games in collection
         else {
             // collection: everything not on the want list
@@ -376,6 +456,8 @@ class Collection extends CI_Model
         if ($filters !== null) {
             $this->db->join('lists', 'collections.ListID = lists.ListID');
             $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID');
+            $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
+            $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
             $this->db->join('collectionPlatform', 'collections.ID = collectionPlatform.CollectionID', 'left');
             $this->db->join('collectionConcept', 'collections.ID = collectionConcept.CollectionID', 'left');
             $this->db->join('games', 'collections.GameID = games.GameID');
@@ -390,6 +472,16 @@ class Collection extends CI_Model
             if (count($filters->statuses) > 0) {
                 $this->db->where_not_in('collections.StatusID', $filters->statuses);
             }
+
+            // filter out futureID's
+            // if (count($filters->futures) > 0) {
+            //     $this->db->where_not_in('collections.FutureID', $filters->futures);
+            // }
+
+            // filter out valueID's
+            // if (count($filters->values) > 0) {
+            //     $this->db->where_not_in('collections.ValueID', $filters->values);
+            // }
             
             // filter out platformID's
             if (count($filters->platforms) > 0 && !$filters->includeNoPlatforms) {
@@ -401,16 +493,6 @@ class Collection extends CI_Model
             elseif (!$filters->includeNoPlatforms) {
                 $this->db->where("(`collectionPlatform`.`PlatformID` IS NOT NULL)");
             }
-
-            // // filter out conceptID's
-            // if(count($filters->concepts) > 0 && !$filters->includeNoConcepts)
-            //     $this->db->where_not_in('collectionConcept.ConceptID', $filters->concepts);
-            // // filter out conceptID's, but include games with no concept
-            // else if(count($filters->concepts) > 0 && $filters->includeNoConcepts)
-            //     $this->db->where("(`collectionConcept`.`ConceptID` NOT IN (" . implode(",", $filters->concepts) . ") OR `collectionConcept`.`ConceptID` IS NULL)");
-            // // filter out games with no concept
-            // else if(!$filters->includeNoConcepts)
-            //     $this->db->where("(`collectionConcept`.`ConceptID` IS NOT NULL)");
         }
         
         // only apply group by, order by and limit if getting list of games
@@ -499,6 +581,8 @@ class Collection extends CI_Model
         $this->db->from('collections');
         $this->db->join('lists', 'collections.ListID = lists.ListID');
         $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID');
+        $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
+        $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
         $this->db->join('collection'.ucfirst($meta), 'collections.ID = collection'.ucfirst($meta).'.CollectionID', 'left');
         $this->db->join($metas, 'collection'.ucfirst($meta).'.'.$metaID.' = '.$metas.'.'.$metaID, 'left');
         $this->db->join('games', 'collections.GameID = games.GameID');
@@ -528,11 +612,13 @@ class Collection extends CI_Model
     // get raw collection data to export
     function getRawCollection($userID)
     {
-        $this->db->select('ID AS GWL_ID, games.GBID AS GB_ID, games.Name, ListName AS List, StatusName AS Status, DateComplete, HoursPlayed, CurrentlyPlaying, platforms.Name AS Platform, concepts.Name AS Concept, Abbreviation');
+        $this->db->select('ID AS GWL_ID, games.GBID AS GB_ID, games.Name, ListName AS List, StatusName AS Status, FutureName AS Future, ValueName AS Value, DateComplete, HoursPlayed, CurrentlyPlaying, platforms.Name AS Platform, concepts.Name AS Concept, Abbreviation');
         $this->db->from('collections');
         $this->db->join('games', 'collections.GameID = games.GameID');
         $this->db->join('lists', 'collections.ListID = lists.ListID');
         $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID');
+        $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
+        $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
         $this->db->join('collectionConcept', 'collections.ID = collectionConcept.CollectionID', 'left');
         $this->db->join('platforms', 'collectionPlatform.PlatformID = platforms.PlatformID', 'left');
         $this->db->join('concepts', 'collectionConcept.ConceptID = concepts.ConceptID', 'left');
@@ -555,6 +641,8 @@ class Collection extends CI_Model
         $this->db->from('collections');
         $this->db->join('games', 'collections.GameID = games.GameID');
         $this->db->join('gameStatuses', 'gameStatuses.StatusID = collections.StatusID');
+        $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
+        $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
         $this->db->where('collections.UserID', $userID);
         $this->db->where('collections.CurrentlyPlaying', 1);
         $this->db->order_by("games.Name", "asc");
@@ -629,6 +717,34 @@ class Collection extends CI_Model
         return $query->result();
     }
 
+    // get futures in collection
+    function getFuturesInCollection($userID)
+    {
+        $this->db->select('gameFutures.FutureID, gameFutures.FutureName, count(*) as Games');
+        $this->db->from('collections');
+        $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
+        $this->db->where('collections.UserID', $userID);
+        $this->db->group_by("gameFutures.FutureID");
+        $this->db->order_by("Games", "desc");
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
+    // get values in collection
+    function getValuesInCollection($userID)
+    {
+        $this->db->select('gameValues.ValueID, gameValues.ValueName, count(*) as Games');
+        $this->db->from('collections');
+        $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
+        $this->db->where('collections.UserID', $userID);
+        $this->db->group_by("gameValues.ValueID");
+        $this->db->order_by("Games", "desc");
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
     // get users who have played game
     function getUsersWhoHavePlayedGame($GBID, $userID)
     {
@@ -637,11 +753,17 @@ class Collection extends CI_Model
         $this->db->select('ProfileImage');
         $this->db->select('StatusNameShort');
         $this->db->select('StatusStyle');
+        $this->db->select('FutureNameShort');
+        $this->db->select('FutureStyle');
+        $this->db->select('ValueNameShort');
+        $this->db->select('ValueStyle');
 
         $this->db->from('games');
         $this->db->join('collections', 'games.GameID = collections.GameID');
         $this->db->join('users', 'collections.UserID = users.UserID');
         $this->db->join('gameStatuses', 'gameStatuses.StatusID = collections.StatusID');
+        $this->db->join('gameFutures', 'gameFutures.FutureID = collections.FutureID');
+        $this->db->join('gameValues', 'gameValues.ValueID = collections.ValueID');
 
         if ($userID != null) {
             $this->db->join('following', 'following.ChildUserID = collections.UserID AND following.ParentUserID = ' . $userID, 'left');
@@ -650,7 +772,8 @@ class Collection extends CI_Model
 
         $this->db->where('games.GBID', $GBID);
 
-        $this->db->order_by("Ranking", "asc");
+        //Error showing that order clause is ambigious
+        // $this->db->order_by("Ranking", "asc");
         
         // if logged in, bump users you follow up the list
         if ($userID != null) {

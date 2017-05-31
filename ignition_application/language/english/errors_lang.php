@@ -4,7 +4,7 @@
   $lang['error_giantbomb_down'] = "Shit sticks! The Giant Bomb API may be down. Please try again.";
   
   // Game Errors
-  $lang['error_game_not_added'] = "You haven't added this game to your collection. You probably need to do that first kido.";
+  $lang['error_game_not_added'] = "You haven't added this game to your collection. You probably need to do that first kido2.";
   $lang['error_game_cant_add'] = "We were unable to add this game to your collection. Please try again.";
   
   // User Errors

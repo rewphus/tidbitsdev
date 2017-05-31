@@ -34,7 +34,8 @@
                     echo '<p><a href="' . $game->GBLink . '" target="_blank">Read more on GiantBomb.com.</a></p>';
 } ?>
                 <?php if ($sessionUserID > 0) { ?>
-                  <div class="pull-right">  
+                  <div class="pull-right">
+                   <!--<?php echo var_export($game) ?> -->
                         <div id="inCollectionControlsBtn<?php echo $game->GBID ?>" class="btn-group <?php if ($game->listID != 0) {
                             echo 'hidden';
 } ?>">

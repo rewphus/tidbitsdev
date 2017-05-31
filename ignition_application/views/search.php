@@ -36,20 +36,7 @@
                                             <p><a href="<?php echo $game->site_detail_url; ?>" target="_blank">Read more on GiantBomb.com.</a></p>
                                             <?php if($sessionUserID > 0) { ?>
                                                 <div class="pull-right">
-                                                    <!--<div class='btn-group'>-->
-                                                        <!--<button id='gameButton<?php echo $game->id ?>' type="button" class="btn btn-default" onclick="javascript:addGame(<?php echo $game->id ?>, 1, true);">Played</button>
-                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <span class="caret"></span>
-                                                            <span class="sr-only">Toggle Dropdown</span>
-                                                        </button>
-                                                          <ul id="inCollectionControls<?php echo $game->id ?>" class='dropdown-menu <?php if($game->listID != 1) echo "hidden" ?>'>
-                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 1);">Dabbled</a></li>
-                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 2);">Got my fill</a></li>
-                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 3);">Need MORE</a></li>
-                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 4);">Mastered</a></li>
-                                                            </ul>
-                                                        </div>-->
-
+                                                <!--<?php echo var_export($game) ?>-->
                                                     <div id="inCollectionControlsBtn<?php echo $game->id ?>" class="btn-group <?php if($game->listID != 0) echo 'hidden' ?>">
                                                         <button type="button" class="btn btn-default" onclick="javascript:addGame(<?php echo $game->id ?>, 1, true);"><span class="icon-large icon-gamepad"  style="height: 18px" aria-hidden="true"></span><br>Played</button>
                                                         <button type="button" class="btn btn-default" onclick="javascript:addGame(<?php echo $game->id ?>, 2, true);"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span><br>Watched</button>
