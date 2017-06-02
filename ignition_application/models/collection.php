@@ -160,20 +160,17 @@ class Collection extends CI_Model
     {
         $statusID = 0;
         $futureID = 0;
-        $valueID = 0;
+        $valueID = 99;
         
         if ($listID == 1) {
-            $statusID = 1;
-            $futureID = 1;
-            $valueID = 1;
+            $statusID = 99;
+            $futureID = 99;
         } elseif ($listID == 2) {
-            $statusID = 6;
-            $futureID = 1;
-            $valueID = 1;
+            $statusID = 100;
+            $futureID = 100;
         } else {
-            $statusID = 9;
-            $futureID = 1;
-            $valueID = 1;
+            $statusID = 101;
+            $futureID = 101;
         }
 
         $data = array(
