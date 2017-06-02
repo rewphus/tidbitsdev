@@ -220,7 +220,7 @@ function changeStatus(giantbombID, statusID) {
     });
 }
 
-/* update game played status */
+/* update game played future */
 function changeFuture(giantbombID, futureID) {
     $('#futureButton' + giantbombID).addClass('disabled').html('Saving...');
     $.ajax({
@@ -241,6 +241,63 @@ function changeFuture(giantbombID, futureID) {
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             showErrorModal('changeFuture' + console.log(XMLHttpRequest.responseText));
+        }
+    });
+}
+
+/* update game played value */
+function changeValue(giantbombID, valueID) {
+    $('#valueButton' + giantbombID).addClass('disabled').html('Saving...');
+    $.ajax({
+        type: 'POST',
+        url: '/games/changeValue',
+        dataType: 'json',
+        data: {
+            GBID: giantbombID,
+            valueID: valueID
+        },
+        success: function(data) {
+            console.log("changeValue: " + JSON.parse(JSON.stringify(data)));
+            if (data.error === true) {
+                showErrorModal(data.errorMessage);
+            } else {
+                $('#valueButton' + giantbombID).html(data.valueName + ' <span class="caret"></span>').removeClass().addClass("btn btn-" + data.valueStyle + " dropdown-toggle");
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            showErrorModal('changeValue' + console.log(XMLHttpRequest.responseText));
+        }
+    });
+}
+
+/* update game played value */
+function setValue(giantbombID, statusID, futureID) {
+    var valueID = 99;
+
+    if ((statusID == 1 || statusID == 2) & futureID == 1) { valueID = 1 } else
+    if (statusID == 1 & futureID == 2) { valueID = 2 };
+
+    console.log("valueID: " + valueID);
+
+    $('#valueButton' + giantbombID).addClass('disabled').html('Saving...');
+    $.ajax({
+        type: 'POST',
+        url: '/games/changeValue',
+        dataType: 'json',
+        data: {
+            GBID: giantbombID,
+            valueID: valueID
+        },
+        success: function(data) {
+            console.log("success setValue: " + JSON.parse(JSON.stringify(data)));
+            if (data.error === true) {
+                showErrorModal(data.errorMessage);
+            } else {
+                $('#valueButton' + giantbombID).html(data.valueName + ' <span class="caret"></span>').removeClass().addClass("btn btn-" + data.valueStyle + " dropdown-toggle");
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            showErrorModal('setValue ' + console.log(XMLHttpRequest.responseText));
         }
     });
 }
