@@ -98,7 +98,24 @@
                                                                     <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 14);">Perfecting</a></li>
                                                                     <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 15);">Mastered</a></li>
                                                             </ul>
-                                                        </div> 
+                                                        </div>
+                                                        <div id="valueButtonGroup<?php echo $game->id ?>" class="btn-group">
+                                                            <button id='valueButton<?php echo $game->id ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->valueStyle ?> dropdown-toggle'><?php echo $game->valueLabel  ?> <span class='caret'></span></button>
+                                                            <ul id="valueDropdown1" class='dropdown-menu <?php if($game->listID != 1) echo "hidden" ?>'>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->id ?>, 1);">Not for me</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->id ?>, 6);">Had my fill</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->id ?>, 2);">Will keep in mind</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->id ?>, 4);">Verdict is still out</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->id ?>, 3);">Shows potential</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->id ?>, 8);">Wish I had more time</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->id ?>, 5);">Instant classic</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->id ?>, 9);">Well worth it</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->id ?>, 7);">I need MORE</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->id ?>, 10);">Flowstate</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->id ?>, 11);">Dedicated</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->id ?>, 12);">Addicted</a></li>
+                                                            </ul>
+                                                        </div>  
                                                     </span>
                                                 </div>
                                             <?php } ?>
