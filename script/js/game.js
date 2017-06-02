@@ -137,10 +137,16 @@ function addGame(giantbombID, listID, reloadPage) {
 
     if (listID == 1) {
         StatusID = 1;
+        FutureID = 1;
+        ValueID = 1;
     } else if (listID == 2) {
         StatusID = 6;
+        FutureID = 1;
+        ValueID = 1;
     } else {
         StatusID = 9;
+        FutureID = 1;
+        ValueID = 1;
     }
 
     $('#gameButton' + giantbombID).addClass('disabled').html('Saving...');
@@ -210,6 +216,31 @@ function changeStatus(giantbombID, statusID) {
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             showErrorModal('changeStatus' + console.log(XMLHttpRequest.responseText));
+        }
+    });
+}
+
+/* update game played status */
+function changeFuture(giantbombID, futureID) {
+    $('#futureButton' + giantbombID).addClass('disabled').html('Saving...');
+    $.ajax({
+        type: 'POST',
+        url: '/games/changeFuture',
+        dataType: 'json',
+        data: {
+            GBID: giantbombID,
+            futureID: futureID
+        },
+        success: function(data) {
+            console.log("changeFuture: " + JSON.parse(JSON.stringify(data)));
+            if (data.error === true) {
+                showErrorModal(data.errorMessage);
+            } else {
+                $('#futureButton' + giantbombID).html(data.futureName + ' <span class="caret"></span>').removeClass().addClass("btn btn-" + data.futureStyle + " dropdown-toggle");
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            showErrorModal('changeFuture' + console.log(XMLHttpRequest.responseText));
         }
     });
 }

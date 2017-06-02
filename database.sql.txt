@@ -15,6 +15,7 @@ CREATE TABLE `blog` (
   PRIMARY KEY (`PostID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+15:57:56	update collections set FutureID = 1 where FutureID = 0	Error Code: 1175. You are using safe update mode and you tried to update a table without a WHERE that uses a KEY column To disable safe mode, toggle the option in Preferences -> SQL Editor and reconnect.	0.00024 sec
 
 
 # Dump of table ci_sessions

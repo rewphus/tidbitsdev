@@ -60,14 +60,14 @@ class Games extends CI_Controller {
 		$this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
         $this->form_validation->set_rules('listID', 'listID', 'trim|xss_clean');
         $this->form_validation->set_rules('statusID', 'statusID', 'trim|xss_clean');
-        // $this->form_validation->set_rules('futureID', 'futureID', 'trim|xss_clean');
-        // $this->form_validation->set_rules('valueID', 'valueID', 'trim|xss_clean');
+        $this->form_validation->set_rules('futureID', 'futureID', 'trim|xss_clean');
+        $this->form_validation->set_rules('valueID', 'valueID', 'trim|xss_clean');
 
 		$GBID = $this->input->post('GBID');
         $listID = $this->input->post('listID');
         $statusID = $this->input->post('statusID');
-        // $futureID = $this->input->post('futureID');
-        // $valueID = $this->input->post('valueID');
+        $futureID = $this->input->post('futureID');
+        $valueID = $this->input->post('valueID');
 		$userID = $this->session->userdata('UserID');
 
         // check that user is logged in
@@ -262,6 +262,102 @@ class Games extends CI_Controller {
         $statusData = $this->Collection->getStatusDetails($statusID);
         $result['statusName'] = $statusData->StatusName;
         $result['statusStyle'] = $statusData->StatusStyle;
+
+        // return success
+        $result['error'] = false;   
+        echo json_encode($result);
+    }
+
+    // change played Future of game
+    function changeFuture()
+    {
+        // form validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
+        $this->form_validation->set_rules('futureID', 'futureID', 'trim|xss_clean');
+
+        $GBID = $this->input->post('GBID');
+        $futureID = $this->input->post('futureID');
+        $userID = $this->session->userdata('UserID');
+
+        // check that user is logged in
+        if($userID <= 0)
+        {
+            $this->returnError($this->lang->line('error_logged_out'),"/login","Login");
+            return;
+        }
+
+        // check if game is in collection
+        $this->load->model('Collection');
+        $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+       
+        // if game is in collection
+        if($collection != null) 
+        {
+            // update played future
+            $this->Collection->updateFuture($GBID, $userID, $futureID);
+        } else {
+            // return error
+            $this->returnError($this->lang->line('error_game_not_added'), false, false);
+            return;
+        }
+
+        // record event
+        $this->load->model('Event');
+        $this->Event->addEvent($userID, $collection->GameID, null, $futureID, null);
+
+        // get future name and style
+        $futureData = $this->Collection->getFutureDetails($futureID);
+        $result['futureName'] = $futureData->FutureName;
+        $result['futureStyle'] = $futureData->FutureStyle;
+
+        // return success
+        $result['error'] = false;   
+        echo json_encode($result);
+    }
+
+    // change played Value of game
+    function changeValue()
+    {
+        // form validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
+        $this->form_validation->set_rules('valueID', 'valueID', 'trim|xss_clean');
+
+        $GBID = $this->input->post('GBID');
+        $valueID = $this->input->post('valueID');
+        $userID = $this->session->userdata('UserID');
+
+        // check that user is logged in
+        if($userID <= 0)
+        {
+            $this->returnError($this->lang->line('error_logged_out'),"/login","Login");
+            return;
+        }
+
+        // check if game is in collection
+        $this->load->model('Collection');
+        $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+       
+        // if game is in collection
+        if($collection != null) 
+        {
+            // update played value
+            $this->Collection->updateValue($GBID, $userID, $valueID);
+        } else {
+            // return error
+            $this->returnError($this->lang->line('error_game_not_added'), false, false);
+            return;
+        }
+
+        // record event
+        $this->load->model('Event');
+        $this->Event->addEvent($userID, $collection->GameID, null, $valueID, null);
+
+        // get value name and style
+        $valueData = $this->Collection->getValueDetails($valueID);
+        $result['valueName'] = $valueData->ValueName;
+        $result['valueStyle'] = $valueData->ValueStyle;
 
         // return success
         $result['error'] = false;   

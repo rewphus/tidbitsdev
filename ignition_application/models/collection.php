@@ -33,8 +33,8 @@ class Collection extends CI_Model
 
             // value button
             $game->valueID = $collection->ValueID;
-            // $game->valueLabel = $collection->ValueName;
-            // $game->valueStyle = $collection->ValueStyle;
+            $game->valueLabel = $collection->ValueName;
+            $game->valueStyle = $collection->ValueStyle;
 
             // data
             $game->currentlyPlaying = ($collection->CurrentlyPlaying == 1) ? true : false;
@@ -142,8 +142,8 @@ class Collection extends CI_Model
         $this->db->join('games', 'collections.GameID = games.GameID');
         $this->db->join('lists', 'collections.ListID = lists.ListID');
         $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID');
-        // $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
-        // $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
+        $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
+        $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
         $this->db->where('games.GBID', $GBID);
         $this->db->where('collections.UserID', $userID);
         $query = $this->db->get();
@@ -164,19 +164,25 @@ class Collection extends CI_Model
         
         if ($listID == 1) {
             $statusID = 1;
+            $futureID = 1;
+            $valueID = 1;
         } elseif ($listID == 2) {
             $statusID = 6;
+            $futureID = 1;
+            $valueID = 1;
         } else {
             $statusID = 9;
+            $futureID = 1;
+            $valueID = 1;
         }
 
         $data = array(
            'UserID' => $userID,
            'GameID' => $gameID,
            'ListID' => $listID,
-           'StatusID' => $statusID // default to Set Status
-            // 'FutureID' => $futureID, // default to Set Future
-            // 'ValueID' => $valueID // default to Set Value
+           'StatusID' => $statusID, // default to Set Status
+             'FutureID' => $futureID, // default to Set Future
+             'ValueID' => $valueID // default to Set Value
         );
 
         $this->db->insert('collections', $data);

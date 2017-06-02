@@ -55,20 +55,48 @@
                                                         <div id="statusButtonGroup<?php echo $game->id ?>" class="btn-group">
                                                             <button id='statusButton<?php echo $game->id ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->statusStyle ?> dropdown-toggle'><?php echo $game->statusLabel  ?> <span class='caret'></span></button>
                                                             <ul id="statusDropdown1" class='dropdown-menu <?php if($game->listID != 1) echo "hidden" ?>'>
-                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 1);"><span>&#x1F60F</span> Dabbled</a></li>
-                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 2);"><span>&#x1F612</span> Got my fill</a></li>
-                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 3);"><span>&#x1F60D</span> Need MORE</a></li>
-                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 4);"><span>&#x1F60E</span> Mastered</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 1);">Still Learning</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 2);">Basic Understanding</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 3);">Improving</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 4);">Perfecting</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 5);">Mastered</a></li>
                                                             </ul>
                                                             <ul id="statusDropdown2" class='dropdown-menu <?php if($game->listID != 2) echo "hidden" ?>'>
-                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 5);">Want to Play</a></li>
-                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 6);">Will Keep Watching</a></li>
-                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 7);">Not for me</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 6);">Trailer</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 7);">Promotional Gameplay</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 8);">Raw Gameplay</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 9);">Full Playthrough</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 10);">Speedrun</a></li>
                                                             </ul>
                                                             <ul id="statusDropdown3" class='dropdown-menu <?php if($game->listID != 3) echo "hidden" ?>'>
-                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 8);">Interested</a></li>
-                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 9);">Maybe some day</a></li>
-                                                                    <li ><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 10);">Hall of Shame</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 11);">Still Learning</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 12);">Basic Understanding</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 13);">Improving</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 14);">Perfecting</a></li>
+                                                                    <li><a onclick="javascript:changeStatus(<?php echo $game->id ?>, 15);">Mastered</a></li>
+                                                            </ul>
+                                                        </div> 
+                                                        <div id="futureButtonGroup<?php echo $game->id ?>" class="btn-group">
+                                                            <button id='futureButton<?php echo $game->id ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->futureStyle ?> dropdown-toggle'><?php echo $game->futureLabel  ?> <span class='caret'></span></button>
+                                                            <ul id="futureDropdown1" class='dropdown-menu <?php if($game->listID != 1) echo "hidden" ?>'>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 1);">Unlikely</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 2);">Maybe Someday</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 3);">Will make time</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 4);">Currently playing</a></li>
+                                                            </ul>
+                                                            <ul id="futureDropdown2" class='dropdown-menu <?php if($game->listID != 2) echo "hidden" ?>'>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 6);">Trailer</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 7);">Promotional Gameplay</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 8);">Raw Gameplay</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 9);">Full Playthrough</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 10);">Speedrun</a></li>
+                                                            </ul>
+                                                            <ul id="futureDropdown3" class='dropdown-menu <?php if($game->listID != 3) echo "hidden" ?>'>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 11);">Still Learning</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 12);">Basic Understanding</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 13);">Improving</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 14);">Perfecting</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 15);">Mastered</a></li>
                                                             </ul>
                                                         </div> 
                                                     </span>
