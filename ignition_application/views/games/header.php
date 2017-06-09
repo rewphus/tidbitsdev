@@ -87,6 +87,47 @@
                                                                     <li><a onclick="javascript:changeStatus(<?php echo $game->GBID ?>, 15);">Mastered</a></li>
                                                             </ul>
                             </div>
+                                                        <div id="futureButtonGroup<?php echo $game->GBID ?>" class="btn-group">
+                                                            <button id='futureButton<?php echo $game->GBID ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->futureStyle ?> dropdown-toggle'><?php echo $game->futureLabel  ?> <span class='caret'></span></button>
+                                                            <ul id="futureDropdown1" class='dropdown-menu <?php if($game->listID != 1) echo "hidden" ?>'>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 1);setValue(<?php echo $game->GBID ?>, <?php echo $game->statusID ?>, 1);">Unlikely</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 2);">Maybe Someday</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 3);">Will make time</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 4);">Currently playing</a></li>
+                                                            </ul>
+                                                            <ul id="futureDropdown2" class='dropdown-menu <?php if($game->listID != 2) echo "hidden" ?>'>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 6);">Trailer</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 7);">Promotional Gameplay</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 8);">Raw Gameplay</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 9);">Full Playthrough</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 10);">Speedrun</a></li>
+                                                            </ul>
+                                                            <ul id="futureDropdown3" class='dropdown-menu <?php if($game->listID != 3) echo "hidden" ?>'>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 11);">Still Learning</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 12);">Basic Understanding</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 13);">Improving</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 14);">Perfecting</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->GBID ?>, 15);">Mastered</a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div id="valueButtonGroup<?php echo $game->GBID ?>" class="btn-group">
+                                                            <button id='valueButton<?php echo $game->GBID ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->valueStyle ?> dropdown-toggle'><?php echo $game->valueLabel  ?> <span class='caret'></span></button>
+                                                            <ul id="valueDropdown1" class='dropdown-menu <?php if($game->listID != 1) echo "hidden" ?>'>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->GBID ?>, 1);">Not for me</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->GBID ?>, 6);">Had my fill</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->GBID ?>, 2);">Will keep in mind</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->GBID ?>, 4);">Verdict is still out</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->GBID ?>, 3);">Shows potential</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->GBID ?>, 8);">Wish I had more time</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->GBID ?>, 5);">Instant classic</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->GBID ?>, 9);">Well worth it</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->GBID ?>, 7);">I need MORE</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->GBID ?>, 10);">Flowstate</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->GBID ?>, 11);">Dedicated</a></li>
+                                                                    <li><a onclick="javascript:changeValue(<?php echo $game->GBID ?>, 12);">Addicted</a></li>
+                                                            </ul>
+                                                        </div>  
+                            
                         </span>
                     </div>   
                 <?php } ?>   

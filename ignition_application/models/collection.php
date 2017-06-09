@@ -21,6 +21,11 @@ class Collection extends CI_Model
             $game->listLabel = $collection->ListName;
             $game->listStyle = $collection->ListStyle;
 
+            // motivation button
+            $game->motivationID = $collection->MotivationID;
+            $game->motivationLabel = $collection->MotivationName;
+            $game->motivationStyle = $collection->MotivationStyle;
+
             // status button
             $game->statusID = $collection->StatusID;
             $game->statusLabel = $collection->StatusName;
@@ -53,6 +58,11 @@ class Collection extends CI_Model
             $game->listID = 0;
             $game->listLabel = "Add to Collection";
             $game->listStyle = "default";
+
+            // motivation button
+            $game->motivationID = 0;
+            $game->motivationLabel = "Set Motivation";
+            $game->motivationStyle = "default";
 
             // status button
             $game->statusID = 0;
@@ -141,6 +151,7 @@ class Collection extends CI_Model
         $this->db->from('collections');
         $this->db->join('games', 'collections.GameID = games.GameID');
         $this->db->join('lists', 'collections.ListID = lists.ListID');
+        $this->db->join('gameMotivations', 'collections.MotivationID = gameMotivations.MotivationID');
         $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID');
         $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
         $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
@@ -158,6 +169,7 @@ class Collection extends CI_Model
     // add game to users collection
     function addToCollection($gameID, $userID, $listID)
     {
+        $motivationID = 99;
         $statusID = 0;
         $futureID = 0;
         $valueID = 99;
@@ -177,6 +189,7 @@ class Collection extends CI_Model
            'UserID' => $userID,
            'GameID' => $gameID,
            'ListID' => $listID,
+           'MotivationID' => $motivationID,
            'StatusID' => $statusID, // default to Set Status
              'FutureID' => $futureID, // default to Set Future
              'ValueID' => $valueID // default to Set Value
@@ -201,6 +214,19 @@ class Collection extends CI_Model
         }
     }
 
+    // update played motivation of game in collection
+    function updateMotivation($GBID, $userID, $motivationID)
+    {
+        // get GameID from GBID
+        $query = $this->db->get_where('games', array('GBID' => $GBID));
+        if ($query->num_rows() == 1) {
+            $row = $query->first_row();
+
+            $this->db->where('GameID', $row->GameID);
+            $this->db->where('UserID', $userID);
+            $this->db->update('collections', array('MotivationID' => $motivationID));
+        }
+    }
     // update played status of game in collection
     function updateStatus($GBID, $userID, $statusID)
     {
@@ -389,6 +415,20 @@ class Collection extends CI_Model
         return null;
     }
 
+    // get played motivation
+    function getMotivationDetails($motivationID)
+    {
+        $this->db->select('*');
+        $this->db->from('gameMotivations');
+        $this->db->where('gameMotivations.MotivationID', $motivationID);
+        $query = $this->db->get();
+
+        if ($query->num_rows() == 1) {
+            return $query->first_row();
+        }
+
+        return null;
+    }
     // get played status
     function getStatusDetails($statusID)
     {
@@ -458,6 +498,7 @@ class Collection extends CI_Model
 
         if ($filters !== null) {
             $this->db->join('lists', 'collections.ListID = lists.ListID');
+            $this->db->join('gameMotivations', 'collections.MotivationID = gameMotivations.MotivationID');
             $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID');
             $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
             $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
@@ -583,6 +624,7 @@ class Collection extends CI_Model
     
         $this->db->from('collections');
         $this->db->join('lists', 'collections.ListID = lists.ListID');
+        $this->db->join('gameMotivations', 'collections.MotivationID = gameMotivations.MotivationID');
         $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID');
         $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
         $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
@@ -615,10 +657,11 @@ class Collection extends CI_Model
     // get raw collection data to export
     function getRawCollection($userID)
     {
-        $this->db->select('ID AS GWL_ID, games.GBID AS GB_ID, games.Name, ListName AS List, StatusName AS Status, FutureName AS Future, ValueName AS Value, DateComplete, HoursPlayed, CurrentlyPlaying, platforms.Name AS Platform, concepts.Name AS Concept, Abbreviation');
+        $this->db->select('ID AS GWL_ID, games.GBID AS GB_ID, games.Name, ListName AS List, MotivationName AS Motivation, StatusName AS Status, FutureName AS Future, ValueName AS Value, DateComplete, HoursPlayed, CurrentlyPlaying, platforms.Name AS Platform, concepts.Name AS Concept, Abbreviation');
         $this->db->from('collections');
         $this->db->join('games', 'collections.GameID = games.GameID');
         $this->db->join('lists', 'collections.ListID = lists.ListID');
+        $this->db->join('gameMotivations', 'collections.MotivationID = gameMotivations.Motivationyou sID');
         $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID');
         $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
         $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
@@ -643,6 +686,7 @@ class Collection extends CI_Model
         $this->db->select('*');
         $this->db->from('collections');
         $this->db->join('games', 'collections.GameID = games.GameID');
+        $this->db->join('gameMotivations', 'gameMotivations.MotivationID = collections.MotivationID');
         $this->db->join('gameStatuses', 'gameStatuses.StatusID = collections.StatusID');
         $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
         $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
@@ -706,6 +750,20 @@ class Collection extends CI_Model
         return $query->result();
     }
 
+    // get motivations in collection
+    function getMotivationsInCollection($userID)
+    {
+        $this->db->select('gameMotivations.MotivationID, gameMotivations.MotivationName, count(*) as Games');
+        $this->db->from('collections');
+        $this->db->join('gameMotivations', 'collections.MotivationID = gameMotivations.MotivationID');
+        $this->db->where('collections.UserID', $userID);
+        $this->db->group_by("gameMotivations.MotivationID");
+        $this->db->order_by("Games", "desc");
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
     // get statuses in collection
     function getStatusesInCollection($userID)
     {
@@ -754,6 +812,8 @@ class Collection extends CI_Model
         $this->db->select('users.UserID');
         $this->db->select('UserName');
         $this->db->select('ProfileImage');
+        $this->db->select('MotivationNameShort');
+        $this->db->select('MotivationStyle');
         $this->db->select('StatusNameShort');
         $this->db->select('StatusStyle');
         $this->db->select('FutureNameShort');
@@ -764,6 +824,7 @@ class Collection extends CI_Model
         $this->db->from('games');
         $this->db->join('collections', 'games.GameID = collections.GameID');
         $this->db->join('users', 'collections.UserID = users.UserID');
+        $this->db->join('gameMotivations', 'gameMotivations.MotivationID = collections.MotivationID');        
         $this->db->join('gameStatuses', 'gameStatuses.StatusID = collections.StatusID');
         $this->db->join('gameFutures', 'gameFutures.FutureID = collections.FutureID');
         $this->db->join('gameValues', 'gameValues.ValueID = collections.ValueID');

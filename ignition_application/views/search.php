@@ -52,6 +52,18 @@
                                                         </ul>
                                                     </div> 
                                                     <span id="inCollectionControls<?php echo $game->id ?>" class="<?php if($game->listID == 0) echo "hidden" ?>">
+                                                        <div id="motivationButtonGroup<?php echo $game->id ?>" class="btn-group">
+                                                            <button id='motivationButton<?php echo $game->id ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->motivationStyle ?> dropdown-toggle'><?php echo $game->motivationLabel  ?> <span class='caret'></span></button>
+                                                            <ul id="motivationDropdown1" class='dropdown-menu <?php if($game->listID != 1) echo "hidden" ?>'>
+                                                                    <li><a onclick="javascript:changeMotivation(<?php echo $game->id ?>, 1);">Action</a></li>
+                                                                    <li><a onclick="javascript:changeMotivation(<?php echo $game->id ?>, 2);">Social</a></li>
+                                                                    <li><a onclick="javascript:changeMotivation(<?php echo $game->id ?>, 3);">Mastery</a></li>
+                                                                    <li><a onclick="javascript:changeMotivation(<?php echo $game->id ?>, 4);">Achievement</a></li>
+                                                                    <li><a onclick="javascript:changeMotivation(<?php echo $game->id ?>, 5);">Immersion</a></li>
+                                                                    <li><a onclick="javascript:changeMotivation(<?php echo $game->id ?>, 6);">Creativity</a></li>
+                                                                    <li><a onclick="javascript:changeMotivation(<?php echo $game->id ?>, 7);">Academic</a></li>
+                                                            </ul>
+                                                        </div> 
                                                         <div id="statusButtonGroup<?php echo $game->id ?>" class="btn-group">
                                                             <button id='statusButton<?php echo $game->id ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->statusStyle ?> dropdown-toggle'><?php echo $game->statusLabel  ?> <span class='caret'></span></button>
                                                             <ul id="statusDropdown1" class='dropdown-menu <?php if($game->listID != 1) echo "hidden" ?>'>
@@ -79,7 +91,7 @@
                                                         <div id="futureButtonGroup<?php echo $game->id ?>" class="btn-group">
                                                             <button id='futureButton<?php echo $game->id ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->futureStyle ?> dropdown-toggle'><?php echo $game->futureLabel  ?> <span class='caret'></span></button>
                                                             <ul id="futureDropdown1" class='dropdown-menu <?php if($game->listID != 1) echo "hidden" ?>'>
-                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 1);">Unlikely</a></li>
+                                                                    <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 1);setValue(<?php echo $game->id ?>, <?php echo $game->statusID ?>, 1);">Unlikely</a></li>
                                                                     <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 2);">Maybe Someday</a></li>
                                                                     <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 3);">Will make time</a></li>
                                                                     <li><a onclick="javascript:changeFuture(<?php echo $game->id ?>, 4);">Currently playing</a></li>

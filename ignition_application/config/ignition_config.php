@@ -4,7 +4,7 @@
 	Website name 
 	Example: Ignition
 */
-$config['website_name'] = 'http://192.168.0.19:8888';
+$config['website_name'] = 'http://0.0.0.0:8888';
 
 /* 
 	Password reset email address 

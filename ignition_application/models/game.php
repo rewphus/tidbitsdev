@@ -27,17 +27,22 @@ class Game extends CI_Model
     var $listLabel = "Add to Collection";
     var $listStyle = "default";
 
+    // motivation button
+    var $motivationID = 0;
+    var $motivationLabel = "Set Status";
+    var $motivationStyle = "default";
+
     // status button
     var $statusID = 0;
     var $statusLabel = "Set Status";
     var $statusStyle = "default";
 
-        // status button
+        // future button
     var $futureID = 0;
     var $futureLabel = "Set Future";
     var $futureStyle = "default";
 
-        // status button
+        // value button
     var $ValueID = 0;
     var $valueLabel = "Set Value";
     var $valueStyle = "default";
@@ -96,7 +101,7 @@ class Game extends CI_Model
     {
         // get game from db
         $this->db->select('games.GameID, games.GBID, games.GBLink, games.Name, games.Image, games.ImageSmall, games.Deck, lists.ListID, lists.ListName, lists.ListStyle');
-        $this->db->select('gameStatuses.StatusID, gameStatuses.StatusName, gameStatuses.StatusStyle, gameFutures.FutureID, gameFutures.FutureName, gameFutures.FutureStyle, gameValues.ValueID, gameValues.ValueName, gameValues.ValueStyle, collections.CurrentlyPlaying, collections.DateComplete, collections.HoursPlayed');
+        $this->db->select('gameMotivations.MotivationID, gameMotivations.MotivationName, gameMotivations.MotivationStyle, gameStatuses.StatusID, gameStatuses.StatusName, gameStatuses.StatusStyle, gameFutures.FutureID, gameFutures.FutureName, gameFutures.FutureStyle, gameValues.ValueID, gameValues.ValueName, gameValues.ValueStyle, collections.CurrentlyPlaying, collections.DateComplete, collections.HoursPlayed');
         $this->db->from('games');
 
         if ($userID == null) {
@@ -105,6 +110,7 @@ class Game extends CI_Model
 
         $this->db->join('collections', 'collections.GameID = games.GameID AND collections.UserID = ' . $userID, 'left');
         $this->db->join('lists', 'collections.ListID = lists.ListID', 'left');
+        $this->db->join('gameMotivations', 'collections.MotivationID = gameMotivations.MotivationID', 'left');
         $this->db->join('gameStatuses', 'collections.StatusID = gameStatuses.StatusID', 'left');
         $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID', 'left');
         $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID', 'left');
@@ -130,6 +136,11 @@ class Game extends CI_Model
                 $this->listID = $result->ListID;
                 $this->listLabel = $result->ListName;
                 $this->listStyle = $result->ListStyle;
+
+                // motivation button
+                $this->motivationID = $result->MotivationID;
+                $this->motivationLabel = $result->MotivationName;
+                $this->motivationStyle = $result->MotivationStyle;
 
                 // status button
                 $this->statusID = $result->StatusID;
@@ -993,6 +1004,11 @@ class Game extends CI_Model
         $this->listID = 0;
         $this->listLabel = "Add to Collection";
         $this->listStyle = "default";
+
+        // motivation button
+        $this->motivationID = 0;
+        $this->motivationLabel = "Set Motivation";
+        $this->motivationStyle = "default";        
 
         // status button
         $this->statusID = 0;

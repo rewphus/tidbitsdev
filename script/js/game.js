@@ -131,6 +131,7 @@ $(document).ready(function() {
 
 /* add/update game status in collection */
 function addGame(giantbombID, listID, reloadPage) {
+    var MotivationID = 99;
     var StatusID = 0;
     var FutureID = 0;
     var ValueID = 0;
@@ -191,6 +192,31 @@ function addGame(giantbombID, listID, reloadPage) {
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             showErrorModal('addGame' + console.log(XMLHttpRequest.responseText));
+        }
+    });
+}
+
+/* update game played motivation */
+function changeMotivation(giantbombID, motivationID) {
+    $('#motivationButton' + giantbombID).addClass('disabled').html('Saving...');
+    $.ajax({
+        type: 'POST',
+        url: '/games/changeMotivation',
+        dataType: 'json',
+        data: {
+            GBID: giantbombID,
+            motivationID: motivationID
+        },
+        success: function(data) {
+            console.log("changeMotivation: " + JSON.parse(JSON.stringify(data)));
+            if (data.error === true) {
+                showErrorModal(data.errorMessage);
+            } else {
+                $('#motivationButton' + giantbombID).html(data.motivationName + ' <span class="caret"></span>').removeClass().addClass("btn btn-" + data.motivationStyle + " dropdown-toggle");
+            }
+        },
+        error: function(XMLHttpRequest, textMotivation, errorThrown) {
+            showErrorModal('changeMotivation' + console.log(XMLHttpRequest.responseText));
         }
     });
 }

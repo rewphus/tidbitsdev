@@ -59,12 +59,14 @@ class Games extends CI_Controller {
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
         $this->form_validation->set_rules('listID', 'listID', 'trim|xss_clean');
+        $this->form_validation->set_rules('motivationID', 'motivationID', 'trim|xss_clean');
         $this->form_validation->set_rules('statusID', 'statusID', 'trim|xss_clean');
         $this->form_validation->set_rules('futureID', 'futureID', 'trim|xss_clean');
         $this->form_validation->set_rules('valueID', 'valueID', 'trim|xss_clean');
 
 		$GBID = $this->input->post('GBID');
         $listID = $this->input->post('listID');
+        $motivationID = $this->input->post('motivationID');
         $statusID = $this->input->post('statusID');
         $futureID = $this->input->post('futureID');
         $valueID = $this->input->post('valueID');
@@ -219,6 +221,54 @@ class Games extends CI_Controller {
         // return success
         $result['error'] = false;   
 	}
+
+    // change played motivation of game
+    function changeMotivation()
+    {
+        // form validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('GBID', 'GBID', 'trim|xss_clean');
+        $this->form_validation->set_rules('motivationID', 'motivationID', 'trim|xss_clean');
+
+        $GBID = $this->input->post('GBID');
+        $motivationID = $this->input->post('motivationID');
+        $userID = $this->session->userdata('UserID');
+
+        // check that user is logged in
+        if($userID <= 0)
+        {
+            $this->returnError($this->lang->line('error_logged_out'),"/login","Login");
+            return;
+        }
+
+        // check if game is in collection
+        $this->load->model('Collection');
+        $collection = $this->Collection->isGameIsInCollection($GBID, $userID);
+       
+        // if game is in collection
+        if($collection != null) 
+        {
+            // update played motivation
+            $this->Collection->updateMotivation($GBID, $userID, $motivationID);
+        } else {
+            // return error
+            $this->returnError($this->lang->line('error_game_not_added'), false, false);
+            return;
+        }
+
+        // record event
+        $this->load->model('Event');
+        $this->Event->addEvent($userID, $collection->GameID, null, $motivationID, null);
+
+        // get motivation name and style
+        $motivationData = $this->Collection->getMotivationDetails($motivationID);
+        $result['motivationName'] = $motivationData->MotivationName;
+        $result['motivationStyle'] = $motivationData->MotivationStyle;
+
+        // return success
+        $result['error'] = false;   
+        echo json_encode($result);
+    }
 
     // change played status of game
     function changeStatus()
