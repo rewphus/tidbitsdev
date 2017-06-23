@@ -33,23 +33,16 @@ class Search extends CI_Controller {
 			$user = $this->User->getUserByIdWithFollowingStatus($this->session->userdata('UserID'), $this->session->userdata('UserID'));
 
 			// page variables
-			$dataUser = $this->Page->create($user->Username, "User");
-			$dataUser['user'] = $user;
-			$dataCollection = $this->Page->create($user->Username, "Collection");
-			$dataCollection['user'] = $user;
-			$dataPlatforms = $this->Page->create($user->Username, "Platforms");
-			$dataPlatforms['user'] = $user;
-			$dataConcepts = $this->Page->create($user->Username, "Concepts");
-			$dataConcepts['user'] = $user;
+			$data['user'] = $user;
 
 			// get users collections by platform
 			$this->load->model('Collection');
-			$dataGetPlatforms['platforms'] = $this->Collection->getCollectionByMeta($this->session->userdata('UserID'), 'platform');
+			$data['platforms'] = $this->Collection->getCollectionByMeta($this->session->userdata('UserID'), 'platform');
 
 			if($user == null)
 				show_404();
 			
-				$this->load->view('templates/profilebar', $dataUser);
+				$this->load->view('templates/profilebar', $data);
 		}
 
 				$this->load->view('templates/footer', $data);
