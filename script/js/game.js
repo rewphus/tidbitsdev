@@ -166,7 +166,7 @@ function addGame(giantbombID, listID, reloadPage) {
                 showErrorModal(data.errorMessage);
             } else {
                 if (reloadPage) {
-                    location.reload();
+                    location.reload(); //need to make this not require reload
                 } else {
                     // update list button label/colour
                     $('#gameButton' + giantbombID).html(data.listName + ' <span class="caret"></span>').removeClass().addClass("btn btn-" + data.listStyle + " dropdown-toggle");
@@ -208,10 +208,11 @@ function changeMotivation(giantbombID, motivationID) {
             motivationID: motivationID
         },
         success: function(data) {
-            console.log("changeMotivation: " + JSON.parse(JSON.stringify(data)));
             if (data.error === true) {
+                console.log("changeMotivation: " + JSON.parse(JSON.stringify(data)));
                 showErrorModal(data.errorMessage);
             } else {
+                location.reload(); //need to make this not require reload
                 $('#motivationButton' + giantbombID).html(data.motivationName + ' <span class="caret"></span>').removeClass().addClass("btn btn-" + data.motivationStyle + " dropdown-toggle");
             }
         },
@@ -237,6 +238,7 @@ function changeStatus(giantbombID, statusID) {
             if (data.error === true) {
                 showErrorModal(data.errorMessage);
             } else {
+                location.reload(); //need to make this not require reload
                 $('#statusButton' + giantbombID).html(data.statusName + ' <span class="caret"></span>').removeClass().addClass("btn btn-" + data.statusStyle + " dropdown-toggle");
             }
         },

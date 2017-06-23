@@ -1,12 +1,12 @@
 $grey: #898f9c;
-
 body {
-	padding-top: 70px;
+    padding-top: 70px;
 }
 
 .footer {
     padding-bottom: 20px;
 }
+
 
 /*
 * blog
@@ -35,6 +35,7 @@ body {
     border: 1px solid #FFFFFF;
     box-shadow: 0 1px 3px #000000, 0 0 0 1px #FFFFFF;
 }
+
 
 /*
 * comments
@@ -68,9 +69,11 @@ body {
     font-size: 12px;
 }
 
-.eventComment, .eventComment img {
+.eventComment,
+.eventComment img {
     width: 100%;
 }
+
 
 /*
 * profile
@@ -85,13 +88,18 @@ body {
 }
 
 .largeProfileImage {
-    width: 100%;    
+    width: 100%;
+}
+
+.smallProfileImage {
+    width: 25%;
 }
 
 .userBio {
     margin: 10px 0;
     text-align: center;
 }
+
 
 /*
 * admin 
@@ -101,11 +109,11 @@ body {
     height: 500px;
 }
 
-#blogViewAllButton, #blogPostImage {
+#blogViewAllButton,
+#blogPostImage {
     width: 100%;
 }
 
 #blogPostImageUpload {
     margin-top: 10px;
 }
-

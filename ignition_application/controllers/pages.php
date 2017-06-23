@@ -12,6 +12,7 @@
 
 require_once APPPATH.'/controllers/ignition/pages.php';
 
-class Pages extends IG_Pages {
-	
+class Pages extends IG_Pages
+{
+
 }

@@ -86,5 +86,9 @@ $route['cron/update'] = 'cron/update';
 
 $route['404_override'] = 'pages/view/404';
 
+$route['news/(:any)'] = 'news/view/$1';
+$route['news'] = 'news';
+$route['news/create'] = 'news/create';
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

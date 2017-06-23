@@ -2,3 +2,121 @@
     font-size: 2em;
     vertical-align: middle;
 }
+
+.dropdown-divider {
+    height: 1px;
+    margin: .5rem 0;
+    overflow: hidden;
+    background-color: #eceeef;
+}
+
+[id^=gameButton] {
+    padding-left: 25px;
+}
+
+[id^=gameButton].btn-success:before {
+    content: "\f11b";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+    /*--adjust as necessary--*/
+    color: white;
+    font-size: 26px;
+    padding-right: 0.5em;
+    display: block
+}
+
+[id^=gameButton].btn-primary:before {
+    content: "\f06e";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+    /*--adjust as necessary--*/
+    color: white;
+    font-size: 26px;
+    padding-right: 0.5em;
+    display: block;
+}
+
+[id^=motivationButton] {
+    &.btn-action:before,
+    &.btn-social:before,
+    &.btn-mastery:before,
+    &.btn-achievement:before,
+    &.btn-immersion:before,
+    &.btn-creativity:before,
+    &.btn-academic:before {
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: inherit;
+        /*--adjust as necessary--*/
+        color: black;
+        font-size: 26px;
+        // padding-right: 0.5em;
+        display: block;
+    }
+}
+
+[id^=statusButton] {
+    &.btn-default:before,
+    &.btn-warning:before,
+    &.btn-primary:before,
+    &.btn-info:before,
+    &.btn-success:before {
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: inherit;
+        /*--adjust as necessary--*/
+        color: black;
+        font-size: 26px;
+        // padding-right: 0.5em;
+        display: block;
+    }
+}
+
+[id^=motivationButton] {
+    &.btn-action:before {
+        content: "\f1e2";
+    }
+    &.btn-social:before {
+        content: "\f086";
+    }
+    &.btn-mastery:before,
+    {
+        content: "\f12e";
+    }
+    &.btn-achievement:before {
+        content: "\f091";
+    }
+    &.btn-immersion:before {
+        content: "\f0ac";
+    }
+    &.btn-creativity:before {
+        content: "\f0ad";
+    }
+    &.btn-academic:before {
+        content: "\f19d";
+    }
+}
+
+[id^=statusButton] {
+    &.btn-default:before {
+        content: "\f244";
+    }
+    &.btn-warning:before {
+        content: "\f243";
+    }
+    &.btn-primary:before {
+        content: "\f242";
+    }
+    &.btn-info:before {
+        content: "\f241";
+    }
+    &.btn-success:before {
+        content: "\f240";
+    }
+}
