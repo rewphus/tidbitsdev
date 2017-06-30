@@ -38,6 +38,7 @@ class Search extends CI_Controller {
 			// get users collections by platform
 			$this->load->model('Collection');
 			$data['platforms'] = $this->Collection->getCollectionByMeta($this->session->userdata('UserID'), 'platform');
+			$data['concepts'] = $this->Collection->getCollectionByMeta($this->session->userdata('UserID'), 'concept');
 
 			if($user == null)
 				show_404();
@@ -47,5 +48,7 @@ class Search extends CI_Controller {
 
 				$this->load->view('templates/footer', $data);
 	}
+
+	
 }
 ?>

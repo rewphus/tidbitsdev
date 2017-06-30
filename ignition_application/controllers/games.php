@@ -124,12 +124,8 @@ class Games extends CI_Controller {
             // get genres for game
             if($this->Game->getGenres($userID))
             {
-                // if game has one genre
-                if($this->Game->genres != null && count($this->Game->genres) == 1)
-                {
-                    // // add game to genre in collection
-
-                }
+                //add genre to collection
+                $this->Collection->addMeta($collectionID, 'concept', $this->Game->concepts[0]->GBID);
             }
 
                         // get developers for game

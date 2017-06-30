@@ -607,6 +607,8 @@ class Collection extends CI_Model
         $metaID = ucfirst($meta)."ID";
 
         $this->db->select('collection'.ucfirst($meta).".".$metaID);
+        //order by timestamp
+        $this->db->select_max('collection'.ucfirst($meta).".lastUpdated","ts");
         $this->db->select($metas.'.Name,');
         $this->db->select($metas.'.Image,');
         // collection: everything not on the want list
@@ -635,7 +637,8 @@ class Collection extends CI_Model
         $this->db->where('collections.UserID', $userID);
 
         $this->db->group_by('collection'.ucfirst($meta).'.'.$metaID);
-        $this->db->order_by("Percentage", "desc");
+        //order by timestamp
+        $this->db->order_by('ts', 'desc');
 
         // get results
         $query = $this->db->get();
