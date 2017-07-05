@@ -46,11 +46,16 @@ class Collection extends CI_Model
             $game->dateComplete = $collection->DateComplete;
             $game->hoursPlayed = $collection->HoursPlayed;
 
-            // get platforms user has game in collection
+            // get meta user has game in collection
             $platforms = $this->getGamesMetaInCollection($game->id, $userID, 'platform');
-
-            // get concepts user has game in collection
             $concepts = $this->getGamesMetaInCollection($game->id, $userID, 'concept');
+            $characters = $this->getGamesMetaInCollection($game->id, $userID, 'character');
+            $developers = $this->getGamesMetaInCollection($game->id, $userID, 'developer');
+            $franchises = $this->getGamesMetaInCollection($game->id, $userID, 'franchise');
+            $genres = $this->getGamesMetaInCollection($game->id, $userID, 'genre');
+            $locations = $this->getGamesMetaInCollection($game->id, $userID, 'location');
+            $publishers = $this->getGamesMetaInCollection($game->id, $userID, 'publisher');
+            $themes = $this->getGamesMetaInCollection($game->id, $userID, 'theme');
 
         // not in collection
         } else {
@@ -84,10 +89,16 @@ class Collection extends CI_Model
             $game->dateComplete = null;
             $game->hoursPlayed = null;
 
-            // get platforms user has game in collection
+            // get meta user has game in collection
             $platforms = null;
-            // get concepts user has game in collection
             $concepts = null;
+            $characters = null;
+            $developers = null;
+            $franchises = null;
+            $genres = null;
+            $locations = null;
+            $publishers = null;
+            $themes = null;
         }
 
         // add platforms user has game on in collection (if any)
@@ -109,8 +120,15 @@ class Collection extends CI_Model
             }
         }
 
-        // $this->doesMetaExist($game, 'platform', $userID);
-         $this->doesMetaExist($game, 'concept', $userID);
+        //I don't know why this is commented out?
+        //$this->doesMetaExist($game, 'platform', $userID);
+        $this->doesMetaExist($game, 'concept', $userID);
+        $this->doesMetaExist($game, 'character', $userID);
+        $this->doesMetaExist($game, 'developer', $userID);
+        $this->doesMetaExist($game, 'franchise', $userID);
+        $this->doesMetaExist($game, 'genre', $userID);
+        $this->doesMetaExist($game, 'location', $userID);
+        $this->doesMetaExist($game, 'theme', $userID);
 
         return $game;
     }
@@ -290,6 +308,13 @@ class Collection extends CI_Model
             $this->db->where('CollectionID', $row->ID);
             $this->db->delete('collectionPlatform');
             $this->db->delete('collectionConcept');
+            $this->db->delete('collectionCharacter');
+            $this->db->delete('collectionDeveloper');
+            $this->db->delete('collectionFranchise');
+            $this->db->delete('collectionGenre');
+            $this->db->delete('collectionLocation');
+            $this->db->delete('collectionPublisher');
+            $this->db->delete('collectionTheme');
 
             // delete userEvents records
             $this->db->where('GameID', $row->GameID);
@@ -303,7 +328,7 @@ class Collection extends CI_Model
     {
         $metaID = ucfirst($meta) . 'ID';
 
-        // get PlatformID from GBID
+        // get metaID from GBID
         $query = $this->db->get_where($meta . 's', array('GBID' => $metaGBID));
         if ($query->num_rows() == 1) {
             $row = $query->first_row();
@@ -503,7 +528,7 @@ class Collection extends CI_Model
             $this->db->join('gameFutures', 'collections.FutureID = gameFutures.FutureID');
             $this->db->join('gameValues', 'collections.ValueID = gameValues.ValueID');
             $this->db->join('collectionPlatform', 'collections.ID = collectionPlatform.CollectionID', 'left');
-            $this->db->join('collectionConcept', 'collections.ID = collectionConcept.CollectionID', 'left');
+            // $this->db->join('collectionConcept', 'collections.ID = collectionConcept.CollectionID', 'left');
             $this->db->join('games', 'collections.GameID = games.GameID');
             $this->db->where('collections.UserID', $userID);
         
@@ -577,7 +602,7 @@ class Collection extends CI_Model
                 $game->Platforms = $this->getGamesMetaInCollection($game->GBID, $userID, 'platform');
             }
 
-                        // add concepts to games
+            // add concepts to games
             foreach ($games as $game) {
                 $game->Concepts = $this->getGamesMetaInCollection($game->GBID, $userID, 'concept');
             }

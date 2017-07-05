@@ -116,6 +116,20 @@ function loadCollection() {
                             }
                         }
 
+                        // display list of characters
+                        var characters = collection[i].Characters;
+                        if (characters != null) {
+                            gameCollection += " on ";
+                            for (x = 0; x < characters.length; x++) {
+                                gameCollection += characters[x].Name;
+                                if (x == characters.length - 2) {
+                                    gameCollection += " and ";
+                                } else if (x < characters.length - 1) {
+                                    gameCollection += ", ";
+                                }
+                            }
+                        }
+
                         gameCollection += '         <div>';
                         gameCollection += '             <span class="label label-' + collection[i].ListStyle + '">' + collection[i].ListName + '</span>';
                         gameCollection += '             <span class="label label-' + collection[i].StatusStyle + '">' + collection[i].StatusName + '</span>';

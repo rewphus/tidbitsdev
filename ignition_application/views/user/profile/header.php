@@ -13,6 +13,13 @@
 			<li id="navCollection"><a href="/user/<?php echo $user->UserID ?>/collection">Collection</a></li>
 			<li id="navPlatforms"><a href="/user/<?php echo $user->UserID ?>/platforms">Platforms</a></li>
 			<li id="navConcepts"><a href="/user/<?php echo $user->UserID ?>/concepts">Concepts</a></li>
+			<li id="navCharacters"><a href="/user/<?php echo $user->UserID ?>/characters">Characters</a></li>
+			<li id="navDevelopers"><a href="/user/<?php echo $user->UserID ?>/developers">Developers</a></li>
+			<li id="navFranchises"><a href="/user/<?php echo $user->UserID ?>/franchises">Franchises</a></li>
+			<li id="navGenres"><a href="/user/<?php echo $user->UserID ?>/genres">Genres</a></li>
+			<li id="navLocations"><a href="/user/<?php echo $user->UserID ?>/locations">Locations</a></li>
+			<li id="navPublishers"><a href="/user/<?php echo $user->UserID ?>/publishers">Publishers</a></li>
+			<li id="navThemes"><a href="/user/<?php echo $user->UserID ?>/themes">Themes</a></li>
 			<?php 
 				// if logged in and this user
 				if($sessionUserID != null && $sessionUserID == $user->UserID) 

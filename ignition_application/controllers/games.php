@@ -121,82 +121,77 @@ class Games extends CI_Controller {
                 }
             }
 
-            // get genres for game
-            if($this->Game->getGenres($userID))
+            // get concepts for game
+            if($this->Game->getConcepts($userID))
             {
-                //add genre to collection
-                $this->Collection->addMeta($collectionID, 'concept', $this->Game->concepts[0]->GBID);
+                foreach($this->Game->concepts as $concept)
+				{
+                    //add concepts to collection
+                    $this->Collection->addMeta($collectionID, 'concept', $concept->GBID);
+                }
             }
 
-                        // get developers for game
+            // get developers for game
             if($this->Game->getDevelopers($userID))
             {
-                // if game has one developer
-                if($this->Game->developers != null && count($this->Game->developers) == 1)
-                {
-                    // // add game to developer in collection
-
+                foreach($this->Game->developers as $developer)
+				{
+                    //add developers to collection
+                    $this->Collection->addMeta($collectionID, 'developer', $developer->GBID);
                 }
             }
 
             // get publishers for game
             if($this->Game->getPublishers($userID))
             {
-                // if game has one publisher
-                if($this->Game->publishers != null && count($this->Game->publishers) == 1)
-                {
+                foreach($this->Game->publishers as $publisher)
+				{
                     // // add game to publisher in collection
-
+                    $this->Collection->addMeta($collectionID, 'publisher', $publisher->GBID);
                 }
-            }            
+            } 
+
             // get themes for game
             if($this->Game->getThemes($userID))
             {
-                // if game has one theme
-                if($this->Game->themes != null && count($this->Game->themes) == 1)
-                {
+                foreach($this->Game->themes as $theme)
+				{
                     // // add game to theme in collection
-
+                    $this->Collection->addMeta($collectionID, 'theme', $theme->GBID);
                 }
+
             } 
+
             // get franchises for game
             if($this->Game->getFranchises($userID))
             {
-                // if game has one franchise
-                if($this->Game->franchises != null && count($this->Game->franchises) == 1)
-                {
-                    // // add game to franchise in collection
-
+                foreach($this->Game->franchises as $franchise)
+				{
+                    $this->Collection->addMeta($collectionID, 'franchise', $franchise->GBID);
                 }
             } 
-                        // get concepts for game
-            if($this->Game->getConcepts($userID))
+            // get genres for game
+            if($this->Game->getGenres($userID))
             {
-                // if game has one concept
-                if($this->Game->concepts != null && count($this->Game->concepts) == 1)
-                {
-                    // // add game to concept in collection
-
+                foreach($this->Game->genres as $genre)
+				{
+                    $this->Collection->addMeta($collectionID, 'genre', $genre->GBID);
                 }
             }   
                         // get locations for game
             if($this->Game->getLocations($userID))
             {
-                // if game has one location
-                if($this->Game->locations != null && count($this->Game->locations) == 1)
-                {
-                    // // add game to location in collection
-
+                foreach($this->Game->locations as $location)
+				{
+                    $this->Collection->addMeta($collectionID, 'location', $location->GBID);
                 }
             }   
                         // get characters for game
             if($this->Game->getCharacters($userID))
             {
-                // if game has one character
-                if($this->Game->characters != null && count($this->Game->characters) == 1)
-                {
-                    // // add game to character in collection
-
+                foreach($this->Game->characters as $character)
+				{
+                    $this->Collection->addMeta($collectionID, 'character', $character->GBID);
                 }
             }                         
             // record event
@@ -1410,10 +1405,10 @@ class Games extends CI_Controller {
             $this->load->model('Character');
 
             // if character isnt in db
-            if(!$this->Character->isCharacterInDB($GBCharacterID))
+            if(!$this->Character->isCharacterInDB($GBID))
             {
                 // get character data 
-                $character = $this->Character->getCharacter($GBCharacterID);
+                $character = $this->Character->getCharacters($GBID, $userID);
 
                 // if API returned nothing
                 if($character == null)

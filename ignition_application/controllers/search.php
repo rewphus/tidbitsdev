@@ -35,10 +35,17 @@ class Search extends CI_Controller {
 			// page variables
 			$data['user'] = $user;
 
-			// get users collections by platform
+			// get users collections by meta
 			$this->load->model('Collection');
 			$data['platforms'] = $this->Collection->getCollectionByMeta($this->session->userdata('UserID'), 'platform');
 			$data['concepts'] = $this->Collection->getCollectionByMeta($this->session->userdata('UserID'), 'concept');
+			$data['characters'] = $this->Collection->getCollectionByMeta($this->session->userdata('UserID'), 'character');
+			$data['developers'] = $this->Collection->getCollectionByMeta($this->session->userdata('UserID'), 'developer');
+			$data['franchises'] = $this->Collection->getCollectionByMeta($this->session->userdata('UserID'), 'franchise');
+			$data['genres'] = $this->Collection->getCollectionByMeta($this->session->userdata('UserID'), 'genre');
+			$data['locations'] = $this->Collection->getCollectionByMeta($this->session->userdata('UserID'), 'location');
+			$data['publisher'] = $this->Collection->getCollectionByMeta($this->session->userdata('UserID'), 'publisher');
+			$data['themes'] = $this->Collection->getCollectionByMeta($this->session->userdata('UserID'), 'theme');
 
 			if($user == null)
 				show_404();

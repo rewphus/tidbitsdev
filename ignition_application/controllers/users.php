@@ -146,6 +146,209 @@ class Users extends IG_Users {
         $this->load->view('templates/footer', $data);
     }
 
+    // view user collection by characters
+    function characters($userID)
+    {   
+        // get user data
+        $this->load->model('User');
+        $user = $this->User->getUserByIdWithFollowingStatus($userID, $this->session->userdata('UserID'));
+
+        if($user == null)
+            show_404();
+
+        // page variables
+        $this->load->model('Page');
+        $data = $this->Page->create($user->Username, "Characters");
+        $data['user'] = $user;
+
+        // get users collections by character
+        $this->load->model('Collection');
+        $data['characters'] = $this->Collection->getCollectionByMeta($userID, 'character');
+
+        // get games currently playing
+        $data['currentlyPlaying'] = $this->Collection->getCurrentlyPlaying($userID);
+
+        // load views
+        $this->load->view('templates/header', $data);
+        $this->load->view('user/profile/header', $data);
+        $this->load->view('user/characters', $data);
+        $this->load->view('templates/footer', $data);
+    }
+
+        // view user collection by developers
+    function developers($userID)
+    {   
+        // get user data
+        $this->load->model('User');
+        $user = $this->User->getUserByIdWithFollowingStatus($userID, $this->session->userdata('UserID'));
+
+        if($user == null)
+            show_404();
+
+        // page variables
+        $this->load->model('Page');
+        $data = $this->Page->create($user->Username, "Developers");
+        $data['user'] = $user;
+
+        // get users collections by character
+        $this->load->model('Collection');
+        $data['developers'] = $this->Collection->getCollectionByMeta($userID, 'developer');
+
+        // get games currently playing
+        $data['currentlyPlaying'] = $this->Collection->getCurrentlyPlaying($userID);
+
+        // load views
+        $this->load->view('templates/header', $data);
+        $this->load->view('user/profile/header', $data);
+        $this->load->view('user/developers', $data);
+        $this->load->view('templates/footer', $data);
+    }
+
+        // view user collection by franchises
+    function franchises($userID)
+    {   
+        // get user data
+        $this->load->model('User');
+        $user = $this->User->getUserByIdWithFollowingStatus($userID, $this->session->userdata('UserID'));
+
+        if($user == null)
+            show_404();
+
+        // page variables
+        $this->load->model('Page');
+        $data = $this->Page->create($user->Username, "franchise");
+        $data['user'] = $user;
+
+        // get users collections by franchise
+        $this->load->model('Collection');
+        $data['franchises'] = $this->Collection->getCollectionByMeta($userID, 'franchise');
+
+        // get games currently playing
+        $data['currentlyPlaying'] = $this->Collection->getCurrentlyPlaying($userID);
+
+        // load views
+        $this->load->view('templates/header', $data);
+        $this->load->view('user/profile/header', $data);
+        $this->load->view('user/franchises', $data);
+        $this->load->view('templates/footer', $data);
+    }
+
+        // view user collection by genres
+    function genres($userID)
+    {   
+        // get user data
+        $this->load->model('User');
+        $user = $this->User->getUserByIdWithFollowingStatus($userID, $this->session->userdata('UserID'));
+
+        if($user == null)
+            show_404();
+
+        // page variables
+        $this->load->model('Page');
+        $data = $this->Page->create($user->Username, "Genres");
+        $data['user'] = $user;
+
+        // get users collections by genre
+        $this->load->model('Collection');
+        $data['genres'] = $this->Collection->getCollectionByMeta($userID, 'genre');
+
+        // get games currently playing
+        $data['currentlyPlaying'] = $this->Collection->getCurrentlyPlaying($userID);
+
+        // load views
+        $this->load->view('templates/header', $data);
+        $this->load->view('user/profile/header', $data);
+        $this->load->view('user/genres', $data);
+        $this->load->view('templates/footer', $data);
+    }
+
+        // view user collection by locations
+    function locations($userID)
+    {   
+        // get user data
+        $this->load->model('User');
+        $user = $this->User->getUserByIdWithFollowingStatus($userID, $this->session->userdata('UserID'));
+
+        if($user == null)
+            show_404();
+
+        // page variables
+        $this->load->model('Page');
+        $data = $this->Page->create($user->Username, "Locations");
+        $data['user'] = $user;
+
+        // get users collections by location
+        $this->load->model('Collection');
+        $data['locations'] = $this->Collection->getCollectionByMeta($userID, 'location');
+
+        // get games currently playing
+        $data['currentlyPlaying'] = $this->Collection->getCurrentlyPlaying($userID);
+
+        // load views
+        $this->load->view('templates/header', $data);
+        $this->load->view('user/profile/header', $data);
+        $this->load->view('user/locations', $data);
+        $this->load->view('templates/footer', $data);
+    }
+
+        // view user collection by publishers
+    function publishers($userID)
+    {   
+        // get user data
+        $this->load->model('User');
+        $user = $this->User->getUserByIdWithFollowingStatus($userID, $this->session->userdata('UserID'));
+
+        if($user == null)
+            show_404();
+
+        // page variables
+        $this->load->model('Page');
+        $data = $this->Page->create($user->Username, "Publishers");
+        $data['user'] = $user;
+
+        // get users collections by publisher
+        $this->load->model('Collection');
+        $data['publishers'] = $this->Collection->getCollectionByMeta($userID, 'publisher');
+
+        // get games currently playing
+        $data['currentlyPlaying'] = $this->Collection->getCurrentlyPlaying($userID);
+
+        // load views
+        $this->load->view('templates/header', $data);
+        $this->load->view('user/profile/header', $data);
+        $this->load->view('user/publishers', $data);
+        $this->load->view('templates/footer', $data);
+    }
+
+        // view user collection by themes
+    function themes($userID)
+    {   
+        // get user data
+        $this->load->model('User');
+        $user = $this->User->getUserByIdWithFollowingStatus($userID, $this->session->userdata('UserID'));
+
+        if($user == null)
+            show_404();
+
+        // page variables
+        $this->load->model('Page');
+        $data = $this->Page->create($user->Username, "Themes");
+        $data['user'] = $user;
+
+        // get users collections by theme
+        $this->load->model('Collection');
+        $data['themes'] = $this->Collection->getCollectionByMeta($userID, 'theme');
+
+        // get games currently playing
+        $data['currentlyPlaying'] = $this->Collection->getCurrentlyPlaying($userID);
+
+        // load views
+        $this->load->view('templates/header', $data);
+        $this->load->view('user/profile/header', $data);
+        $this->load->view('user/themes', $data);
+        $this->load->view('templates/footer', $data);
+    }
+
     function getCollection()
     {
         // form validation

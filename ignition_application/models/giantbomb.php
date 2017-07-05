@@ -42,6 +42,45 @@ class GiantBomb extends CI_Model {
         }
     }
 
+        // get character from Giant Bomb API
+    public function getCharacter($GBID) 
+    {   
+                                              echo '<script>
+      var x;
+      x = "GBID Char: ' . $GBID . '"
+      console.log(x)</script>'; 
+        
+        // build API request
+        $url = $this->config->item('gb_api_root') . "/character/" . $GBID . "?api_key=" . $this->config->item('gb_api_key') . "&format=json";
+        
+        // make API request
+        $result = $this->Utility->getData($url, "Character");
+        
+        if(is_object($result))
+        {
+            return $result;
+        } else {
+            return null;
+        }
+    }
+    
+    // get characters from Giant Bomb API (returns 100 characters at a time, paged with an offset)
+    public function getCharacters($offset) 
+    {   
+        // build API request
+        $url = $this->config->item('gb_api_root') . "/characters/?api_key=" . $this->config->item('gb_api_key') . "&format=json&offset=" . $offset;
+        
+        // make API request
+        $result = $this->Utility->getData($url, "Characters");
+        
+        if(is_object($result))
+        {
+            return $result;
+        } else {
+            return null;
+        }
+    }
+
     // search Giant Bomb API for games  
     function searchForGame($query, $page, $resultsPerPage, $userID) 
     {  

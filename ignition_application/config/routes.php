@@ -60,6 +60,7 @@ $route['search/(:any)'] = 'search/index/$1';
 $route['search/(:any)/(:any)'] = 'search/index/$1/$2';
 
 $route['game/(:any)'] = 'games/view/$1';
+$route['character/(:any)'] = 'characters/view/$1';
 
 $route['user/settings'] = 'users/settings';
 $route['user/settings/image'] = 'users/image';
@@ -73,6 +74,13 @@ $route['user/follow'] = 'users/follow';
 $route['user/(:any)/collection'] = 'users/collection/$1';
 $route['user/(:any)/platforms'] = 'users/platforms/$1';
 $route['user/(:any)/concepts'] = 'users/concepts/$1';
+$route['user/(:any)/characters'] = 'users/characters/$1';
+$route['user/(:any)/developers'] = 'users/developers/$1';
+$route['user/(:any)/franchises'] = 'users/franchises/$1';
+$route['user/(:any)/genres'] = 'users/genres/$1';
+$route['user/(:any)/locations'] = 'users/locations/$1';
+$route['user/(:any)/publishers'] = 'users/publishers/$1';
+$route['user/(:any)/themes'] = 'users/themes/$1';
 $route['user/(:any)'] = 'users/view/$1';
 $route['user/(:any)/(:any)'] = 'users/view/$1/$2';
 

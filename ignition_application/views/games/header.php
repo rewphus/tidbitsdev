@@ -237,6 +237,8 @@
                     foreach ($game->characters as $character) {
                         echo "<label><div id='character_" . $game->GBID . "_" . $character->GBID . "' ";
                         echo "> <span class='label label-info'>" . $character->name . "</span></div></label> ";
+                        // echo "<a href='/game/'>" . $character->name . "</a>";
+                        echo "<a href='/character/" . $character->GBID . "'>" . $character->name . "</a>";
                     }
                      echo "</div>";
                 }
