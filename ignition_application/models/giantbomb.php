@@ -15,6 +15,11 @@ class GiantBomb extends CI_Model {
         
         // build API request
         $url = $this->config->item('gb_api_root') . "/" . $meta . "/" . $GBID . "?api_key=" . $this->config->item('gb_api_key') . "&format=json";
+
+                                      echo '<script>
+      var x;
+      x = "GB URL: ' . $url . '"
+      console.log(x)</script>';
         
         // make API request
         $result = $this->Utility->getData($url, ucfirst($meta));
@@ -32,6 +37,11 @@ class GiantBomb extends CI_Model {
     {   
         // build API request
         $url = $this->config->item('gb_api_root') . "/" . $meta . "s/?api_key=" . $this->config->item('gb_api_key') . "&format=json&offset=" . $offset;
+
+                              echo '<script>
+      var x;
+      x = "GBs URL: ' . $url . '"
+      console.log(x)</script>';
         
         // make API request
         $result = $this->Utility->getData($url, ucfirst($meta) . "s");

@@ -62,6 +62,12 @@ $route['search/(:any)/(:any)'] = 'search/index/$1/$2';
 $route['game/(:any)'] = 'games/view/$1';
 $route['character/(:any)'] = 'characters/view/$1';
 $route['concept/(:any)'] = 'concepts/view/$1';
+$route['developer/(:any)'] = 'developers/view/$1';
+$route['franchise/(:any)'] = 'franchises/view/$1';
+$route['genre/(:any)'] = 'genres/view/$1';
+$route['location/(:any)'] = 'locations/view/$1';
+$route['publisher/(:any)'] = 'publishers/view/$1';
+$route['theme/(:any)'] = 'themes/view/$1';
 
 $route['user/settings'] = 'users/settings';
 $route['user/settings/image'] = 'users/image';

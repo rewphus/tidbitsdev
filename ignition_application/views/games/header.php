@@ -155,7 +155,7 @@
             echo "<div id='developers" . $game->GBID . "' class='panel-footer'>Developer<br>";
             foreach ($game->developers as $developer) {
                 echo "<label><div id='developer_" . $game->GBID . "_" . $developer->GBID . "' ";
-                echo "> <span class='label label-info'>" . $developer->name . "</span></div></label> ";
+                echo "> <span class='label label-info'>" . "<a href='/developer/" . $developer->GBID . "'>" . $developer->name. "</a>" . "</span></div></label> ";
             }
             echo "</div>";
         }
@@ -166,7 +166,7 @@
             echo "<div id='publishers" . $game->GBID . "' class='panel-footer'>Publisher<br>";
             foreach ($game->publishers as $publisher) {
                 echo "<label><div id='publisher_" . $game->GBID . "_" . $publisher->GBID . "' ";
-                echo "> <span class='label label-info'>" . $publisher->name . "</span></div></label> ";
+                echo "> <span class='label label-info'>" . "<a href='/publisher/" . $publisher->GBID . "'>" . $publisher->name. "</a>" . "</span></div></label> ";
             }
             echo "</div>";
         }
@@ -177,7 +177,7 @@
             echo "<div id='genres" . $game->GBID . "' class='panel-footer'>Genre<br>";
             foreach ($game->genres as $genre) {
                 echo "<label><div id='genre_" . $game->GBID . "_" . $genre->GBID . "' ";
-                echo "> <span class='label label-info'>" . $genre->name . "</span></div></label> ";
+                echo "> <span class='label label-info'>" . "<a href='/genre/" . $genre->GBID . "'>" . $genre->name. "</a>" . "</span></div></label> ";
             }
             echo "</div>";
         }
@@ -188,7 +188,7 @@
             echo "<div id='themes" . $game->GBID . "' class='panel-footer'>Theme<br>";
             foreach ($game->themes as $theme) {
                 echo "<label><div id='theme_" . $game->GBID . "_" . $theme->GBID . "' ";
-                echo "> <span class='label label-info'>" . $theme->name . "</span></div></label> ";
+                echo "> <span class='label label-info'>" . "<a href='/theme/" . $theme->GBID . "'>" . $theme->name. "</a>" . "</span></div></label> ";
             }
             echo "</div>";
         }
@@ -199,7 +199,7 @@
             echo "<div id='franchises" . $game->GBID . "' class='panel-footer'>Franchise<br>";
             foreach ($game->franchises as $franchise) {
                 echo "<label><div id='franchise_" . $game->GBID . "_" . $franchise->GBID . "' ";
-                echo "> <span class='label label-info'>" . $franchise->name . "</span></div></label> ";
+                echo "> <span class='label label-info'>" . "<a href='/franchise/" . $franchise->GBID . "'>" . $franchise->name. "</a>" . "</span></div></label> ";
             }
             echo "</div>";
         }
@@ -220,7 +220,7 @@
                     echo "<div id='locations" . $game->GBID . "' class='panel-footer'>Location<br>";
                     foreach ($game->locations as $location) {
                         echo "<label><div id='location_" . $game->GBID . "_" . $location->GBID . "' ";
-                        echo "> <span class='label label-info'>" . $location->name . "</span></div></label> ";
+                        echo "> <span class='label label-info'>" . "<a href='/location/" . $location->GBID . "'>" . $location->name. "</a>" . "</span></div></label> ";
                     }
                      echo "</div>";
                 }

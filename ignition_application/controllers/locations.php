@@ -1,20 +1,20 @@
 <?php
 
 
-class Characters extends CI_Controller {
+class Locations extends CI_Controller {
     
     public function __construct(){ 
       parent::__construct();
     }
     
-    // view character
+    // view location
     function view($GBID, $page = 1)
     {
         $userID = $this->session->userdata('UserID');
 
         // lookup game
-        $this->load->model('Character');
-        if(!$this->Character->getCharacters($GBID, $userID, false))
+        $this->load->model('Location');
+        if(!$this->Location->getLocations($GBID, $userID, false))
             show_404();
 
         // paging
@@ -23,12 +23,12 @@ class Characters extends CI_Controller {
 
         // page variables
         $this->load->model('Page');
-        $data = $this->Page->create($this->Character->name, "Character");
-        $data['character'] = $this->Character;
+        $data = $this->Page->create($this->Location->name, "Location");
+        $data['location'] = $this->Location;
 
         // load views
         $this->load->view('templates/header', $data);
-        $this->load->view('characters/header', $data);
+        $this->load->view('locations/header', $data);
         $this->load->view('templates/footer', $data);
     }
 }

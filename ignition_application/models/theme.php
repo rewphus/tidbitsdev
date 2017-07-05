@@ -2,6 +2,15 @@
 
 class Theme extends CI_Model {
 
+        // theme data
+    var $themeID;
+    var $GBID;
+    var $GBLink;
+    var $name;
+    var $image;
+    var $imageSmall;
+    var $deck;
+
     function __construct()
     {
         // Call the Model constructor
@@ -38,8 +47,19 @@ class Theme extends CI_Model {
         // if theme isn't in db
         if($theme == null)
         {
-            // add theme to db
-            $this->Theme->addTheme($gbTheme);
+            // theme was not found, get from Giant Bomb
+            $this->load->model('GiantBomb');
+            $result = $this->GiantBomb->getMeta($gbTheme->id, "theme");
+
+            // if theme was returned
+            if ($result != null && $result->error == "OK" && $result->number_of_total_results > 0) {
+                // add theme to database
+                $this->addTheme($result->results);
+
+            } else {
+                // theme was not found
+                return false;
+            }
 
             // get theme from db
             $theme = $this->getThemeByGBID($gbTheme->id);
@@ -54,25 +74,76 @@ class Theme extends CI_Model {
         $data = array(
            'GBID' => $theme->id,
            'Name' => $theme->name,
-           'API_Detail' => $theme->api_detail_url
+           'API_Detail' => $theme->api_detail_url,
+            'GBLink' => $theme->site_detail_url,
+           'Image' => is_object($theme->image) ? $theme->image: null,
+           'Deck' => $theme->deck           
         );
 
         return $this->db->insert('themes', $data); 
     }
 
-    // get theme data from Giant Bomb API
-    function getTheme($gbID)
+    // get theme by GBID
+    public function getThemes($GBID, $userID)
     {
-        $url = $this->config->item('gb_api_root') . "/theme/" . $gbID . "?api_key=" . $this->config->item('gb_api_key') . "&format=json";
-    
-        // make API request
-        $result = $this->Utility->getData($url, "Theme");
-        
-        if(is_object($result))
-        {
-            return $result->results;
-        } else {
-            return null;
+        // check if theme is in database
+        if ($this->isThemeInDB($GBID)) {
+            // get theme from database
+            if ($this->getThemeFromDatabase($GBID, $userID)) {
+                // theme found
+                return true;
+            }
         }
+
+        // theme was not found, get from Giant Bomb
+        $this->load->model('GiantBomb');
+        $result = $this->GiantBomb->getMeta($GBID, "theme");
+
+        // if theme was returned
+        if ($result != null && $result->error == "OK" && $result->number_of_total_results > 0) {
+            // add theme to database
+            $this->addTheme($result->results);
+
+            // get theme from database
+            return $this->getThemeFromDatabase($GBID, $userID);
+        } else {
+            // theme was not found
+            return false;
+        }
+    }
+
+    // get theme from database
+    public function getThemeFromDatabase($GBID, $userID)
+    {
+        // get theme from db
+        $this->db->select('themes.ThemeID, themes.GBID, themes.GBLink, themes.Name, themes.Image, themes.ImageSmall, themes.Deck');
+        $this->db->from('themes');
+
+        if ($userID == null) {
+            $userID = 0; // prevents joining on UserID causing an error
+        }
+
+        // $this->db->join('collections', 'collections.ThemeID = themes.ThemeID AND collections.UserID = ' . $userID, 'left');
+        // $this->db->join('lists', 'collections.ListID = lists.ListID', 'left');
+
+        $this->db->where('themes.GBID', $GBID);
+        $query = $this->db->get();
+
+        // if theme returned
+        if ($query->num_rows() == 1) {
+            $result = $query->first_row();
+
+            $this->themeID = $result->ThemeID;
+            $this->GBID = $result->GBID;
+            $this->GBLink = $result->GBLink;
+            $this->name = $result->Name;
+            $this->image = $result->Image;
+            $this->imageSmall = $result->ImageSmall;
+            $this->deck = $result->Deck;
+
+            return true;
+        }
+        
+        return false;
     }
 }

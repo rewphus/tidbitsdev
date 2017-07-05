@@ -686,10 +686,10 @@ class Games extends CI_Controller {
             $this->load->model('Genre');
 
             // if genre isnt in db
-            if(!$this->Genre->isGenreInDB($GBGenreID))
+            if(!$this->Genre->isGenreInDB($GBID))
             {
                 // get genre data 
-                $genre = $this->Genre->getGenre($GBGenreID);
+                $genre = $this->Genre->getGenres($GBID);
 
                 // if API returned nothing
                 if($genre == null)
@@ -788,10 +788,10 @@ class Games extends CI_Controller {
             $this->load->model('Developer');
 
             // if developer isnt in db
-            if(!$this->Developer->isDeveloperInDB($GBDeveloperID))
+            if(!$this->Developer->isDeveloperInDB($GBID))
             {
                 // get developer data 
-                $developer = $this->Developer->getDeveloper($GBDeveloperID);
+                $developer = $this->Developer->getDevelopers($GBID);
 
                 // if API returned nothing
                 if($developer == null)
@@ -890,10 +890,10 @@ class Games extends CI_Controller {
             $this->load->model('Publisher');
 
             // if publisher isnt in db
-            if(!$this->Publisher->isPublisherInDB($GBPublisherID))
+            if(!$this->Publisher->isPublisherInDB($GBID))
             {
                 // get publisher data 
-                $publisher = $this->Publisher->getPublisher($GBPublisherID);
+                $publisher = $this->Publisher->getPublishers($GBID);
 
                 // if API returned nothing
                 if($publisher == null)
@@ -992,10 +992,10 @@ class Games extends CI_Controller {
             $this->load->model('Theme');
 
             // if theme isnt in db
-            if(!$this->Theme->isThemeInDB($GBThemeID))
+            if(!$this->Theme->isThemeInDB($GBID))
             {
                 // get theme data 
-                $theme = $this->Theme->getTheme($GBThemeID);
+                $theme = $this->Theme->getThemes($GBID);
 
                 // if API returned nothing
                 if($theme == null)
@@ -1094,10 +1094,10 @@ class Games extends CI_Controller {
             $this->load->model('Franchise');
 
             // if franchise isnt in db
-            if(!$this->Franchise->isFranchiseInDB($GBFranchiseID))
+            if(!$this->Franchise->isFranchiseInDB($GBID))
             {
                 // get franchise data 
-                $franchise = $this->Franchise->getFranchise($GBFranchiseID);
+                $franchise = $this->Franchise->getFranchises($GBID);
 
                 // if API returned nothing
                 if($franchise == null)
