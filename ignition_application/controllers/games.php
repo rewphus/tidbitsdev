@@ -1199,10 +1199,10 @@ class Games extends CI_Controller {
             $this->load->model('Concept');
 
             // if concept isnt in db
-            if(!$this->Concept->isConceptInDB($GBConceptID))
+            if(!$this->Concept->isConceptInDB($GBID))
             {
                 // get concept data 
-                $concept = $this->Concept->getConcept($GBConceptID);
+                $concept = $this->Concept->getConcepts($GBID);
 
                 // if API returned nothing
                 if($concept == null)
@@ -1302,10 +1302,10 @@ class Games extends CI_Controller {
             $this->load->model('Location');
 
             // if location isnt in db
-            if(!$this->Location->isLocationInDB($GBLocationID))
+            if(!$this->Location->isLocationInDB($GBID))
             {
                 // get location data 
-                $location = $this->Location->getLocation($GBLocationID);
+                $location = $this->Location->getLocations($GBID);
 
                 // if API returned nothing
                 if($location == null)

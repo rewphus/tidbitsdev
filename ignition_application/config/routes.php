@@ -61,6 +61,7 @@ $route['search/(:any)/(:any)'] = 'search/index/$1/$2';
 
 $route['game/(:any)'] = 'games/view/$1';
 $route['character/(:any)'] = 'characters/view/$1';
+$route['concept/(:any)'] = 'concepts/view/$1';
 
 $route['user/settings'] = 'users/settings';
 $route['user/settings/image'] = 'users/image';

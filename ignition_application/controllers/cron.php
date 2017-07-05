@@ -13,7 +13,7 @@ class Cron extends CI_Controller {
 		if($crawlerOffset != null) {
 			// get games from Giant Bomb API (returns 100 games at a time, paged with an offset)
 			$this->load->model('GiantBomb');
-			$result = $this->GiantBomb->getGames($crawlerOffset);
+			$result = $this->GiantBomb->getMetas($crawlerOffset, "game");
 
 			// if games returned from API
 			if(is_object($result))

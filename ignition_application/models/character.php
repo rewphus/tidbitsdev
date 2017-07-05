@@ -50,7 +50,7 @@ class Character extends CI_Model {
         
             // character was not found, get from Giant Bomb
             $this->load->model('GiantBomb');
-            $result = $this->GiantBomb->getCharacter($gbCharacter->id);
+            $result = $this->GiantBomb->getMeta($gbCharacter->id, "character");
 
             // if character was returned
             if ($result != null && $result->error == "OK" && $result->number_of_total_results > 0) {
@@ -88,11 +88,6 @@ class Character extends CI_Model {
     // get character by GBID
     public function getCharacters($GBID, $userID)
     {
-                              echo '<script>
-      var x;
-      x = "GBID: ' . $GBID . '"
-      console.log(x)</script>';
-
         // check if character is in database
         if ($this->isCharacterInDB($GBID)) {
             // get character from database
@@ -104,7 +99,7 @@ class Character extends CI_Model {
 
         // character was not found, get from Giant Bomb
         $this->load->model('GiantBomb');
-        $result = $this->GiantBomb->getCharacter($GBID);
+        $result = $this->GiantBomb->getMeta($GBID, "character");
 
         // if character was returned
         if ($result != null && $result->error == "OK" && $result->number_of_total_results > 0) {
@@ -147,39 +142,6 @@ class Character extends CI_Model {
             $this->image = $result->Image;
             $this->imageSmall = $result->ImageSmall;
             $this->deck = $result->Deck;
-
-            // // if character is in collection
-            // if ($result->ListID != null) {
-            //     // list button
-            //     $this->listID = $result->ListID;
-            //     $this->listLabel = $result->ListName;
-            //     $this->listStyle = $result->ListStyle;
-
-            //     // motivation button
-            //     $this->motivationID = $result->MotivationID;
-            //     $this->motivationLabel = $result->MotivationName;
-            //     $this->motivationStyle = $result->MotivationStyle;
-
-            //     // status button
-            //     $this->statusID = $result->StatusID;
-            //     $this->statusLabel = $result->StatusName;
-            //     $this->statusStyle = $result->StatusStyle;
-
-            //                     // future button
-            //     $this->futureID = $result->FutureID;
-            //     $this->futureLabel = $result->FutureName;
-            //     $this->futureStyle = $result->FutureStyle;
-
-            //                     // value button
-            //     $this->valueID = $result->ValueID;
-            //     $this->valueLabel = $result->ValueName;
-            //     $this->valueStyle = $result->ValueStyle;
-
-            //     // played data
-            //     $this->currentlyPlaying = ($result->CurrentlyPlaying == 1) ? true : false;
-            //     $this->dateComplete = $result->DateComplete;
-            //     $this->hoursPlayed = $result->HoursPlayed;
-            // }
 
             return true;
         }

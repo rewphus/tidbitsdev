@@ -208,14 +208,8 @@
                 if ($game->concepts != null) {
                     echo "<div id='concepts" . $game->GBID . "' class='panel-footer'>Concept<br>";
                     foreach ($game->concepts as $concept) {
-                        echo "<label><input id='concept_" . $game->GBID . "_" . $concept->GBID . "' type='checkbox'";
-                        if ($concept->inCollection) {
-                            echo " checked";
-                        }
-                        if ($game->listID == 0) {
-                            echo " readonly";
-                        }
-                        echo "> <span class='label label-info'>" . $concept->name . "</span></label> ";
+                        echo "<label><div id='concept_" . $game->GBID . "_" . $concept->GBID . "'";
+                        echo "> <span class='label label-info'>" . "<a href='/concept/" . $concept->GBID . "'>" . $concept->name. "</a>" . "</span></div></label> ";
                     }
                     echo "</div>";
                 }
@@ -236,9 +230,7 @@
                     echo "<div id='characters" . $game->GBID . "' class='panel-footer'>Character<br>";
                     foreach ($game->characters as $character) {
                         echo "<label><div id='character_" . $game->GBID . "_" . $character->GBID . "' ";
-                        echo "> <span class='label label-info'>" . $character->name . "</span></div></label> ";
-                        // echo "<a href='/game/'>" . $character->name . "</a>";
-                        echo "<a href='/character/" . $character->GBID . "'>" . $character->name . "</a>";
+                        echo "> <span class='label label-info'>" . "<a href='/character/" . $character->GBID . "'>" . $character->name. "</a>" . "</span></div></label> ";
                     }
                      echo "</div>";
                 }

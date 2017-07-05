@@ -17,7 +17,7 @@ class IG_Pages extends CI_Controller {
 	public function view($page = 'home')
 	{
 		if (!file_exists('ignition_application/views/pages/'.$page.'.php'))
-		{
+		{	
 			// Whoops, we don't have a page for that!
 			show_404();
 		}

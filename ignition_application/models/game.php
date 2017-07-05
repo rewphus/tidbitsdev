@@ -72,7 +72,7 @@ class Game extends CI_Model
 
         // game was not found, get from Giant Bomb
         $this->load->model('GiantBomb');
-        $result = $this->GiantBomb->getGame($GBID);
+        $result = $this->GiantBomb->getMeta($GBID, "game");
 
         // if game was returned
         if ($result != null && $result->error == "OK" && $result->number_of_total_results > 0) {
