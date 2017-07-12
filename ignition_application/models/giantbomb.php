@@ -15,11 +15,6 @@ class GiantBomb extends CI_Model {
         
         // build API request
         $url = $this->config->item('gb_api_root') . "/" . $meta . "/" . $GBID . "?api_key=" . $this->config->item('gb_api_key') . "&format=json";
-
-                                      echo '<script>
-      var x;
-      x = "GB URL: ' . $url . '"
-      console.log(x)</script>';
         
         // make API request
         $result = $this->Utility->getData($url, ucfirst($meta));
@@ -37,11 +32,6 @@ class GiantBomb extends CI_Model {
     {   
         // build API request
         $url = $this->config->item('gb_api_root') . "/" . $meta . "s/?api_key=" . $this->config->item('gb_api_key') . "&format=json&offset=" . $offset;
-
-                              echo '<script>
-      var x;
-      x = "GBs URL: ' . $url . '"
-      console.log(x)</script>';
         
         // make API request
         $result = $this->Utility->getData($url, ucfirst($meta) . "s");
@@ -53,74 +43,6 @@ class GiantBomb extends CI_Model {
             return null;
         }
     }    
-
-    // // get meta from Giant Bomb API
-    // public function getGame($GBID) 
-    // {   
-    //     // build API request
-    //     $url = $this->config->item('gb_api_root') . "/game/" . $GBID . "?api_key=" . $this->config->item('gb_api_key') . "&format=json";
-        
-    //     // make API request
-    //     $result = $this->Utility->getData($url, "Game");
-        
-    //     if(is_object($result))
-    //     {
-    //         return $result;
-    //     } else {
-    //         return null;
-    //     }
-    // }
-    
-    // // get games from Giant Bomb API (returns 100 games at a time, paged with an offset)
-    // public function getGames($offset) 
-    // {   
-    //     // build API request
-    //     $url = $this->config->item('gb_api_root') . "/games/?api_key=" . $this->config->item('gb_api_key') . "&format=json&offset=" . $offset;
-        
-    //     // make API request
-    //     $result = $this->Utility->getData($url, "Games");
-        
-    //     if(is_object($result))
-    //     {
-    //         return $result;
-    //     } else {
-    //         return null;
-    //     }
-    // }
-
-    // // get character from Giant Bomb API
-    // public function getCharacter($GBID) 
-    // {   
-    //     // build API request
-    //     $url = $this->config->item('gb_api_root') . "/character/" . $GBID . "?api_key=" . $this->config->item('gb_api_key') . "&format=json";
-        
-    //     // make API request
-    //     $result = $this->Utility->getData($url, "Character");
-        
-    //     if(is_object($result))
-    //     {
-    //         return $result;
-    //     } else {
-    //         return null;
-    //     }
-    // }
-    
-    // // get characters from Giant Bomb API (returns 100 characters at a time, paged with an offset)
-    // public function getCharacters($offset) 
-    // {   
-    //     // build API request
-    //     $url = $this->config->item('gb_api_root') . "/characters/?api_key=" . $this->config->item('gb_api_key') . "&format=json&offset=" . $offset;
-        
-    //     // make API request
-    //     $result = $this->Utility->getData($url, "Characters");
-        
-    //     if(is_object($result))
-    //     {
-    //         return $result;
-    //     } else {
-    //         return null;
-    //     }
-    // }
 
     // search Giant Bomb API for games  
     function searchForGame($query, $page, $resultsPerPage, $userID) 

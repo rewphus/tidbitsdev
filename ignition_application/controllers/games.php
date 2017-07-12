@@ -686,10 +686,10 @@ class Games extends CI_Controller {
             $this->load->model('Genre');
 
             // if genre isnt in db
-            if(!$this->Genre->isGenreInDB($GBID))
+            if(!$this->Genre->isGenreInDB($GBGenreID))
             {
                 // get genre data 
-                $genre = $this->Genre->getGenres($GBID);
+                $genre = $this->Genre->getGenres($GBGenreID);
 
                 // if API returned nothing
                 if($genre == null)
@@ -788,10 +788,10 @@ class Games extends CI_Controller {
             $this->load->model('Developer');
 
             // if developer isnt in db
-            if(!$this->Developer->isDeveloperInDB($GBID))
+            if(!$this->Developer->isDeveloperInDB($GBDeveloperID))
             {
                 // get developer data 
-                $developer = $this->Developer->getDevelopers($GBID);
+                $developer = $this->Developer->getDevelopers($GBDeveloperID);
 
                 // if API returned nothing
                 if($developer == null)
@@ -890,10 +890,10 @@ class Games extends CI_Controller {
             $this->load->model('Publisher');
 
             // if publisher isnt in db
-            if(!$this->Publisher->isPublisherInDB($GBID))
+            if(!$this->Publisher->isPublisherInDB($GBPublisherID))
             {
                 // get publisher data 
-                $publisher = $this->Publisher->getPublishers($GBID);
+                $publisher = $this->Publisher->getPublishers($GBPublisherID);
 
                 // if API returned nothing
                 if($publisher == null)
@@ -992,10 +992,10 @@ class Games extends CI_Controller {
             $this->load->model('Theme');
 
             // if theme isnt in db
-            if(!$this->Theme->isThemeInDB($GBID))
+            if(!$this->Theme->isThemeInDB($GBThemeID))
             {
                 // get theme data 
-                $theme = $this->Theme->getThemes($GBID);
+                $theme = $this->Theme->getThemes($GBThemeID);
 
                 // if API returned nothing
                 if($theme == null)
@@ -1094,10 +1094,10 @@ class Games extends CI_Controller {
             $this->load->model('Franchise');
 
             // if franchise isnt in db
-            if(!$this->Franchise->isFranchiseInDB($GBID))
+            if(!$this->Franchise->isFranchiseInDB($GBFranchiseID))
             {
                 // get franchise data 
-                $franchise = $this->Franchise->getFranchises($GBID);
+                $franchise = $this->Franchise->getFranchises($GBFranchiseID);
 
                 // if API returned nothing
                 if($franchise == null)
@@ -1199,10 +1199,10 @@ class Games extends CI_Controller {
             $this->load->model('Concept');
 
             // if concept isnt in db
-            if(!$this->Concept->isConceptInDB($GBID))
+            if(!$this->Concept->isConceptInDB($GBConceptID))
             {
                 // get concept data 
-                $concept = $this->Concept->getConcepts($GBID);
+                $concept = $this->Concept->getConcepts($GBConceptID);
 
                 // if API returned nothing
                 if($concept == null)
@@ -1302,10 +1302,10 @@ class Games extends CI_Controller {
             $this->load->model('Location');
 
             // if location isnt in db
-            if(!$this->Location->isLocationInDB($GBID))
+            if(!$this->Location->isLocationInDB($GBLocationID))
             {
                 // get location data 
-                $location = $this->Location->getLocations($GBID);
+                $location = $this->Location->getLocations($GBLocationID);
 
                 // if API returned nothing
                 if($location == null)
@@ -1405,7 +1405,7 @@ class Games extends CI_Controller {
             $this->load->model('Character');
 
             // if character isnt in db
-            if(!$this->Character->isCharacterInDB($GBID))
+            if(!$this->Character->isCharacterInDB($GBCharacterID))
             {
                 // get character data 
                 $character = $this->Character->getCharacters($GBID, $userID);

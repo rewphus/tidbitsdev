@@ -75,9 +75,7 @@ class Theme extends CI_Model {
            'GBID' => $theme->id,
            'Name' => $theme->name,
            'API_Detail' => $theme->api_detail_url,
-            'GBLink' => $theme->site_detail_url,
-           'Image' => is_object($theme->image) ? $theme->image: null,
-           'Deck' => $theme->deck           
+            'GBLink' => $theme->site_detail_url,      
         );
 
         return $this->db->insert('themes', $data); 

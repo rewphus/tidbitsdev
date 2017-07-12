@@ -64,7 +64,8 @@
                                                                     <li><a onclick="javascript:changeMotivation(<?php echo $game->id ?>, 6);"><i class="fa fa-wrench" aria-hidden="true"></i> Creativity</a></li>
                                                                     <li><a onclick="javascript:changeMotivation(<?php echo $game->id ?>, 7);"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Academic</a></li>
                                                             </ul>
-                                                        </div> 
+                                                        </div>
+                                                        <!--<input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/> -->
                                                         <div id="statusButtonGroup<?php echo $game->id ?>" class="btn-group <?php if($game->motivationID == 99) echo "hidden" ?>">
                                                             <button id='statusButton<?php echo $game->id ?>' data-toggle='dropdown' class='btn btn-<?php echo $game->statusStyle ?> dropdown-toggle'><?php echo $game->statusLabel  ?> <span class='caret'></span></button>
                                                             <ul id="statusActionDropdown" class='dropdown-menu <?php if( $game->motivationID != 1) echo "hidden" ?>'>

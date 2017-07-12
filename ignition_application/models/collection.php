@@ -120,8 +120,6 @@ class Collection extends CI_Model
             }
         }
 
-        //I don't know why this is commented out?
-        //$this->doesMetaExist($game, 'platform', $userID);
         $this->doesMetaExist($game, 'concept', $userID);
         $this->doesMetaExist($game, 'character', $userID);
         $this->doesMetaExist($game, 'developer', $userID);
